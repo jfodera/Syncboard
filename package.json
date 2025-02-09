@@ -1,0 +1,19 @@
+{
+  "name": "itws-4500-s25-syncboard",
+  "version": "1.0.0",
+  "description": "web science group project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RPI-ITWS/ITWS-4500-S25-syncboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RPI-ITWS/ITWS-4500-S25-syncboard/issues"
+  },
+  "homepage": "https://github.com/RPI-ITWS/ITWS-4500-S25-syncboard#readme"
+}

@@ -1,0 +1,9 @@
+[
+    {
+        "groupName": "SyncBoard",
+        "description": "Our project focuses on streamlining team project management.",
+        "students": ["Aditya", "Morgan", "Ryan", "Grace", "Joe"],
+        "visibility": "public",
+        "tags": ["best", "project", "ever"]
+    }
+]
