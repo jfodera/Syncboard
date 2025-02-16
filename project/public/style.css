@@ -1,8 +1,9 @@
 :root {
-    --orange: #ff6600;
+    --orange: #F78154;
     --offwhite: #f8f8f8;
     --shadow: rgba(0, 0, 0, 0.1);
     --blue: #8cc0e8; 
+    --yellow: #FFC858;
 }
 
 body {
@@ -10,6 +11,11 @@ body {
     background-color: var(--offwhite);
     margin: 0;
     padding: 0;
+}
+
+h2 {
+    margin-top: 60px;
+    margin-left: 2.5%;
 }
 
 /* nav */
@@ -40,7 +46,7 @@ body {
 }
 
 .logout {
-    color: red;
+    color: var(--orange);
     cursor: pointer;
 }
 
@@ -48,15 +54,38 @@ body {
 .workspaces {
     display: flex;
     gap: 20px;
+    width: 95%;
+    margin-left: 2.5%;
     margin-top: 20px;
 }
 
 /* cards  */
 .card {
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px var(--shadow);
-    width: 250px;
+    width: 280px; 
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 8px var(--shadow);
+    font-family: Verdana, sans-serif;
+}
+
+.card-header {
+    height: 100px; 
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.card-body h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
     color: #333;
-    background-color: var(--offwhite); 
+}
+
+.card-body p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: #666;
 }
