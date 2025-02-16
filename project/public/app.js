@@ -4,6 +4,7 @@ const App = () => {
             <Navbar />
             <h2>Your Workspaces</h2>
             <Workspaces />
+            <Footer />
         </div>
     );
 };

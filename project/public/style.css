@@ -4,9 +4,12 @@
     --shadow: rgba(0, 0, 0, 0.1);
     --blue: #8cc0e8; 
     --yellow: #FFC858;
+    --darkgrey: #333;
+    --lightgrey: #666;
 }
 
 body {
+    height: 100%;
     font-family: Verdana, sans-serif;
     background-color: var(--offwhite);
     margin: 0;
@@ -14,6 +17,7 @@ body {
 }
 
 h2 {
+    color: var(--darkgrey);
     margin-top: 60px;
     margin-left: 2.5%;
 }
@@ -41,7 +45,7 @@ h2 {
 
 .menu a {
     text-decoration: none;
-    color: black;
+    color: var(--darkgrey);
     font-weight: bold;
 }
 
@@ -61,16 +65,15 @@ h2 {
 
 /* cards  */
 .card {
-    width: 280px; 
+    width: 25%; 
     border-radius: 12px;
     overflow: hidden;
     background: white;
     box-shadow: 0 4px 8px var(--shadow);
-    font-family: Verdana, sans-serif;
 }
 
 .card-header {
-    height: 100px; 
+    height: 150px; 
 }
 
 .card-body {
@@ -79,13 +82,27 @@ h2 {
 
 .card-body h3 {
     margin: 0;
+    margin-bottom: 20px;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #333;
+    color: var(--darkgrey);
 }
 
 .card-body p {
     margin: 4px 0;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--lightgrey);
+}
+
+/* footer */
+.footer {
+    width: 100%;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--offwhite);
+    color: var(--lightgrey);
+    text-align: center;
+    padding: 1rem;
 }
