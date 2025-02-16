@@ -1,0 +1,62 @@
+:root {
+    --orange: #ff6600;
+    --offwhite: #f8f8f8;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --blue: #8cc0e8; 
+}
+
+body {
+    font-family: Verdana, sans-serif;
+    background-color: var(--offwhite);
+    margin: 0;
+    padding: 0;
+}
+
+/* nav */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 15px 30px;
+    box-shadow: 0px 2px 5px var(--shadow);
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--orange);
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.logout {
+    color: red;
+    cursor: pointer;
+}
+
+/* workspace */
+.workspaces {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* cards  */
+.card {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--shadow);
+    width: 250px;
+    color: #333;
+    background-color: var(--offwhite); 
+}
