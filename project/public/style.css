@@ -1,0 +1,108 @@
+:root {
+    --orange: #F78154;
+    --offwhite: #f8f8f8;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --blue: #8cc0e8; 
+    --yellow: #FFC858;
+    --darkgrey: #333;
+    --lightgrey: #666;
+}
+
+body {
+    height: 100%;
+    font-family: Verdana, sans-serif;
+    background-color: var(--offwhite);
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    color: var(--darkgrey);
+    margin-top: 60px;
+    margin-left: 2.5%;
+}
+
+/* nav */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 15px 30px;
+    box-shadow: 0px 2px 5px var(--shadow);
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--orange);
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: var(--darkgrey);
+    font-weight: bold;
+}
+
+.logout {
+    color: var(--orange);
+    cursor: pointer;
+}
+
+/* workspace */
+.workspaces {
+    display: flex;
+    gap: 20px;
+    width: 95%;
+    margin-left: 2.5%;
+    margin-top: 20px;
+}
+
+/* cards  */
+.card {
+    width: 25%; 
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 8px var(--shadow);
+}
+
+.card-header {
+    height: 150px; 
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.card-body h3 {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--darkgrey);
+}
+
+.card-body p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: var(--lightgrey);
+}
+
+/* footer */
+.footer {
+    width: 100%;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--offwhite);
+    color: var(--lightgrey);
+    text-align: center;
+    padding: 1rem;
+}
