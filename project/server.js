@@ -2,10 +2,15 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 const PORT = 3000;
+const path = require('path');
 
 app.use(express.json());
 
-const groupsData = 'groups.json';
+const groupsData = path.join(__dirname, 'public', 'groups.json');
+
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // helper function to read data from JSON file
 function readData() {
@@ -104,7 +109,9 @@ app.delete('/groups/:groupID', (req, res) => {
 app.get('/groups', (req, res) => {
     let data = readData();
     let publicGroups = [];
+    console.log(data);
     for (let i = 0; i < data.groups.length; i++) {
+        console.log(data.groups.length);
         if (data.groups[i].visibility === 'public') {
             publicGroups.push(data.groups[i]);
         }
