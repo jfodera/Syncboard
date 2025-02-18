@@ -1,11 +1,21 @@
+
 const App = () => {
     return (
-        <div>
+        <ReactRouterDOM.BrowserRouter>
             <Navbar />
-            <h2>Your Workspaces</h2>
-            <Workspaces />
+            <div className="content">
+                    {/* Default route (this will be shown first when the app loads) */}
+
+                    <ReactRouterDOM.Route path="/" exact component={Workspaces} />
+                    
+                    {/* Define the route for /home */}
+                    <ReactRouterDOM.Route path="/home" exact component={Home} />
+
+                    <ReactRouterDOM.Route path="/home/dashboard" component={Dashboard} />
+                    <ReactRouterDOM.Route path="/home/resources" component={Resources} />
+            </div>
             <Footer />
-        </div>
+        </ReactRouterDOM.BrowserRouter>
     );
 };
 
