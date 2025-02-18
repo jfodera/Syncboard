@@ -6,10 +6,14 @@ const Workspaces = () => {
     ];
 
     return (
-        <div className="workspaces">
-            {workspaces.map((workspace, index) => (
-                <Card key={index} {...workspace} />
-            ))}
+        <div>
+            <h2>Your Workspaces</h2>
+            <div className="workspaces">
+                {workspaces.map((workspace, index) => (
+                    <Card key={index} {...workspace} />
+                ))}
+            </div>
         </div>
+        
     );
 };

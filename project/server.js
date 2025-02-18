@@ -4,6 +4,7 @@ const app = express();
 const PORT = 3000;
 const path = require('path');
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 const groupsData = path.join(__dirname, 'public', 'groups.json');
@@ -109,7 +110,6 @@ app.delete('/groups/:groupID', (req, res) => {
 app.get('/groups', (req, res) => {
     let data = readData();
     let publicGroups = [];
-    console.log(data);
     for (let i = 0; i < data.groups.length; i++) {
         console.log(data.groups.length);
         if (data.groups[i].visibility === 'public') {
