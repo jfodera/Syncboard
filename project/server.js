@@ -197,8 +197,7 @@ app.get('/groups/search', (req, res) => {
 
 app.get('/profile', (req, res) => {
     
-    let profiles = []
-    // console.log(profileEmail);
+    let profiles = [];
     db.collection('profiles')
         .find()
         .forEach(pf => profiles.push(pf))
@@ -216,12 +215,30 @@ app.get('/profile/:name', (req, res) => {
     db.collection('profiles')
         .findOne({name: profileName})
         .then(response => {
-            console.log("AAAAA")
             res.status(200).json(response);
         })
         .catch(err => {
             res.status(500).json({error: err});
         });
+});
+
+app.put('/profile/:name', (req, res) => {
+    const updatedProfile = req.body;
+    delete updatedProfile._id; 
+    const profileName = req.params.name;
+
+    db.collection('profiles')
+        .updateOne({name: profileName}, {$set: updatedProfile})
+        .then(result => {
+            if (result.modifiedCount === 0) {
+                return res.status(404).json({ error: 'Profile not found!' });
+            }
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({error: 'Could not update your profile!'});
+        })
 });
 
 app.listen(PORT, function() {
