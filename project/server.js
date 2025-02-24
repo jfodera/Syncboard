@@ -211,16 +211,15 @@ app.get('/profile', (req, res) => {
 });
 
 app.get('/profile/:name', (req, res) => {
-    // const profileName = req.params.name;
+    const profileName = req.params.name;
 
     db.collection('profiles')
-        .findOne({_id: ObjectId(req.params.name)})
+        .findOne({name: profileName})
         .then(response => {
             console.log("AAAAA")
             res.status(200).json(response);
         })
         .catch(err => {
-            console.log("AAAAA")
             res.status(500).json({error: err});
         });
 });
