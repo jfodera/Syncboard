@@ -13,7 +13,7 @@ const App = () => {
 
                     <ReactRouterDOM.Route path="/home/dashboard" component={Dashboard} />
                     <ReactRouterDOM.Route path="/home/resources" component={Resources} />
-                    <ReactRouterDOM.Route path="/home/profile" component={Profile} />
+                    <ReactRouterDOM.Route path="/home/profile" render={() => <Profile name="Emily Chen"/>} />
             </div>
             <Footer />
         </ReactRouterDOM.BrowserRouter>
