@@ -3,9 +3,21 @@ const fs = require('fs');
 const app = express();
 const PORT = 3000;
 const path = require('path');
+const { ObjectId } = require('mongodb');
+const { connectToDb, getDb } = require('./db.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+
+connectToDb((err) => {
+    if (!err){
+        db = getDb();
+        console.log("Successful database connection!")
+    }
+    else {
+        console.log(err);
+    }
+})
 
 const groupsData = path.join(__dirname, 'public', 'groups.json');
 
@@ -179,6 +191,38 @@ app.get('/groups/search', (req, res) => {
         }
     }
     res.json(results);
+});
+
+// **profile endpoints**
+
+app.get('/profile', (req, res) => {
+    
+    let profiles = []
+    // console.log(profileEmail);
+    db.collection('profiles')
+        .find()
+        .forEach(pf => profiles.push(pf))
+        .then(() => {
+            res.status(200).json(profiles);
+        })
+        .catch(err => {
+            res.status(500).json({error: err});
+        });
+});
+
+app.get('/profile/:name', (req, res) => {
+    // const profileName = req.params.name;
+
+    db.collection('profiles')
+        .findOne({_id: ObjectId(req.params.name)})
+        .then(response => {
+            console.log("AAAAA")
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log("AAAAA")
+            res.status(500).json({error: err});
+        });
 });
 
 app.listen(PORT, function() {
