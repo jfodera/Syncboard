@@ -6,7 +6,7 @@ const Dashboard = () => {
                 <div className="left">
                     <h2>Team Calendar</h2>
                     <iframe className="iframe-style"
-                        src="https://calendar.google.com/calendar/embed?src=josephfodera25%40gmail.com&ctz=America%2FNew_York">
+                        src="https://calendar.google.com/calendar/embed?src=websciteam1%40gmail.com&ctz=America%2FNew_York">
                         
                     </iframe>
                 </div>
