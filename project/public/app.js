@@ -1,12 +1,14 @@
 
 const App = () => {
     return (
+
+         // Presents page based on whats currently in URL, loads into route 
         <ReactRouterDOM.BrowserRouter>
             <Navbar />
             <div className="content">
                     {/* Default route (this will be shown first when the app loads) */}
 
-                    <ReactRouterDOM.Route path="/" exact component={Workspaces} />
+                    <ReactRouterDOM.Route path="/" exact component={Workspace} />
                     
                     {/* Define the route for /home */}
                     <ReactRouterDOM.Route path="/home" exact component={Home} />

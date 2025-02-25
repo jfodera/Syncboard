@@ -250,3 +250,7 @@ hr {
     border: 1px solid #ff8056;
     color: white;
 }
+
+a {
+   display: block;
+}
