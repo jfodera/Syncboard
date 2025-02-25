@@ -7,7 +7,7 @@ const Navbar = () => {
                 <ReactRouterDOM.Link to="/">Workspaces</ReactRouterDOM.Link>
                 {/* <a href="#">Professor Tools</a> */}
             </div>
-            <div className="logout">Logout</div>
+            <div className="logout" onClick={() => (window.location.href = '../login.html')}>Logout</div>
         </nav>
     );
 };

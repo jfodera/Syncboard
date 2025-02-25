@@ -3,7 +3,6 @@ const fs = require('fs');
 const app = express();
 const PORT = 3000;
 const path = require('path');
-const { ObjectId } = require('mongodb');
 const { connectToDb, getDb } = require('./db.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -24,6 +23,7 @@ const groupsData = path.join(__dirname, 'public', 'groups.json');
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
 
 // helper function to read data from JSON file
 function readData() {
@@ -240,6 +240,44 @@ app.put('/profile/:name', (req, res) => {
             res.status(500).json({error: 'Could not update your profile!'});
         })
 });
+
+// *login endpoints*
+
+app.post('/login', (req, res) => {
+    const loginProfile = req.body;
+
+    db.collection('profiles')
+        .findOne({ email: loginProfile['email'], password: loginProfile['password'] }) 
+        .then(profile => {
+            if (!profile) {
+                return res.status(401).json({ error: 'Invalid name or password!' });
+            }
+            res.status(200).json(profile);
+        })
+        .catch(err => {
+            console.error('Database query error:', err);
+            res.status(500).json({ error: 'Internal server error' });
+        });
+
+})
+
+app.post('/signup', (req, res) => {
+    const newProfile = req.body;
+
+    db.collection('profiles')
+        .insertOne(newProfile) 
+        .then(profile => {
+            if (!profile) {
+                return res.status(401).json({ error: 'Invalid profile!' });
+            }
+            res.status(200).json(profile);
+        })
+        .catch(err => {
+            console.error('Database query error:', err);
+            res.status(500).json({ error: 'Internal server error' });
+        });
+
+})
 
 app.listen(PORT, function() {
     console.log('Server running on port ' + PORT);
