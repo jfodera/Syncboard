@@ -1,4 +1,4 @@
-const DropdownSelect = ({ id, name }) => {
+const DropdownSelect = ({ id, name, value }) => {
     const [color, setColor] = React.useState("");
 
     const handleChange = (e) => {
@@ -15,6 +15,7 @@ const DropdownSelect = ({ id, name }) => {
                 setColor("");
         }
     };
+    
 
 
     return (

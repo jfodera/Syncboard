@@ -1,4 +1,25 @@
 const Tasks = () => {
+    const [tasks, setTasks] = React.useState([
+        {task: 'Proposal Presentation', status: 'completed'},
+        {task: 'UI Mockups', status: 'completed'},
+        {task: 'Frontend Implementation', status: 'completed'},
+        {task: 'Midterm Presentation', status: 'completed'},
+        {task: 'Backend Implementation', status: 'In Progress'},
+    ]);
+
+    const addTask = () => {
+        setTasks([
+            ...tasks,
+            { task: 'Placeholder', status: 'To do' }
+        ]);
+    }
+
+    const handleTaskChange = (index, newName) => {
+        const updatedTasks = [...tasks];
+        updatedTasks[index].task = newName; 
+        setTasks(updatedTasks); 
+    };
+
     return (
         <div>
             <table className="tasks">
@@ -6,53 +27,38 @@ const Tasks = () => {
                     <th>TASK</th>
                     <th>STATUS</th>
                 </tr>
-                <tr>
-                    <td>Proposal presentation</td>
-                    <td>
-                        <div className="select">
-                        <DropdownSelect id="slct" name="slct" />
-                        </div>
-                    </td>
-                </tr>
 
-                <tr>
-                    <td>UI Mockups</td>
-                    <td>
-                        <div className="select">
-                            <DropdownSelect id="selectTwo" name="selectTwo" />
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Frontend Implementation</td>
-                    <td>
-                        <div className="select">
-                            <DropdownSelect id="selectThree" name="selectThree" />
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Midterm Presentation</td>
-                    <td>
-                        <div className="select">
-                            <DropdownSelect id="selectFour" name="selectFour" />
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Backend Implementation</td>
-                    <td>
-                        <div className="select">
-                            <DropdownSelect id="selectFive" name="selectFive" />
-                        </div>
-                    </td>
-                </tr>
+                <tbody>
+                    {tasks.map((task, index) => (
+                        <tr key={index}>
+                            <td>
+                                {task.task === 'Placeholder' ? (
+                                    <form>
+                                        <input
+                                            type="text"
+                                            onBlur={(e) => handleTaskChange(index, e.target.value)}
+                                        />
+                        
+                                    </form>        
+                                ) : (
+                                    task.task
+                                )}
+                            </td>
+                            <td>
+                                <DropdownSelect id={`select${index}`} name={`select${index}`} value={task.status}/>
+                            </td>
+                        </tr>
+                        
+                    ))}
+                </tbody>
 
                 
             </table>
+
+            <br></br>
+            <span className="material-symbols-outlined circle" onClick={addTask}>
+                add_circle
+            </span>
         </div>
         
     );

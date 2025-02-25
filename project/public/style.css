@@ -308,3 +308,13 @@ select {
     padding-bottom: 10px;
 }
 
+.circle{
+    float: right;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+.circle:hover{
+    transform: scale(1.2);
+}
+
