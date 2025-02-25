@@ -2,7 +2,16 @@ const Dashboard = () => {
     return (
         <div>
             <Homebar />
-            <h2>Dashboard</h2>
+            <div className="mainContent">
+                <div className="left">
+                    <h2>Team Calendar</h2>
+                </div>
+                <div className="right">
+                    <h2>Tasks</h2>
+                    <Tasks />
+                </div>
+            </div>
+            
         </div>
         
     );
