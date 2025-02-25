@@ -3,17 +3,17 @@
 const DropdownSelect = ({ id, name }) => {
     const [color, setColor] = React.useState();
 
-    // onClick: () => { 
-    //     setColor();
-    // }
+    onClick: () => { 
+        setColor();
+    }
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData({
-    //       ...formData,
-    //       [name]: value
-    //     });
-    //   };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+          ...formData,
+          [name]: value
+        });
+      };
 
     return (
         <div className="select">
