@@ -18,6 +18,11 @@ body {
     
 }
 
+
+.content{
+   padding-bottom:50px ;
+}
+
 h2 {
     color: var(--darkgrey);
     margin-top: 60px;
@@ -38,6 +43,10 @@ h2 {
     font-size: 1.5em;
     font-weight: bold;
     color: var(--orange);
+    text-decoration: none;
+}
+a{
+   text-decoration: none;
 }
 
 .menu {
@@ -63,6 +72,10 @@ h2 {
     width: 95%;
     margin-left: 2.5%;
     margin-top: 20px;
+}
+
+#work-Holder{
+   padding-bottom: 180px;
 }
 
 /* cards  */
@@ -100,7 +113,7 @@ h2 {
 .footer {
     width: 100%;
     background-color: white;
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
     width: 100%;
     background-color: var(--offwhite);
@@ -233,7 +246,6 @@ hr {
     padding: 5px 0;
 }
 
-<<<<<<< Updated upstream
 .edit-profile-btn {
     background-color: transparent;
     border: 1px solid #333;
@@ -246,11 +258,18 @@ hr {
     font-weight: 500;
 }
 
+iframe {
+   border: 0;
+   width:60vw;
+   height:90vh;
+}
+
 .edit-profile-btn:hover {
     background-color: #ff8056; /* Light coral (matches "SyncBoard" logo) */
     border: 1px solid #ff8056;
     color: white;
-=======
+}
+
 .left{
     width:75%;
 }
@@ -287,5 +306,5 @@ select {
     overflow: hidden;
     border-radius: .25em;
     padding-bottom: 10px;
->>>>>>> Stashed changes
 }
+
