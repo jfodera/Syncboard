@@ -43,6 +43,10 @@ h2 {
     font-size: 1.5em;
     font-weight: bold;
     color: var(--orange);
+    text-decoration: none;
+}
+a{
+   text-decoration: none;
 }
 
 .menu {

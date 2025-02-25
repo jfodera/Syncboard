@@ -1,8 +1,9 @@
 Current 
 :
-   Calendar
-   resources page
-   make sure task page is good 
+   Calendar√
+   resources page√
+   make sure task page is good √
+   Home link and make logo a link 
    work on overall readme if really have time 
 
    Script for 5 min demo, assign each person a role

@@ -1,7 +1,7 @@
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <div className="logo">SyncBoard</div>
+            <ReactRouterDOM.Link to="/home"><div className="logo">SyncBoard</div></ReactRouterDOM.Link>
             <div className="menu">
                 {/* <a href="#">Home</a> */}
                 <ReactRouterDOM.Link to="/home">Home</ReactRouterDOM.Link>
