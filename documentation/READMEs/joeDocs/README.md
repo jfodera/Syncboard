@@ -21,6 +21,7 @@ Things I learned:
 
 Future tasks: 
    mess with relative links 
+   make URL link up with induvidual classes 
 
 What I did: 
    

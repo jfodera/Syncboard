@@ -6,7 +6,7 @@ const Workspace = () => {
     ];
 
     return (
-        <div>
+        <div id="work-Holder">
             <h2>Your Workspaces</h2>
             <div className="workspaces">
                 {workspaces.map((workspace, index) => (

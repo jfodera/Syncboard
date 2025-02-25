@@ -3,7 +3,7 @@
 const Card = ({ title, day, time, location, color}) => {
     return (
          <div className="card">
-            <ReactRouterDOM.Link to="/home">
+            <ReactRouterDOM.Link to="/class">
                <div className="card-header" style={{ backgroundColor: `var(${color})` }}></div>
                <div className="card-body">
                   
