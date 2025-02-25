@@ -16,6 +16,7 @@ const DropdownSelect = ({ id, name }) => {
         }
     };
 
+
     return (
         <div className="select">
             <select name={name} id={id} onChange={handleChange} style={{ backgroundColor: color }}>

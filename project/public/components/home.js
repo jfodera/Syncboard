@@ -1,3 +1,5 @@
+/* not currently used */ 
+
 const Home = () => {
     return (
         <div>

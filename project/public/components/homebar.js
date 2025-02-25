@@ -1,10 +1,10 @@
 const Homebar = () => {
     return (
         <nav className="bar">
-            <ReactRouterDOM.Link to="/home/dashboard">Dashboard</ReactRouterDOM.Link>
+            <ReactRouterDOM.Link to="/class">Dashboard</ReactRouterDOM.Link>
             <a href="#">Chat</a>
-            <ReactRouterDOM.Link to="/home/resources">Resources</ReactRouterDOM.Link>
-            <ReactRouterDOM.Link to="/home/profile">Profile</ReactRouterDOM.Link>
+            <ReactRouterDOM.Link to="/class/resources">Resources</ReactRouterDOM.Link>
+            <ReactRouterDOM.Link to="/class/profile">Profile</ReactRouterDOM.Link>
         </nav>
     );
 };
