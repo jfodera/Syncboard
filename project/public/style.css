@@ -233,7 +233,6 @@ hr {
     padding: 5px 0;
 }
 
-<<<<<<< Updated upstream
 .edit-profile-btn {
     background-color: transparent;
     border: 1px solid #333;
@@ -250,7 +249,7 @@ hr {
     background-color: #ff8056; /* Light coral (matches "SyncBoard" logo) */
     border: 1px solid #ff8056;
     color: white;
-=======
+}
 .left{
     width:75%;
 }
@@ -287,5 +286,4 @@ select {
     overflow: hidden;
     border-radius: .25em;
     padding-bottom: 10px;
->>>>>>> Stashed changes
 }
