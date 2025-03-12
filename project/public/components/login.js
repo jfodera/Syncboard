@@ -30,12 +30,7 @@ const Login = () => {
 
   return (
     <div className="container">
-      <div className="navbar">
-        <div className="logo-container">
-          <div className="logo"></div>
-          <div className="logo-text">SyncBoard</div>
-        </div>
-      </div>
+
       <div className="welcome-text">Welcome to SyncBoard!</div>
       <div className="login-container">
         <div className="login-title">Log In</div>
