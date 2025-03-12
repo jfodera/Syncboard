@@ -8,6 +8,7 @@ const App = () => {
             <div className="content">
                     {/* Default route (this will be shown first when the app loads) */}
 
+                    {/* <ReactRouterDOM.Route path="/" exact component={Login} /> */}
                     <ReactRouterDOM.Route path="/" exact component={Workspace} />
                     
                     {/* Define the route for /class */}
