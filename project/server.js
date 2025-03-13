@@ -41,6 +41,10 @@ function writeData(data) {
     fs.writeFileSync(groupsData, jsonData);
 }
 
+app.get('*', (req, res) => {
+   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+ });
+
 // create a new group
 app.post('/groups', (req, res) => {
     let data = readData();
