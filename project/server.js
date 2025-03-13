@@ -8,6 +8,13 @@ const { connectToDb, getDb } = require('./db.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+app.use(session({
+    secret: "your_secret_key",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { secure: false } // Change to `true` in production with HTTPS
+}));
+
 connectToDb((err) => {
     if (!err){
         db = getDb();
@@ -256,6 +263,12 @@ app.post('/login', (req, res) => {
             if (!profile) {
                 return res.status(401).json({ error: 'Invalid name or password!' });
             }
+            req.session.user = {
+                id: profile._id,
+                email: profile.email,
+                name: profile.name
+            };
+            req.session.save();
             res.status(200).json(profile);
         })
         .catch(err => {
@@ -282,6 +295,22 @@ app.post('/signup', (req, res) => {
         });
 
 })
+
+app.get('/user', (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+    res.json(req.session.user);
+})
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ error: 'Logout failed' });
+        }
+        res.json({ message: "Logged out successfully" });
+    });
+});
 
 app.listen(PORT, function() {
     console.log('Server running on port ' + PORT);
