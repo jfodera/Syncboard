@@ -18,7 +18,7 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        window.location.href = '/'; // Redirect to home page
+        window.location.href = '/workspace'; // Redirect to home page
       } else {
         alert(data.message || 'Invalid email or password');
       }
@@ -56,12 +56,14 @@ const Login = () => {
         <button className="sign-in-btn" onClick={handleSignIn}>
           Sign In
         </button>
-        <button
-          className="sign-up-btn"
-          onClick={() => (window.location.href = './signup.html')}
-        >
-          Don’t have an account? Sign up now!
-        </button>
+        <ReactRouterDOM.Link to="/signup">
+            <button
+               className="sign-up-btn"
+            >
+         
+               Don’t have an account? Sign up now!
+            </button>
+        </ReactRouterDOM.Link>
         <a href="#" className="forgot-password">
           Forgot password?
         </a>

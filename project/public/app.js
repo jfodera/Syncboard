@@ -9,7 +9,8 @@ const App = () => {
                     {/* Default route (this will be shown first when the app loads) */}
 
                     <ReactRouterDOM.Route path="/" exact component={Login} />
-                    {/* <ReactRouterDOM.Route path="/" exact component={Workspace} /> */}
+                    <ReactRouterDOM.Route path="/signup" exact component={Signup} />
+                    <ReactRouterDOM.Route path="/workspace" exact component={Workspace} />
                     
                     {/* Define the route for /class */}
                     <ReactRouterDOM.Route path="/class" exact component={Dashboard} />
