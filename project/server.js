@@ -8,12 +8,7 @@ const { connectToDb, getDb } = require('./db.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-app.use(session({
-    secret: "your_secret_key",
-    saveUninitialized: false,
-    resave: false,
-    cookie: { secure: false } // Change to `true` in production with HTTPS
-}));
+
 
 connectToDb((err) => {
     if (!err){
