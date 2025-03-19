@@ -2,7 +2,6 @@
 // ex: when an event is created or edited we edit/create the db entry
 // then just autorefresh and rerender the calendar with the stored db info (since it renders on startup, see comment below)
 
-
 // creating new events
 const CreateEventModal = ({ isOpen, onClose, onSubmit }) => {
     const [title, setTitle] = React.useState('');
@@ -146,13 +145,11 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit }) => {
           },
         ],
         dateClick: function (info) {
-            // add function to edit db info here
           setEventType('create');
           setEventData(info);
           setCreateModalOpen(true); 
         },
         eventClick: function (info) {
-            // add function to edit db info here
           setEventType('edit');
           setEventData(info.event);
           setEditModalOpen(true); 
