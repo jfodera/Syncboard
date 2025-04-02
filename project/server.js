@@ -231,7 +231,7 @@ app.get('/logout', (req, res) => {
 // *** calendar stuff ***
 
 // get all events for a group by groupID
-app.get('/calendar/:groupid/events', async (req, res) => {
+app.get('/calendar/:groupid', async (req, res) => {
     const groupid = parseInt(req.params.groupid);
     if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
     try {
@@ -257,7 +257,7 @@ app.get('/calendar/:groupid/:eventid', async (req, res) => {
 });
 
 // add new event by groupID
-app.post('/calendar/:groupid/events', async (req, res) => {
+app.post('/calendar/:groupid', async (req, res) => {
     const groupid = parseInt(req.params.groupid);
     if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
     const { eventname, starttime, endtime, date } = req.body;
@@ -315,9 +315,177 @@ app.delete('/calendar/:groupid/:eventid', async (req, res) => {
 
 // *** resources stuff ***
 
+// get all resources for a group by groupID
+app.get('/resources/:groupid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
+    try {
+        const resource = await db.collection('resources').find({ groupid }).toArray();
+        res.json(resource);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch resources' });
+    }
+});
+
+// get a specific resource by groupID and resourceID
+app.get('/resources/:groupid/:resourceid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    const resourceid = parseInt(req.params.resourceid);
+    if (isNaN(groupid) || isNaN(resourceid)) return res.status(400).json({ error: 'Invalid group or resource ID' });
+    try {
+        const resource = await db.collection('resources').findOne({ groupid, resourceid });
+        if (!resource) return res.status(404).json({ error: 'Event not found' });
+        res.json(resource);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch event' });
+    }
+});
+
+// add new resource by groupID
+app.post('/resources/:groupid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
+    const { resourcename, link, classid } = req.body;
+    if (!resourcename || !link || !classid) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    try {
+        const lastResource = await db.collection('resources').find().sort({ resourceid: -1 }).limit(1).toArray();
+        const newResourceId = lastResource.length > 0 ? lastResource[0].resourceid + 1 : 1;
+        const newResource = { resourcename, link, classid, groupid, resourceid: newResourceId };
+        const result = await db.collection('resources').insertOne(newResource);
+        res.json({ message: 'Resource created', resourceid: newResourceId });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to create resource' });
+    }
+});
+
+
+// update an event by groupID and resourceID
+app.put('/resources/:groupid/:resourceid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    const resourceid = parseInt(req.params.resourceid);
+    if (isNaN(resourceid) || isNaN(resourceid)) return res.status(400).json({ error: 'Invalid group or resource ID' });
+    try {
+        const updateFields = req.body;
+        if (Object.keys(updateFields).length === 0) return res.status(400).json({ error: 'No fields to update' });
+        const result = await db.collection('resources').updateOne(
+            { groupid, resourceid },
+            { $set: updateFields }
+        );
+        if (result.matchedCount === 0) return res.status(404).json({ error: 'Resource not found' });
+        res.json({ message: 'Resource updated' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update resource' });
+    }
+});
+
+// delete a resource
+app.delete('/resources/:groupid/:resourceid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    const resourceid = parseInt(req.params.resourceid);
+    if (isNaN(groupid) || isNaN(resourceid)) {
+        return res.status(400).json({ error: 'Invalid group or resource ID' });
+    }
+    try {
+        const result = await db.collection('resources').deleteOne({ groupid, resourceid });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: 'Resource not found' });
+        }
+        res.json({ message: 'Resource deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete resource' });
+    }
+});
 
 // *** task stuff ***
 
+// get all task for a group by groupID
+app.get('/tasks/:groupid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
+    try {
+        const resource = await db.collection('tasks').find({ groupid }).toArray();
+        res.json(resource);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch tasks' });
+    }
+});
+
+// get a specific resource by groupID and taskID
+app.get('/tasks/:groupid/:taskid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    const taskid = parseInt(req.params.taskid);
+    if (isNaN(groupid) || isNaN(taskid)) return res.status(400).json({ error: 'Invalid group or task ID' });
+    try {
+        const task = await db.collection('tasks').findOne({ groupid, taskid });
+        if (!task) return res.status(404).json({ error: 'Task not found' });
+        res.json(task);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch event' });
+    }
+});
+
+// add new task by groupID
+app.post('/tasks/:groupid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
+    const { task } = req.body;
+    if (!task) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+    try {
+        const lastTask = await db.collection('tasks').find().sort({ taskid: -1 }).limit(1).toArray();
+        const newTaskId = lastTask.length > 0 ? lastTask[0].taskid + 1 : 1;
+        const newTask = { task, groupid, taskid: newTaskId, completed: false};
+        const result = await db.collection('tasks').insertOne(newTask);
+        res.json({ message: 'Task created', taskId: newTaskId });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to create task' });
+    }
+});
+
+
+// update an event by groupID and taskID
+app.put('/tasks/:groupid/:taskid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    const taskid = parseInt(req.params.taskid);
+    if (isNaN(groupid) || isNaN(taskid)) return res.status(400).json({ error: 'Invalid group or task ID' });
+    try {
+        const updateFields = req.body;
+        if (Object.keys(updateFields).length === 0) return res.status(400).json({ error: 'No fields to update' });
+        const result = await db.collection('tasks').updateOne(
+            { groupid, taskid },
+            { $set: updateFields }
+        );
+        if (result.matchedCount === 0) return res.status(404).json({ error: 'Task not found' });
+        res.json({ message: 'Task updated' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update task' });
+    }
+});
+
+// delete a task
+app.delete('/tasks/:groupid/:taskid', async (req, res) => {
+    const groupid = parseInt(req.params.groupid);
+    const taskid = parseInt(req.params.taskid);
+    if (isNaN(groupid) || isNaN(taskid)) {
+        return res.status(400).json({ error: 'Invalid group or task ID' });
+    }
+    try {
+        const result = await db.collection('tasks').deleteOne({ groupid, taskid });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: 'Task not found' });
+        }
+        res.json({ message: 'Task deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete task' });
+    }
+});
 
 // allows reload 
 app.get('*', (req, res) => {
