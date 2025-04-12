@@ -32,8 +32,8 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
     import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
-    import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
-  
+    import { getFirestore, addDoc, collection, serverTimestamp, query } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
+
     // Your Firebase config object
     const firebaseConfig = {
         apiKey: "AIzaSyBxPOJzh_bZNE9uW8xb7-2X4TVWN_ogXc0",
@@ -49,13 +49,18 @@
 
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    const firestore = getFirestore(app);
+    const db = getFirestore(app);
   
     console.log(app.name);
 
     window.firebaseAuth = auth;
     window.firebaseProvider = provider;
     window.signInWithPopup = signInWithPopup; 
+    window.db = db;
+    window.collection = collection;
+    window.query = query;
+    window.addDoc = addDoc;
+    window.serverTimestamp = serverTimestamp;
   </script>
    
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"> </script>
