@@ -5,6 +5,7 @@ const PORT = 3000;
 const path = require('path');
 const { connectToDb, getDb } = require('./db.js');
 
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
