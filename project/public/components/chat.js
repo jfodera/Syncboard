@@ -1,94 +1,65 @@
-// import { auth } from "../../firebase";
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-// import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
-// import { getAuth, GoogleAuthProvider, signInWithRedirect, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
-// import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
-// import GoogleSignin from "../img/btn_google_signin_dark_pressed_web.png";
-
-// const Chat = () => {
-//   const [user, setUser] = React.useState(false);
-
-//   const googleSignIn = () => {
-//     setUser(true);
-//   };
-
-//   const signOut = () => {
-//     setUser(false);
-//   };
-
-//   return (
-//     <nav className="nav-bar">
-//       <h1>React Chat</h1>
-//       {user ? (
-//         <button onClick={signOut} className="sign-out" type="button">
-//           Sign Out
-//         </button>
-//       ) : (
-//         <button className="sign-in">
-//           <img
-//             onClick={googleSignIn}
-//             src={GoogleSignin}
-//             alt="sign in with google"
-//             type="button"
-//           />
-//         </button>
-//       )}
-//     </nav>
-//   );
-// };
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
 const Chat = () => {
-  const [user, setUser] = React.useState(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
-  // Firebase Authentication provider
-  const provider = new firebase.auth.GoogleAuthProvider();  // Use compat version
-  
-  // Listen for authentication state changes
   React.useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);  // If a user is logged in, set the user state
-      } else {
-        setUser(null);  // If no user is logged in, set the user state to null
-      }
-    });
+    const checkRedirect = async () => {
+      try {
+        console.log("Tester!");
+        const result = await window.getRedirectResult(window.firebaseAuth);
+        console.log("Result: " + result);
+        if (result && result.user) {
+          const user = result.user;
 
-    // Cleanup the listener when the component is unmounted
-    return () => unsubscribe();
+          const expiryDays = 7;
+          const expiryDate = new Date();
+          expiryDate.setDate(expiryDate.getDate() + expiryDays);
+      
+          //save user info into cookies
+          document.cookie = `uid=${encodeURIComponent(user.uid)}; expires=${expiryDate.toUTCString()}; path=/`;
+          document.cookie = `name=${encodeURIComponent(user.displayName)}; expires=${expiryDate.toUTCString()}; path=/`;        
+          document.cookie = `email=${encodeURIComponent(user.email)}; expires=${expiryDate.toUTCString()}; path=/`;
+          document.cookie = `photoURL=${encodeURIComponent(user.photoURL)}; expires=${expiryDate.toUTCString()}; path=/`;
+          document.cookie = `accessToken=${encodeURIComponent(user.accessToken)}; expires=${expiryDate.toUTCString()}; path=/`;
+          document.cookie = `refreshToken=${encodeURIComponent(user.stsTokenManager.refreshToken)}; expires=${expiryDate.toUTCString()}; path=/`;
+          
+          setIsLoggedIn(true);
+          alert("You are logged in!")
+        } else {
+          const uid = getCookie("uid");
+          if (uid) {
+            console.log("Cookie:", uid);
+            setIsLoggedIn(true);
+            alert("You are logged in!")
+          }
+        }
+      } catch (error) {
+        console.error("getRedirectResult error:", error);
+      }
+    };
+
+    checkRedirect();
   }, []);
 
-  // Google Sign-In with Firebase
-  const googleSignIn = () => {
-    firebase.auth().signInWithRedirect(provider);  // Trigger the Google sign-in flow using compat version
-  };
-
-  // Sign Out
-  const handleSignOut = () => {
-    firebase.auth().signOut().then(() => {
-      console.log("User signed out");
-    }).catch((error) => {
-      console.error("Error signing out:", error);
-    });
-  };
 
   return (
-    <nav className="nav-bar">
-      <h1>React Chat</h1>
-      {user ? (
-        <div>
-          <h2>Welcome, {user.displayName || user.email}</h2>
-          <button onClick={handleSignOut} className="sign-out" type="button">
-            Sign Out
-          </button>
-        </div>
-      ) : (
-        <button className="sign-in" onClick={googleSignIn} type="button">
-          <img src="../img/btn_google_signin_dark_pressed_web.png" alt="Sign in with Google" />
-        </button>
-      )}
-    </nav>
+    <div className="App">
+      {/* {isLoggedIn ? (<ChatBox />) : (<Auth onLogin={() => setIsLoggedIn(true)} />)} */}
+      {isLoggedIn ? (<ChatBox />) : (<Auth />)}
+    </div>
   );
 };
-
-export default Chat;

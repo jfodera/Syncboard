@@ -30,7 +30,7 @@ const App = () => {
                     {/* Default route (this will be shown first when the app loads) */}
 
                     {/* tester */}
-                    <ReactRouterDOM.Route path="/" exact component={Auth} />
+                    <ReactRouterDOM.Route path="/" exact component={Chat} />
 
                     {/* <ReactRouterDOM.Route path="/" exact component={Workspace} /> */}
                     

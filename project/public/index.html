@@ -31,8 +31,8 @@
   
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
-    import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
-    import { getFirestore, addDoc, collection, serverTimestamp, query } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
+    import { getAuth, GoogleAuthProvider, signInWithPopup, getRedirectResult, signInWithRedirect } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
+    import { getFirestore, addDoc, collection, serverTimestamp, query, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
 
     // Your Firebase config object
     const firebaseConfig = {
@@ -56,11 +56,15 @@
     window.firebaseAuth = auth;
     window.firebaseProvider = provider;
     window.signInWithPopup = signInWithPopup; 
+    window.signInWithRedirect = signInWithRedirect;
+    window.getRedirectResult = getRedirectResult; 
     window.db = db;
     window.collection = collection;
     window.query = query;
     window.addDoc = addDoc;
     window.serverTimestamp = serverTimestamp;
+    window.orderBy = orderBy;
+    window.onSnapshot = onSnapshot;
   </script>
    
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"> </script>
@@ -95,13 +99,14 @@
     <script type="text/babel" src="./components/tasks.js"></script>
     <script type="text/babel" src="./components/dashboard.js"></script>
     <script type="text/babel" src="./components/resources.js"></script>
-    <script type="text/babel" src="./components/auth.js"></script>
-    <script type="text/babel" src="./components/profile.js"></script>
-    <!-- <script type="text/babel" src="./components/chat.js" defer></script>
-    <script type="text/babel" src="./components/chatPage.js"></script>
-    <script type="text/babel" src="./components/chatBox.js"></script>
+
+    <script type="text/babel" src="./components/sendMessage.js"></script>
     <script type="text/babel" src="./components/message.js"></script>
-    <script type="text/babel" src="./components/sendMessage.js"></script> -->
+    <script type="text/babel" src="./components/chatBox.js"></script>
+    <script type="text/babel" src="./components/auth.js"></script>
+    <script type="text/babel" src="./components/chat.js"></script>
+    
+    <script type="text/babel" src="./components/profile.js"></script>
     <script type="text/babel" src="app.js"></script>
     <!-- <script type="text/babel" src="../firebase.js"></script> -->
 </body>
