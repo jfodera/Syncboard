@@ -7,7 +7,7 @@ function getCookie(cname) {
       c = c.substring(1);
     }
     if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
+      return decodeURIComponent(c.substring(name.length, c.length));
     }
   }
   return "";
@@ -43,6 +43,8 @@ const Chat = () => {
           const uid = getCookie("uid");
           if (uid) {
             console.log("Cookie:", uid);
+            //tester
+            console.log(getCookie("photoURL"));
             setIsLoggedIn(true);
             alert("You are logged in!")
           }

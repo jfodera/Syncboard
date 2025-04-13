@@ -7,7 +7,7 @@ function getCookie(cname) {
         c = c.substring(1);
       }
       if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
+        return decodeURIComponent(c.substring(name.length, c.length));
       }
     }
     return "";
@@ -24,11 +24,14 @@ const SendMessage = () => {
         }
 
         const uid = getCookie('uid');
+        const url = getCookie('photoURL');
+        console.log("Photo: " + url);
 
         await window.addDoc(window.collection(window.db, "messages"), {
           text: message,
           name: getCookie('name'),
-          avatar: getCookie('photoURL'),
+        //   avatar: getCookie('photoURL'),
+          avatar: "../userProfile.jpeg",
           createdAt: window.serverTimestamp(),
           uid,
         });
