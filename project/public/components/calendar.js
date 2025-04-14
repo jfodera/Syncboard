@@ -40,14 +40,32 @@ function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
 
   document.getElementById('create-event-form').onsubmit = async (e) => {
     e.preventDefault();
-    const title = document.getElementById('createevent-title').value;
+    const title = document.getElementById('createevent-title').value.trim();
     const date = document.getElementById('createevent-date').value;
     const allDay = allDayCheckbox.checked;
     const starttime = allDay ? null : document.getElementById('createevent-start').value;
     const endtime = allDay ? null : document.getElementById('createevent-end').value;
+    // make sure title and date exist
+    if (!title || !date) {
+      alert('Event name and date are required.');
+      return;
+    }
+    // if all day is not checked, start and end times are required
+    if (!allDay) {
+      if (!starttime || !endtime) {
+        alert('Start and end time are required unless the event is all day.');
+        return;
+      }
+      // make sure end time is after start time
+      if (endtime <= starttime) {
+        alert('End time must be after start time.');
+        return;
+      }
+    }
     await onSubmit({ title, date, starttime, endtime, allDay });
     document.body.removeChild(container);
   };
+  
   document.getElementById('close-create-modal').onclick = () => {
     document.body.removeChild(container);
     onClose();
@@ -117,15 +135,34 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
     }
   });
 
+  // handle submitting edit event modal
   document.getElementById('submit-editevent').onclick = async () => {
-    const title = document.getElementById('editevent-name').value;
+    const title = document.getElementById('editevent-name').value.trim();
     const date = document.getElementById('editevent-date').value;
-    const starttime = allDayCheckbox.checked ? null : document.getElementById('editevent-start').value;
-    const endtime = allDayCheckbox.checked ? null : document.getElementById('editevent-end').value;
-    await onSubmit({ title, date, starttime, endtime });
+    const allDay = allDayCheckbox.checked;
+    const starttime = allDay ? null : document.getElementById('editevent-start').value;
+    const endtime = allDay ? null : document.getElementById('editevent-end').value;
+    // make sure title and date exist
+    if (!title || !date) {
+      alert('Event name and date are required.');
+      return;
+    }
+    // if all day is not checked, start time and end time are required
+    if (!allDay) {
+      if (!starttime || !endtime) {
+        alert('Start and end time are required unless the event is all day.');
+        return;
+      }
+      // make sure end time is after start time
+      if (endtime <= starttime) {
+        alert('End time must be after start time.');
+        return;
+      }
+    }
+    await onSubmit({ title, date, starttime, endtime, allDay });
     document.body.removeChild(container);
   };
-  
+
   document.getElementById('delete-editevent').onclick = async () => {
     await onDelete(eventData);
     document.body.removeChild(container);
@@ -195,9 +232,9 @@ const CalendarComponent = () => {
   // run when event is deleted, delete from db
   const handleDeleteEvent = async (eventData) => {
     try {
-      const eventId = eventData.extendedProps.eventid;
+      const eventid = eventData.extendedProps.eventid;
       // delete individual event
-      const response = await fetch(`/calendar/${sessiongroupid}/${eventId}`, {
+      const response = await fetch(`/calendar/${sessiongroupid}/${eventid}`, {
         method: 'DELETE',
       });
   
@@ -252,7 +289,8 @@ const CalendarComponent = () => {
 
     try {
       // edit individual event
-      await fetch(`/calendar/${sessiongroupid}/${eventData.extendedProps && eventData.extendedProps.eventid}`,
+      const eventid = eventData.extendedProps.eventid;
+      await fetch(`/calendar/${sessiongroupid}/${eventid}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
