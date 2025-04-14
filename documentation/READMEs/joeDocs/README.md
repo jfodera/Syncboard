@@ -16,6 +16,9 @@
 
 # VM Configs: 
    - sudo npm install express-session
+   - sudo npm install cors
+   - change over to VM URL's 
+   - set to true when on VM: cookie: { secure: false }  
 
 # Things I learned/Citations : 
    - Viewport width= based off of the visible area of the web browser 
@@ -37,3 +40,6 @@
       - https://www.google.com/search?client=safari&rls=en&q=Javascript+session+middleware%3A&ie=UTF-8&oe=UTF-8]
       - app.use runs in between each get call (thus middleware)
       - //cookie links the client to the session, session is not a cookie
+   - React Browser, Sessions are stored on server side, so in order to retrieve session variables, react must make API calls 
+   - CORS -> Data (like session variables) acsess manager for JS: 
+      - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS&ved=2ahUKEwjNlrPv19eMAxVxvokEHQ1LKegQFnoECBkQAQ&usg=AOvVaw2xmyG8mpAqKyMiOwPBDkob

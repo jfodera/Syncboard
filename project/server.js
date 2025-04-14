@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const session = require('express-session');
+const session = require('express-session')
+const cors = require('cors');
 const fs = require('fs');
 const crypto = require('crypto')
 const app = express();
@@ -23,8 +24,16 @@ connectToDb((err) => {
     }
 })
 
-//set up session middleware: 
+app.use(cors({
 
+   //vm: 
+   //local 
+   origin: 'http://localhost:3000', // React app URL
+   credentials: true // Allow cookies (session ID) to be sent
+ }));
+
+
+ //set up session middleware: 
 app.use(session({
    //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
    //cookie links the client to the session, session is not a cookie
@@ -35,8 +44,23 @@ app.use(session({
    //saves when new session created 
    saveUninitialized: true,
    //cokies being sent are secure as we are on https. 
-   cookie: { secure: true }  
+   cookie: { secure: false }  
  }));
+
+// *** Session Requests ***/
+
+
+// Allow requests from reach app 
+
+
+ //so react can acsess session data (as it is server side:):
+app.get('/session/rin', (req, res) => {
+   res.json({
+     rin: req.session.user.rin
+   });
+ });
+
+
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -241,8 +265,10 @@ app.post('/login', (req, res) => {
                 rin: profile['rin']
             };
             req.session.save();
-            // console.log("session user" + req.session.user.rin); 
-            // res.status(200).json(profile); //sending the profile object returned by the database
+            
+            
+            //status 200: 'OK' -> Successfull
+            res.status(200).json(profile); //sending the profile object returned by the database
         })
         .catch(err => {
             console.error('Database query error:', err);

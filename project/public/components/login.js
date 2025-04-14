@@ -17,17 +17,21 @@ const Login = () => {
          });
 
          const data = await response.json();
-         console.log( data); 
 
+         const rinRes = await fetch('/session/rin', {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+         });
+         var rin = await rinRes.json()
+         rin = rin['rin']
          
-
-         // console.log(email);
-         // console.log(password);
-         // if (response.ok) {
-         //    window.location.href = '/workspace'; // Redirect to home page
-         // } else {
-         //    alert(data.message || 'Invalid email or password');
-         // }
+         
+         if (response.ok) {
+            window.location.href = '/workspace'; // Redirect to home page
+         } else {
+            alert(data.message || 'Invalid email or password');
+         }
       } catch (error) {
          console.error('Error:', error);
          alert('Something went wrong. Please try again.');
