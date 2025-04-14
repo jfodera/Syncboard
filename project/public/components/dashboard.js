@@ -1,5 +1,30 @@
 const Dashboard = () => {
-  return (
+   //runs on mount and when dependecies in dependency array change (there are none)
+   React.useEffect(  () => {
+      //session valildation 
+      const valSession = async ()=> {
+         try{
+
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            let session = await rinRes.json()
+               
+            if(session['sessionMissing']){
+               //back to login
+               window.location.href = '/';
+            }
+         }catch(err){   
+            console.error('Session Validation error:', err);
+         }
+      }
+      valSession();
+
+   }, []);
+  
+   return (
     <div>
       <Homebar />
       <div className="mainContent">

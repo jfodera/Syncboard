@@ -82,9 +82,20 @@ app.use(session({
 
  //so react can acsess session data (as it is server side:):
 app.get('/session/rin', (req, res) => {
-   res.json({
-     rin: req.session.user.rin
-   });
+   
+   if(req.session.user != undefined){
+      res.json({
+         'sessionMissing': false,
+         rin: req.session.user.rin
+       });
+   }else{
+      res.json({'sessionMissing': true}); 
+   }
+      // res.json({
+      //    'sessionMissing': false,
+      //    rin: 621231
+      //  });
+   
  });
 
 
@@ -278,7 +289,6 @@ app.post('/login', async (req, res)  => {
 
    
     const loginProfile = req.body;
-   //  console.log(req.body); 
    //  res.json({ message: `Entire DB Populated.` }); 
 
     db.collection('profiles')
