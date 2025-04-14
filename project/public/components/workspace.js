@@ -1,17 +1,28 @@
 const Workspace = () => {
-    const workspaces = [
-        { title: "Web Science", day: "Tuesday/Friday", time: "8:00-9:50am", location: "Lally 102", color: "--orange" },
-        { title: "Intro to Biology", day: "Tuesday/Friday", time: "10:00-11:50am", location: "Sage 2510", color: "--yellow" },
-        { title: "Data Structures", day: "Monday/Thursday", time: "2:00-3:50pm", location: "DCC 337", color: "--blue" }
-    ];
+    const [workspaces, setWorkspaces] = React.useState([]);
+
+    const colors = ["--orange", "--yellow", "--blue"];
+
+    React.useEffect(() => {
+        //we would need to save the user's rin in a session variable, but now I will be hardcoding it
+        const rin = 662098475;
+    
+        fetch(`/groups/${rin}`, { method: 'GET' })
+        .then(response=>response.json())
+        .then(data => {
+            setWorkspaces(data);
+        });
+    }, []);
 
     return (
         <div id="work-Holder">
             <h2>Your Workspaces</h2>
+             
             <div className="workspaces">
-                {workspaces.map((workspace, index) => (
-                    <Card key={index} {...workspace} />
+                {workspaces.map((course, i) => (
+                    <Card key={i} title={course} color={colors[i]} />
                 ))}
+                
             </div>
         </div>
         
