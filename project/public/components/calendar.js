@@ -1,3 +1,7 @@
+// replace this with session variables
+const sessiongroupid = 2;
+
+// modal for creating new event
 function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
   if (!isOpen) return null;
 
@@ -36,20 +40,39 @@ function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
 
   document.getElementById('create-event-form').onsubmit = async (e) => {
     e.preventDefault();
-    const title = document.getElementById('createevent-title').value;
+    const title = document.getElementById('createevent-title').value.trim();
     const date = document.getElementById('createevent-date').value;
     const allDay = allDayCheckbox.checked;
     const starttime = allDay ? null : document.getElementById('createevent-start').value;
     const endtime = allDay ? null : document.getElementById('createevent-end').value;
+    // make sure title and date exist
+    if (!title || !date) {
+      alert('Event name and date are required.');
+      return;
+    }
+    // if all day is not checked, start and end times are required
+    if (!allDay) {
+      if (!starttime || !endtime) {
+        alert('Start and end time are required unless the event is all day.');
+        return;
+      }
+      // make sure end time is after start time
+      if (endtime <= starttime) {
+        alert('End time must be after start time.');
+        return;
+      }
+    }
     await onSubmit({ title, date, starttime, endtime, allDay });
     document.body.removeChild(container);
   };
+  
   document.getElementById('close-create-modal').onclick = () => {
     document.body.removeChild(container);
     onClose();
   };
 }
 
+// modal for editing existing events
 function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
   if (!isOpen || !eventData) return null;
 
@@ -112,12 +135,31 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
     }
   });
 
+  // handle submitting edit event modal
   document.getElementById('submit-editevent').onclick = async () => {
-    const title = document.getElementById('editevent-name').value;
+    const title = document.getElementById('editevent-name').value.trim();
     const date = document.getElementById('editevent-date').value;
-    const starttime = allDayCheckbox.checked ? null : document.getElementById('editevent-start').value;
-    const endtime = allDayCheckbox.checked ? null : document.getElementById('editevent-end').value;
-    await onSubmit({ title, date, starttime, endtime });
+    const allDay = allDayCheckbox.checked;
+    const starttime = allDay ? null : document.getElementById('editevent-start').value;
+    const endtime = allDay ? null : document.getElementById('editevent-end').value;
+    // make sure title and date exist
+    if (!title || !date) {
+      alert('Event name and date are required.');
+      return;
+    }
+    // if all day is not checked, start time and end time are required
+    if (!allDay) {
+      if (!starttime || !endtime) {
+        alert('Start and end time are required unless the event is all day.');
+        return;
+      }
+      // make sure end time is after start time
+      if (endtime <= starttime) {
+        alert('End time must be after start time.');
+        return;
+      }
+    }
+    await onSubmit({ title, date, starttime, endtime, allDay });
     document.body.removeChild(container);
   };
 
@@ -132,25 +174,24 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
   };
 }
 
-
-// calendar component
+// FullCalendar component
 const CalendarComponent = () => {
   const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
   const [isEditModalOpen, setEditModalOpen] = React.useState(false);
   const [eventData, setEventData] = React.useState(null);
   const [calendar, setCalendar] = React.useState(null);
   const [events, setEvents] = React.useState([]);
-  // UPDATE THIS ONCE SESSIONS ARE SET UP!!!!!!!!!!!!!!!!!!!!!!!
-  const groupId = 1;
   const fetchEvents = async () => {
     try {
-      const res = await fetch(`/calendar/${groupId}`);
+      // get all events for a group
+      const res = await fetch(`/calendar/${sessiongroupid}`);
       const data = await res.json();
       const formattedEvents = data
       .filter(event => !event.deleted)
       .map(event => {
         const { eventname, date, starttime, endtime, eventid, groupid, allday } = event;
         return {
+          // format "all day" events and time-bound events correctly
           id: eventid,
           title: eventname,
           start: allday ? date : `${date}T${starttime}`,
@@ -175,7 +216,8 @@ const CalendarComponent = () => {
   // run when event is created, post to db
   const handleCreateSubmit = async ({ title, date, starttime, endtime, allDay }) => {
     try {
-      await fetch(`/calendar/${groupId}`, {
+      // add new event 
+      await fetch(`/calendar/${sessiongroupid}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eventname: title, starttime, endtime, date, allday: allDay }),
@@ -187,12 +229,12 @@ const CalendarComponent = () => {
     setCreateModalOpen(false);
   };
 
+  // run when event is deleted, delete from db
   const handleDeleteEvent = async (eventData) => {
     try {
-      const groupId = eventData.extendedProps.groupid;
-      const eventId = eventData.extendedProps.eventid;
-  
-      const response = await fetch(`/calendar/${groupId}/${eventId}`, {
+      const eventid = eventData.extendedProps.eventid;
+      // delete individual event
+      const response = await fetch(`/calendar/${sessiongroupid}/${eventid}`, {
         method: 'DELETE',
       });
   
@@ -208,6 +250,7 @@ const CalendarComponent = () => {
     }
   };
 
+  // run when event is edited, put to db
   const handleEditSubmit = async () => {
     const nameInput = document.getElementById('editevent-name');
     const dateInput = document.getElementById('editevent-date');
@@ -245,7 +288,9 @@ const CalendarComponent = () => {
     };
 
     try {
-      await fetch(`/calendar/${eventData.extendedProps && eventData.extendedProps.groupid}/${eventData.extendedProps && eventData.extendedProps.eventid}`,
+      // edit individual event
+      const eventid = eventData.extendedProps.eventid;
+      await fetch(`/calendar/${sessiongroupid}/${eventid}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
