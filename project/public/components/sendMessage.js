@@ -1,17 +1,5 @@
-function getCookie(cname) {
-    let name = cname + "=";
-    let ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return decodeURIComponent(c.substring(name.length, c.length));
-      }
-    }
-    return "";
-}
+//note to self, now we want the user to login with group chats that they are in
+// need to read the groupid from mongodb and when the user logged in, we check the groups they are in
 
 const SendMessage = () => {
     const [message, setMessage] = React.useState("");
@@ -24,13 +12,10 @@ const SendMessage = () => {
         }
 
         const uid = getCookie('uid');
-        const url = getCookie('photoURL');
-        console.log("Photo: " + url);
 
         await window.addDoc(window.collection(window.db, "messages"), {
           text: message,
           name: getCookie('name'),
-        //   avatar: getCookie('photoURL'),
           avatar: "../userProfile.jpeg",
           createdAt: window.serverTimestamp(),
           uid,
