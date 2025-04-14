@@ -1,4 +1,5 @@
 const Workspace = () => {
+
    //workspaces initialized to empty array , this represents the array of courses the student is in 
     const [workspaces, setWorkspaces] = React.useState([]); 
 
@@ -30,8 +31,7 @@ const Workspace = () => {
       }
       
 
-      
-      
+      //uses groups to present what classes the student is in as there is no 'group homepage' if you are not in a good 
       const fetchGroups = async () =>{
          let rin = await valSession();
          fetch(`/groups/${rin}`, { method: 'GET' })

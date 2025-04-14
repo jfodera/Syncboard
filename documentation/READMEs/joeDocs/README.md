@@ -6,13 +6,14 @@
    - hash passwords for signup, edit login √
    - password requirements for it to be good.  √
    - add login checkers to each page  √
-   - assign 
-   - make sure workspace Cards correlate to the actual class (grace)
-   - associating group ID with user 
-      - assuming rn groups are already loaded in, but in the future we would give instructors the ability to update groups themselves 
+   - make sure workspace Cards correlate to the actual class (grace) √
+   - logout button, cannot acsess login page if already logged in
+   - actual calendar representation 
    - professors randomizing 
    - eventually have calendar pull from our API 
    - verify CSS 
+
+
 
 # Project requirements: 
    - front end in react
@@ -57,6 +58,7 @@
 # App Conventions/Descriptions
    - Class data would be scrapped from somewhere so that the professor doesn't have to hardcode that in. 
    - then when a user signs up, the class data is checked for their rin, if that is 
+   - on the workspace page, classes only show up if you are already in a groupa s that is the whole entire point of the appplication 
 
 # Things I learned/Citations : 
    - Viewport width= based off of the visible area of the web browser 
@@ -89,6 +91,10 @@
       - https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
    - when server restarts session is cleared 
    - don't make useeffect async 
+   - Conditionals in line with JSX 
+      - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://legacy.reactjs.org/docs/conditional-rendering.html&ved=2ahUKEwj8iPLjxtiMAxUrFVkFHbdIAlgQFnoECBgQAQ&usg=AOvVaw35iJf_iuDEpRKBcK713PlE
+   - brackets in any jsx allows you to write js: {console.log(loggedIn)}
+   
 
 # Code Chunks: 
 
