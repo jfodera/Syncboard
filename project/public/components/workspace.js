@@ -32,7 +32,7 @@ const Workspace = () => {
 
       
       
-      const fetchClasses = async () =>{
+      const fetchGroups = async () =>{
          let rin = await valSession();
          fetch(`/groups/${rin}`, { method: 'GET' })
          .then(response=>response.json())
@@ -40,7 +40,7 @@ const Workspace = () => {
             setWorkspaces(data);
          });
       }
-      fetchClasses(); 
+      fetchGroups(); 
 
 
    }, []);

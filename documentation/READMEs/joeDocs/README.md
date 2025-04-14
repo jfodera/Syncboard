@@ -6,7 +6,10 @@
    - hash passwords for signup, edit login √
    - password requirements for it to be good.  √
    - add login checkers to each page  √
+   - assign 
    - make sure workspace Cards correlate to the actual class (grace)
+   - associating group ID with user 
+      - assuming rn groups are already loaded in, but in the future we would give instructors the ability to update groups themselves 
    - professors randomizing 
    - eventually have calendar pull from our API 
    - verify CSS 
@@ -19,6 +22,9 @@
    - MERN Stack 
    
 # Good Users to create Key: 
+   - 1 group from each course 
+   - some overlap where one user is in multiple groups 
+
    - 174860325: in intro to HCI and Lin alg
       ```
       email: 'test1@rpi.edu'
@@ -30,6 +36,11 @@
       password: 'im-Inall3Ha?'
       ```
    - 413682709: just webSci
+      ```
+      email: 'test3@rpi.edu'
+      password: 'final0ne!>'
+      ```
+   
    - 662018329: Web Sci Systems dev instructor 
 
    
@@ -38,9 +49,10 @@
 # VM Configs: 
    - sudo npm install express-session
    - sudo npm install cors
+   - sudo npm install bcrypt
+   - sudo npm install crypto
    - change over to VM URL's 
    - set to true when on VM: cookie: { secure: false }  
-   - npm install bcrypt
 
 # App Conventions/Descriptions
    - Class data would be scrapped from somewhere so that the professor doesn't have to hardcode that in. 

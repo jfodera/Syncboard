@@ -47,6 +47,8 @@ async function getAssoCodes(stuRin){
 
 
 
+
+
 //Main API Functions
 
 app.use(cors({
@@ -334,6 +336,7 @@ app.post('/signup', async (req, res)  => {
       }else{
 
          const codes = await getAssoCodes(newProfile['rin'])
+         
 
          //formatting data right 
          delete newProfile['year']

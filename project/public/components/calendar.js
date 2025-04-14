@@ -141,7 +141,7 @@ const CalendarComponent = () => {
   const [calendar, setCalendar] = React.useState(null);
   const [events, setEvents] = React.useState([]);
   // UPDATE THIS ONCE SESSIONS ARE SET UP!!!!!!!!!!!!!!!!!!!!!!!
-  const groupId = 1;
+  const groupId = 2;
   const fetchEvents = async () => {
     try {
       const res = await fetch(`/calendar/${groupId}`);
