@@ -14,6 +14,8 @@
    - MERN Stack 
    
 
+# VM Configs: 
+   - sudo npm install express-session
 
 # Things I learned/Citations : 
    - Viewport width= based off of the visible area of the web browser 
@@ -33,3 +35,5 @@
    - Javascript Session Middleware: 
       - (see comments on server.js on what I learned)
       - https://www.google.com/search?client=safari&rls=en&q=Javascript+session+middleware%3A&ie=UTF-8&oe=UTF-8]
+      - app.use runs in between each get call (thus middleware)
+      - //cookie links the client to the session, session is not a cookie

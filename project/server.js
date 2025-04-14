@@ -1,9 +1,10 @@
 const express = require('express');
-const fs = require('fs');
-const app = express();
-const PORT = 3000;
 const path = require('path');
 const session = require('express-session');
+const fs = require('fs');
+const crypto = require('crypto')
+const app = express();
+const PORT = 3000;
 const { connectToDb, getDb } = require('./db.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -25,10 +26,16 @@ connectToDb((err) => {
 //set up session middleware: 
 
 app.use(session({
-   secret: 'yourSecretKey',  // Change this to a secure secret string
+   //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
+   //cookie links the client to the session, session is not a cookie
+   //64 char random string
+   secret: crypto.randomBytes(32).toString('hex'),  
+   //prevents rewrites if nothing changes
    resave: false,
+   //saves when new session created 
    saveUninitialized: true,
-   cookie: { secure: false }  // Change to 'true' for HTTPS
+   //cokies being sent are secure as we are on https. 
+   cookie: { secure: true }  
  }));
 
 app.get('/', function (req, res) {
@@ -202,8 +209,8 @@ app.post('/login', (req, res) => {
             req.session.user = { //stores this is the session of whever requested this
                 rin: profile['rin']
             };
-            // req.session.save();
-            console.log("session user" + req.session.user); 
+            req.session.save();
+            // console.log("session user" + req.session.user.rin); 
             // res.status(200).json(profile); //sending the profile object returned by the database
         })
         .catch(err => {
