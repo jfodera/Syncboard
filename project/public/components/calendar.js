@@ -1,6 +1,7 @@
 // replace this with session variables
 const sessiongroupid = 2;
 
+// modal for creating new event
 function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
   if (!isOpen) return null;
 
@@ -53,6 +54,7 @@ function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
   };
 }
 
+// modal for editing existing events
 function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
   if (!isOpen || !eventData) return null;
 
@@ -123,7 +125,7 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
     await onSubmit({ title, date, starttime, endtime });
     document.body.removeChild(container);
   };
-
+  
   document.getElementById('delete-editevent').onclick = async () => {
     await onDelete(eventData);
     document.body.removeChild(container);
@@ -135,8 +137,7 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
   };
 }
 
-
-// calendar component
+// FullCalendar component
 const CalendarComponent = () => {
   const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
   const [isEditModalOpen, setEditModalOpen] = React.useState(false);
@@ -145,6 +146,7 @@ const CalendarComponent = () => {
   const [events, setEvents] = React.useState([]);
   const fetchEvents = async () => {
     try {
+      // get all events for a group
       const res = await fetch(`/calendar/${sessiongroupid}`);
       const data = await res.json();
       const formattedEvents = data
@@ -152,6 +154,7 @@ const CalendarComponent = () => {
       .map(event => {
         const { eventname, date, starttime, endtime, eventid, groupid, allday } = event;
         return {
+          // format "all day" events and time-bound events correctly
           id: eventid,
           title: eventname,
           start: allday ? date : `${date}T${starttime}`,
@@ -176,6 +179,7 @@ const CalendarComponent = () => {
   // run when event is created, post to db
   const handleCreateSubmit = async ({ title, date, starttime, endtime, allDay }) => {
     try {
+      // add new event 
       await fetch(`/calendar/${sessiongroupid}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -188,10 +192,11 @@ const CalendarComponent = () => {
     setCreateModalOpen(false);
   };
 
+  // run when event is deleted, delete from db
   const handleDeleteEvent = async (eventData) => {
     try {
       const eventId = eventData.extendedProps.eventid;
-  
+      // delete individual event
       const response = await fetch(`/calendar/${sessiongroupid}/${eventId}`, {
         method: 'DELETE',
       });
@@ -208,6 +213,7 @@ const CalendarComponent = () => {
     }
   };
 
+  // run when event is edited, put to db
   const handleEditSubmit = async () => {
     const nameInput = document.getElementById('editevent-name');
     const dateInput = document.getElementById('editevent-date');
@@ -245,6 +251,7 @@ const CalendarComponent = () => {
     };
 
     try {
+      // edit individual event
       await fetch(`/calendar/${sessiongroupid}/${eventData.extendedProps && eventData.extendedProps.eventid}`,
         {
           method: 'PUT',
