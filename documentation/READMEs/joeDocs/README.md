@@ -5,10 +5,10 @@
    - finish login √
    - hash passwords for signup, edit login √
    - password requirements for it to be good.  √
-   - add login checkers to each page 
+   - add login checkers to each page  √
    - make sure workspace Cards correlate to the actual class (grace)
    - professors randomizing 
-   - eventually have calendar pull from our AP I 
+   - eventually have calendar pull from our API 
    - verify CSS 
 
 # Project requirements: 
