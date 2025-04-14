@@ -2,7 +2,7 @@
    - Calendar√
    - resources page√
    - make sure task page is good √
-   - Login/Sign Up 
+   - Login/Sign Up -> Try with session vars already setup, but if that doesn't work use cookies 
    - professors randomizing 
    - eventually have calendar pull from our AP I 
 
@@ -30,3 +30,6 @@
    - this is an absolute path: <link rel="stylesheet" href="/style.css">
    - this is a relative path: <link rel="stylesheet" href="./style.css">
       - reltive breaks browser router when 2 deep like: 'class/resources' 
+   - Javascript Session Middleware: 
+      - (see comments on server.js on what I learned)
+      - https://www.google.com/search?client=safari&rls=en&q=Javascript+session+middleware%3A&ie=UTF-8&oe=UTF-8]

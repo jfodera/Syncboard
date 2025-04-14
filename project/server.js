@@ -3,12 +3,16 @@ const fs = require('fs');
 const app = express();
 const PORT = 3000;
 const path = require('path');
+const session = require('express-session');
 const { connectToDb, getDb } = require('./db.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 let db;
+//calls connect to DB, once that conection is sucessfull getDb assigns db from getDb 
+//runs as soon as node server is called 
 connectToDb((err) => {
+   //calls function in different file 
     if (!err){
         db = getDb();
         console.log("Successful database connection!")
@@ -17,6 +21,15 @@ connectToDb((err) => {
         console.log(err);
     }
 })
+
+//set up session middleware: 
+
+app.use(session({
+   secret: 'yourSecretKey',  // Change this to a secure secret string
+   resave: false,
+   saveUninitialized: true,
+   cookie: { secure: false }  // Change to 'true' for HTTPS
+ }));
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -173,21 +186,25 @@ app.put('/profile/:name', (req, res) => {
 // *** login stuff ***
 
 app.post('/login', (req, res) => {
+
+   
     const loginProfile = req.body;
+   //  console.log(req.body); 
+   //  res.json({ message: `Entire DB Populated.` }); 
 
     db.collection('profiles')
         .findOne({ email: loginProfile['email'], password: loginProfile['password'] }) 
-        .then(profile => {
+        .then(profile => { //define what the return in called 
             if (!profile) {
                 return res.status(401).json({ error: 'Invalid name or password!' });
             }
-            req.session.user = {
-                id: profile._id,
-                email: profile.email,
-                name: profile.name
+            
+            req.session.user = { //stores this is the session of whever requested this
+                rin: profile['rin']
             };
-            req.session.save();
-            res.status(200).json(profile);
+            // req.session.save();
+            console.log("session user" + req.session.user); 
+            // res.status(200).json(profile); //sending the profile object returned by the database
         })
         .catch(err => {
             console.error('Database query error:', err);

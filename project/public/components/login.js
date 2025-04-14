@@ -1,31 +1,37 @@
 const Login = () => {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = React.useState(''); //email is set everytime input box changes 
   const [password, setPassword] = React.useState('');
 
   const handleSignIn = async () => {
-    if (!email || !password) {
-      alert('Please enter both email and password.');
-      return;
-    }
-
-    try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        window.location.href = '/workspace'; // Redirect to home page
-      } else {
-        alert(data.message || 'Invalid email or password');
+      if (!email || !password) {
+         alert('Please enter both email and password.');
+         return;
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Something went wrong. Please try again.');
-    }
+
+      try {
+         //calls our API -> note there is no URL at this point so we are fin e
+         const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+         });
+
+         const data = await response.json();
+         console.log( data); 
+
+         
+
+         // console.log(email);
+         // console.log(password);
+         // if (response.ok) {
+         //    window.location.href = '/workspace'; // Redirect to home page
+         // } else {
+         //    alert(data.message || 'Invalid email or password');
+         // }
+      } catch (error) {
+         console.error('Error:', error);
+         alert('Something went wrong. Please try again.');
+      }
   };
 
   return (
