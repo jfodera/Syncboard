@@ -24,6 +24,10 @@
       password: 'Yo-mama3<'
       ```
    - 435219607: in HCI, Lin Alg, and Web Sci Systems 
+      ```
+      email: 'test2@rpi.edu'
+      password: 'im-Inall3Ha?'
+      ```
    - 413682709: just webSci
    - 662018329: Web Sci Systems dev instructor 
 
@@ -70,6 +74,7 @@
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://medium.com/%40patilchetan2110/password-encryption-and-decryption-in-node-js-using-bcrypt-package-5a7b1952d49d&ved=2ahUKEwil-vrr_NeMAxUSl4kEHTO8HzMQFnoECBUQAQ&usg=AOvVaw0i4FlYUanMMrvR79yv5r3X
    - password hadhing in bcrypt 
       - https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
+   - when server restarts session is cleared 
 
 # Code Chunks: 
 

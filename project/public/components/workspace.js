@@ -1,29 +1,33 @@
 const Workspace = () => {
-    const [workspaces, setWorkspaces] = React.useState([]);
+   //workspaces initialized to empty array , this represents the array of courses the student is in 
+    const [workspaces, setWorkspaces] = React.useState([]); 
 
     const colors = ["--orange", "--yellow", "--blue"];
    
     //runs on mount and when dependecies in dependency array change (there are none)
     React.useEffect( async () => {
+      let rin; 
 
-      //if doesn't exist, is undefined    
+      //session valildation 
       try{
-
          const rinRes = await fetch('/session/rin', {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
          });
-         var rin = await rinRes.json()
-         rin = rin['rin']
-
-      }catch{   
+         let session = await rinRes.json()
+          
+         if(session['sessionMissing']){
+            window.location.href = '/';
+         }else{
+            rin = session['rin']
+         }
+      }catch(err){   
          console.error('Session Validation error:', err);
       }
 
-
-      //we would need to save the user's rin in a session variable, but now I will be hardcoding it
-      const rin = 662098475;
+      console.log(rin) 
+      
 
       fetch(`/groups/${rin}`, { method: 'GET' })
       .then(response=>response.json())
