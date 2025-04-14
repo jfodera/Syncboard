@@ -20,6 +20,8 @@
 # Good Users to create Key: 
    - 174860325: in intro to HCI and Lin alg
    - 435219607: in HCI, Lin Alg, and Web Sci Systems 
+   - 413682709: just webSci
+   - 662018329: Web Sci Systems dev instructor 
 
 # VM Configs: 
    - sudo npm install express-session
@@ -54,6 +56,10 @@
    - React Browser, Sessions are stored on server side, so in order to retrieve session variables, react must make API calls 
    - CORS -> Data (like session variables) acsess manager for JS: 
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS&ved=2ahUKEwjNlrPv19eMAxVxvokEHQ1LKegQFnoECBkQAQ&usg=AOvVaw2xmyG8mpAqKyMiOwPBDkob
+   - difference between for in and for of: 
+      - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://stackoverflow.com/questions/29285897/difference-between-for-in-and-for-of-statements&ved=2ahUKEwjo2oHj99eMAxWmvokEHSBWFrsQFnoECBgQAQ&usg=AOvVaw1oRcWABDTPWc4BWsFyXsxa
+   - Always encrypt passwords on server side: 
+      - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://medium.com/%40patilchetan2110/password-encryption-and-decryption-in-node-js-using-bcrypt-package-5a7b1952d49d&ved=2ahUKEwil-vrr_NeMAxUSl4kEHTO8HzMQFnoECBUQAQ&usg=AOvVaw0i4FlYUanMMrvR79yv5r3X
 
 # Code Chunks: 
    -          try{
@@ -67,3 +73,7 @@
             rin = rin['rin']
 
          }
+
+
+# Potential future additions 
+   - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 

@@ -1,8 +1,8 @@
 const Signup = () => {
   const [formData, setFormData] = React.useState({
-      name: 'Joe Fodera',
-      email: 'foderj@rpi.edu',
-      rin: '662061839',
+      name: 'Test1',
+      email: 'test1@rpi.edu',
+      rin: '174860325',
       year: '2026',
       major: 'CS',
       password: 'Yo-mama3'

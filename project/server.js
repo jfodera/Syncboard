@@ -24,6 +24,28 @@ connectToDb((err) => {
     }
 })
 
+
+//helper functions 
+//assumes only students can log in for right now
+async function getAssoCodes(stuRin){
+   //gets entire classes array 
+   let classCodes = []
+   const rpiClasses = await db.collection('classes').find({}).toArray()
+   for(const rpiClass of rpiClasses){
+      
+      for(const rin of rpiClass['studentRINs']){
+         if(rin == stuRin){
+            classCodes.push(rpiClass['crn'])
+         }
+      }
+   }
+   return(classCodes)
+
+
+}
+
+//Main API Functions
+
 app.use(cors({
 
    //vm: 
@@ -283,10 +305,6 @@ app.post('/login', (req, res) => {
 app.post('/signup', async (req, res)  => {
     const newProfile = req.body;
    
-    
-
-   //mess with newProfile JSON here
-
    try{
       const emailThere = await db.collection('profiles').findOne({ email: newProfile['email']}) 
       const rinThere = await db.collection('profiles').findOne({ rin: newProfile['rin']}) 
@@ -297,12 +315,20 @@ app.post('/signup', async (req, res)  => {
       }else if(rinThere != null){
          res.status(409).json({error: 'An account with this rin already exists'})
       }else{
-         const profile =  await db.collection('profiles').insertOne(newProfile) 
+
+         const codes = await getAssoCodes(newProfile['rin'])
+         console.log(codes)
+
+         console.log(newProfile)
+
+         
+         
+         // const profile =  await db.collection('profiles').insertOne(newProfile) 
       
-         if (!profile.acknowledged) {
-            return res.status(401).json({ error: 'Invalid profile!' });
-         }        
-         res.status(200).json(profile);
+         // if (!profile.acknowledged) {
+         //    return res.status(401).json({ error: 'Invalid profile!' });
+         // }        
+         // res.status(200).json(profile);
       }
       
       
