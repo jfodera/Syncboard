@@ -4,3 +4,4 @@ Resources:
 - https://www.w3schools.com/html/html_tables.asp
 - https://www.geeksforgeeks.org/how-to-use-bootstrap-with-react/
 - https://www.geeksforgeeks.org/how-to-style-a-dropdown-using-css/
+- https://www.mongodb.com/docs/manual/reference/method/db.collection.findOne/

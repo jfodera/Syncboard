@@ -24,6 +24,37 @@ app.get('/', function (req, res) {
 
 // *** group stuff ***
 
+// get groups from RIN
+app.get('/groups/:rin', async (req, res) => {
+    const rin = parseInt(req.params.rin);
+    if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
+    try {
+        const groups = await db.collection('groups').find({students: rin}).project({ groupid: 1, groupName: 1, crn: 1, _id: 0}).toArray();
+
+        const crns = groups.map(item => item.crn);
+
+        //get each course in groups, get the names from the crn
+        let classPromises = crns.map(async (crn) => {
+            const course = await db.collection('classes').findOne({crn: crn}, {projection: { className: 1, _id: 0 }});
+            return course;
+        });
+
+        let classes = await Promise.all(classPromises);
+
+        const allclasses = classes.map(item => item.className);
+
+        if (!groups) {
+            return res.status(404).json({ error: 'Groups not found' });
+        }
+
+        res.json(allclasses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch details' });
+    }
+});
+
+
 // list all groups in a specific section (by crn)
 app.get('/groups/all/:crn', async (req, res) => {
     const crn = parseInt(req.params.crn);
