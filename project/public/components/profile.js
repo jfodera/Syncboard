@@ -11,26 +11,25 @@ const Profile = ({ name }) => {
 
     // Fetch profile data
     React.useEffect(async () => {
+      const valSession = async ()=> {
+         try{
 
-      
-      //session valildation 
-      try{
-         const rinRes = await fetch('/session/rin', {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-         });
-         let session = await rinRes.json()
-            
-         if(session['sessionMissing']){
-            //back to login
-            window.location.href = '/';
-         }else{
-            rin = session['rin']
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            let session = await rinRes.json()
+               
+            if(session['sessionMissing']){
+               //back to login
+               window.location.href = '/';
+            }
+         }catch(err){   
+            console.error('Session Validation error:', err);
          }
-      }catch(err){   
-         console.error('Session Validation error:', err);
       }
+      valSession();
 
 
       const fetchProfile = async () => {

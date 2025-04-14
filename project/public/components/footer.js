@@ -5,6 +5,3 @@ const Footer = () => {
         </div>
     );
 };
-
-const rootElement = document.getElementById("footer");
-ReactDOM.createRoot(rootElement).render(<Footer />);

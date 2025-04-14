@@ -13,8 +13,6 @@ const Dashboard = () => {
          if(session['sessionMissing']){
             //back to login
             window.location.href = '/';
-         }else{
-            rin = session['rin']
          }
       }catch(err){   
          console.error('Session Validation error:', err);

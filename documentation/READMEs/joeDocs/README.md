@@ -75,6 +75,7 @@
    - password hadhing in bcrypt 
       - https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
    - when server restarts session is cleared 
+   - don't make useeffect async 
 
 # Code Chunks: 
 

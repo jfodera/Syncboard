@@ -75,5 +75,4 @@ const Login = () => {
   );
 };
 
-const rootElement = document.getElementById('login-root');
-ReactDOM.createRoot(rootElement).render(<Login />);
+

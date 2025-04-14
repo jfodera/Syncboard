@@ -20,11 +20,11 @@ const DropdownSelect = ({ id, name, value }) => {
 
     return (
         <div className="select">
-            <select name={name} id={id} onChange={handleChange} style={{ backgroundColor: color }}>
+            <select defaultValue="3" name={name} id={id} onChange={handleChange} style={{ backgroundColor: color }}>
                 <option>Status</option>
                 <option value="1">Completed</option>
                 <option value="2">In Progress</option>
-                <option selected value="3">To Do</option>
+                <option value="3">To Do</option>
             </select>
         </div>
     );

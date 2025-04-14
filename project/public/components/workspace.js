@@ -6,34 +6,42 @@ const Workspace = () => {
    
     //runs on mount and when dependecies in dependency array change (there are none)
     React.useEffect( async () => {
-      let rin; 
-
-      //session valildation 
-      try{
-         const rinRes = await fetch('/session/rin', {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-         });
-         let session = await rinRes.json()
-          
-         if(session['sessionMissing']){
-            window.location.href = '/';
-         }else{
-            rin = session['rin']
-         }
-      }catch(err){   
-         console.error('Session Validation error:', err);
-      }
-
-      console.log(rin) 
       
 
-      fetch(`/groups/${rin}`, { method: 'GET' })
-      .then(response=>response.json())
-      .then(data => {
-         setWorkspaces(data);
-      });
+      const valSession = async ()=> {
+         try{
+
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            let session = await rinRes.json()
+               
+            if(session['sessionMissing']){
+               //back to login
+               window.location.href = '/';
+            }else{
+               return(session['rin'])
+            }
+         }catch(err){   
+            console.error('Session Validation error:', err);
+         }
+      }
+      let rin = valSession();
+
+      
+      
+      const fetchClasses = async (rin) =>{
+         fetch(`/groups/${rin}`, { method: 'GET' })
+         .then(response=>response.json())
+         .then(data => {
+            setWorkspaces(data);
+         });
+      }
+      fetchClasses(rin); 
+
+
    }, []);
 
     return (

@@ -91,5 +91,3 @@ const Signup = () => {
   );
 };
 
-const rootElement = document.getElementById('signup-root');
-ReactDOM.createRoot(rootElement).render(<Signup />);
