@@ -399,20 +399,34 @@ app.get('/calendar/:groupid/:eventid', async (req, res) => {
 app.post('/calendar/:groupid', async (req, res) => {
     const groupid = parseInt(req.params.groupid);
     if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
-    const { eventname, starttime, endtime, date } = req.body;
-    if (!eventname || !starttime || !endtime || !date) {
-        return res.status(400).json({ error: 'Missing required fields' });
+    const { eventname, starttime, endtime, date, allday } = req.body;
+      if (!eventname || !date || typeof allday !== 'boolean') {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+      if (!allday && (!starttime || !endtime)) {
+      return res.status(400).json({ error: 'Start and end time required for non-all-day events' });
     }
     try {
-        const lastEvent = await db.collection('calendar').find({ groupid }).sort({ eventid: -1 }).limit(1).toArray();
-        const newEventId = lastEvent.length > 0 ? lastEvent[0].eventid + 1 : 1;
-        const newEvent = { eventname, starttime, endtime, date, groupid, eventid: newEventId, deleted: false };
-        const result = await db.collection('calendar').insertOne(newEvent);
-        res.json({ message: 'Event created', eventId: newEventId });
+      const lastEvent = await db.collection('calendar').find({ groupid }).sort({ eventid: -1 }).limit(1).toArray();
+      const newEventId = lastEvent.length > 0 ? lastEvent[0].eventid + 1 : 1;
+      const newEvent = {
+        eventname,
+        date,
+        groupid,
+        eventid: newEventId,
+        deleted: false,
+        allday,
+        starttime: allday ? null : starttime,
+        endtime: allday ? null : endtime,
+      };
+      await db.collection('calendar').insertOne(newEvent);
+      res.json({ message: 'Event created', eventId: newEventId });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create event' });
+      console.error('Error creating event:', error);
+      res.status(500).json({ error: 'Failed to create event' });
     }
-});
+  });
+  
 
 // update an event by groupID and eventID
 app.put('/calendar/:groupid/:eventid', async (req, res) => {
@@ -421,6 +435,11 @@ app.put('/calendar/:groupid/:eventid', async (req, res) => {
     if (isNaN(groupid) || isNaN(eventid)) return res.status(400).json({ error: 'Invalid group or event ID' });
     try {
         const updateFields = req.body;
+        // If allDay is being updated to true, set starttime and endtime to null
+        if (updateFields.allDay === true) {
+            updateFields.starttime = null;
+            updateFields.endtime = null;
+        }
         if (Object.keys(updateFields).length === 0) return res.status(400).json({ error: 'No fields to update' });
         const result = await db.collection('calendar').updateOne(
             { groupid, eventid, deleted: false },
