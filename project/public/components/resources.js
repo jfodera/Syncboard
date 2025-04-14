@@ -2,7 +2,7 @@ const Resources = () =>{
 
    //fine that this is not async as yes it will not wait for the promise to be fufilled in order to finish executing but valSession is called independently so
    //once it is carried out window.location will still be executed if neccesary
-   React.useEffect( async () => {
+   React.useEffect( () => {
       //session valildation 
       const valSession = async ()=> {
          try{

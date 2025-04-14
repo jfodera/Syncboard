@@ -82,19 +82,19 @@ app.use(session({
 
  //so react can acsess session data (as it is server side:):
 app.get('/session/rin', (req, res) => {
-   // console.log(req.session.user)
-   // if(req.session.user != undefined){
-   //    res.json({
-   //       'sessionMissing': false,
-   //       rin: req.session.user.rin
-   //     });
-   // }else{
-   //    res.json({'sessionMissing': true}); 
-   // }
+   console.log(req.session.user)
+   if(req.session.user != undefined){
       res.json({
          'sessionMissing': false,
-         rin: 621231
+         rin: req.session.user.rin
        });
+   }else{
+      res.json({'sessionMissing': true}); 
+   }
+      // res.json({
+      //    'sessionMissing': false,
+      //    rin: 621231
+      //  });
    
  });
 

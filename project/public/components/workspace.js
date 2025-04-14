@@ -5,7 +5,7 @@ const Workspace = () => {
     const colors = ["--orange", "--yellow", "--blue"];
    
     //runs on mount and when dependecies in dependency array change (there are none)
-    React.useEffect( async () => {
+    React.useEffect( () => {
       
 
       const valSession = async ()=> {
@@ -28,18 +28,19 @@ const Workspace = () => {
             console.error('Session Validation error:', err);
          }
       }
-      let rin = valSession();
+      
 
       
       
-      const fetchClasses = async (rin) =>{
+      const fetchClasses = async () =>{
+         let rin = await valSession();
          fetch(`/groups/${rin}`, { method: 'GET' })
          .then(response=>response.json())
          .then(data => {
             setWorkspaces(data);
          });
       }
-      fetchClasses(rin); 
+      fetchClasses(); 
 
 
    }, []);

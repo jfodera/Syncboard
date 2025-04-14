@@ -9,6 +9,7 @@
    - make sure workspace Cards correlate to the actual class (grace)
    - professors randomizing 
    - eventually have calendar pull from our AP I 
+   - verify CSS 
 
 # Project requirements: 
    - front end in react
@@ -82,6 +83,7 @@
 
 
 # Potential future additions 
+
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 

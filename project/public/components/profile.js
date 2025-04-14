@@ -10,7 +10,7 @@ const Profile = ({ name }) => {
     const [isEditing, setIsEditing] = React.useState(false);
 
     // Fetch profile data
-    React.useEffect(async () => {
+    React.useEffect( () => {
       const valSession = async ()=> {
          try{
 
@@ -114,8 +114,8 @@ const Profile = ({ name }) => {
                         </div>
 
                         <div className="form-actions">
-                            <button type="submit" class="edit-profile-btn">Save</button>
-                            <button type="button" onClick={() => setIsEditing(false)} class="edit-profile-btn">Cancel</button>
+                            <button type="submit" className="edit-profile-btn">Save</button>
+                            <button type="button" onClick={() => setIsEditing(false)} className="edit-profile-btn">Cancel</button>
                         </div>
                     </form>
                 ) : (
@@ -145,7 +145,7 @@ const Profile = ({ name }) => {
                             <span>Major</span>
                             <span>{profile.major}</span>
                         </div>
-                        <button onClick={() => setIsEditing(true)} class="edit-profile-btn">Edit Profile</button>
+                        <button onClick={() => setIsEditing(true)} className="edit-profile-btn">Edit Profile</button>
                     </div>
                 )}
             </div>

@@ -1,22 +1,26 @@
 const Dashboard = () => {
    //runs on mount and when dependecies in dependency array change (there are none)
-   React.useEffect( async () => {
+   React.useEffect(  () => {
       //session valildation 
-      try{
-         const rinRes = await fetch('/session/rin', {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-         });
-         let session = await rinRes.json()
-            
-         if(session['sessionMissing']){
-            //back to login
-            window.location.href = '/';
+      const valSession = async ()=> {
+         try{
+
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            let session = await rinRes.json()
+               
+            if(session['sessionMissing']){
+               //back to login
+               window.location.href = '/';
+            }
+         }catch(err){   
+            console.error('Session Validation error:', err);
          }
-      }catch(err){   
-         console.error('Session Validation error:', err);
       }
+      valSession();
 
    }, []);
   
