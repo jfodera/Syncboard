@@ -23,10 +23,12 @@ const Tasks = () => {
     return (
         <div>
             <table className="tasks">
-                <tr>
-                    <th>TASK</th>
-                    <th>STATUS</th>
-                </tr>
+               <tbody>
+                  <tr>
+                     <th>TASK</th>
+                     <th>STATUS</th>
+                  </tr>
+                </tbody>
 
                 <tbody>
                     {tasks.map((task, index) => (

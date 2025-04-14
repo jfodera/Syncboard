@@ -30,9 +30,12 @@ const App = () => {
                     {/* Default route (this will be shown first when the app loads) */}
 
                     {/* tester */}
-                    <ReactRouterDOM.Route path="/" exact component={Chat} />
+                    {/* <ReactRouterDOM.Route path="/" exact component={Chat} /> */}
 
                     {/* <ReactRouterDOM.Route path="/" exact component={Workspace} /> */}
+                    <ReactRouterDOM.Route path="/" exact component={Login} />
+                    <ReactRouterDOM.Route path="/signup" exact component={Signup} />
+                    <ReactRouterDOM.Route path="/workspace" exact component={Workspace} />
                     
                     {/* Define the route for /class */}
                     <ReactRouterDOM.Route path="/class" exact component={Dashboard} />
@@ -46,6 +49,9 @@ const App = () => {
         </ReactRouterDOM.BrowserRouter>
     );
 };
+
+
+
 
 const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement).render(<App />);
