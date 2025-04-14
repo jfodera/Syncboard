@@ -5,10 +5,11 @@
    - finish login √
    - hash passwords for signup, edit login √
    - password requirements for it to be good.  √
-   - add login checkers to each page 
-   - Login/Sign Up -> Try with session vars already setup, but if that doesn't work use cookies 
+   - add login checkers to each page  √
+   - make sure workspace Cards correlate to the actual class (grace)
    - professors randomizing 
-   - eventually have calendar pull from our AP I 
+   - eventually have calendar pull from our API 
+   - verify CSS 
 
 # Project requirements: 
    - front end in react
@@ -19,9 +20,20 @@
    
 # Good Users to create Key: 
    - 174860325: in intro to HCI and Lin alg
+      ```
+      email: 'test1@rpi.edu'
+      password: 'Yo-mama3<'
+      ```
    - 435219607: in HCI, Lin Alg, and Web Sci Systems 
+      ```
+      email: 'test2@rpi.edu'
+      password: 'im-Inall3Ha?'
+      ```
    - 413682709: just webSci
    - 662018329: Web Sci Systems dev instructor 
+
+   
+
 
 # VM Configs: 
    - sudo npm install express-session
@@ -63,22 +75,16 @@
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://medium.com/%40patilchetan2110/password-encryption-and-decryption-in-node-js-using-bcrypt-package-5a7b1952d49d&ved=2ahUKEwil-vrr_NeMAxUSl4kEHTO8HzMQFnoECBUQAQ&usg=AOvVaw0i4FlYUanMMrvR79yv5r3X
    - password hadhing in bcrypt 
       - https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
+   - when server restarts session is cleared 
+   - don't make useeffect async 
 
 # Code Chunks: 
-   -          try{
 
-            const rinRes = await fetch('/session/rin', {
-               method: 'GET',
-               credentials: 'include',
-               headers: { 'Content-Type': 'application/json' },
-            });
-            var rin = await rinRes.json()
-            rin = rin['rin']
-
-         }
 
 
 # Potential future additions 
+
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
+   - make session validation a module. 

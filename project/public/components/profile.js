@@ -10,20 +10,41 @@ const Profile = ({ name }) => {
     const [isEditing, setIsEditing] = React.useState(false);
 
     // Fetch profile data
-    React.useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/profile/${name}`);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-                setProfile(data);
-            } catch (err) {
-                setError("Failed to fetch profile");
-                console.error(err);
-            }
-        };
+    React.useEffect( () => {
+      const valSession = async ()=> {
+         try{
 
-        fetchProfile();
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            let session = await rinRes.json()
+               
+            if(session['sessionMissing']){
+               //back to login
+               window.location.href = '/';
+            }
+         }catch(err){   
+            console.error('Session Validation error:', err);
+         }
+      }
+      valSession();
+
+
+      const fetchProfile = async () => {
+         try {
+               const response = await fetch(`http://localhost:3000/profile/${name}`);
+               if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+               const data = await response.json();
+               setProfile(data);
+         } catch (err) {
+               setError("Failed to fetch profile");
+               console.error(err);
+         }
+      };
+
+      fetchProfile();
     }, [name]);
 
     // Handle form input changes
@@ -93,8 +114,8 @@ const Profile = ({ name }) => {
                         </div>
 
                         <div className="form-actions">
-                            <button type="submit" class="edit-profile-btn">Save</button>
-                            <button type="button" onClick={() => setIsEditing(false)} class="edit-profile-btn">Cancel</button>
+                            <button type="submit" className="edit-profile-btn">Save</button>
+                            <button type="button" onClick={() => setIsEditing(false)} className="edit-profile-btn">Cancel</button>
                         </div>
                     </form>
                 ) : (
@@ -124,7 +145,7 @@ const Profile = ({ name }) => {
                             <span>Major</span>
                             <span>{profile.major}</span>
                         </div>
-                        <button onClick={() => setIsEditing(true)} class="edit-profile-btn">Edit Profile</button>
+                        <button onClick={() => setIsEditing(true)} className="edit-profile-btn">Edit Profile</button>
                     </div>
                 )}
             </div>

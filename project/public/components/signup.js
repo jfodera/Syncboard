@@ -1,11 +1,11 @@
 const Signup = () => {
   const [formData, setFormData] = React.useState({
-      name: 'Test1',
-      email: 'test1@rpi.edu',
-      rin: '174860325',
-      year: '2026',
-      major: 'CS',
-      password: 'Yo-mama3<'
+      name: '',
+      email: '',
+      rin: '',
+      year: '',
+      major: '',
+      password: ''
   });
 
   //as of rn, year and major not stores 
@@ -91,5 +91,3 @@ const Signup = () => {
   );
 };
 
-const rootElement = document.getElementById('signup-root');
-ReactDOM.createRoot(rootElement).render(<Signup />);
