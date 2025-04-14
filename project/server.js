@@ -1,14 +1,23 @@
 const express = require('express');
+const path = require('path');
+const session = require('express-session')
+const cors = require('cors');
+const bcrypt = require('bcrypt');
 const fs = require('fs');
+const crypto = require('crypto')
 const app = express();
 const PORT = 3000;
-const path = require('path');
+//for BC cypt 1024 iterations of internal key derivation (good balance between time and secureness)
+const saltRounds = 10;
 const { connectToDb, getDb } = require('./db.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 let db;
+//calls connect to DB, once that conection is sucessfull getDb assigns db from getDb 
+//runs as soon as node server is called 
 connectToDb((err) => {
+   //calls function in different file 
     if (!err){
         db = getDb();
         console.log("Successful database connection!")
@@ -17,6 +26,68 @@ connectToDb((err) => {
         console.log(err);
     }
 })
+
+
+//helper functions 
+//assumes only students can log in for right now
+async function getAssoCodes(stuRin){
+   //gets entire classes array 
+   let classCodes = []
+   const rpiClasses = await db.collection('classes').find({}).toArray()
+   for(const rpiClass of rpiClasses){
+      
+      for(const rin of rpiClass['studentRINs']){
+         if(rin == stuRin){
+            classCodes.push(rpiClass['crn'])
+         }
+      }
+   }
+   return(classCodes)
+}
+
+
+
+//Main API Functions
+
+app.use(cors({
+
+   //vm: 
+   //local 
+   origin: 'http://localhost:3000', // React app URL
+   credentials: true // Allow cookies (session ID) to be sent
+ }));
+
+
+ //set up session middleware: 
+app.use(session({
+   //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
+   //cookie links the client to the session, session is not a cookie
+   //note: this is not the sesion ID, that is a different cookeie 
+   //64 char random string
+   secret: crypto.randomBytes(32).toString('hex'),  
+   //prevents rewrites if nothing changes
+   resave: false,
+   //saves when new session created 
+   saveUninitialized: true,
+   //cokies being sent are secure as we are on https. 
+   //how session ID is trackerd
+   cookie: { secure: false }  
+ }));
+
+// *** Session Requests ***/
+
+
+// Allow requests from reach app 
+
+
+ //so react can acsess session data (as it is server side:):
+app.get('/session/rin', (req, res) => {
+   res.json({
+     rin: req.session.user.rin
+   });
+ });
+
+
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -203,43 +274,80 @@ app.put('/profile/:name', (req, res) => {
 
 // *** login stuff ***
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res)  => {
+
+   
     const loginProfile = req.body;
+   //  console.log(req.body); 
+   //  res.json({ message: `Entire DB Populated.` }); 
 
     db.collection('profiles')
-        .findOne({ email: loginProfile['email'], password: loginProfile['password'] }) 
-        .then(profile => {
-            if (!profile) {
+         //works as email is a unique identifier in DAtabase 
+        .findOne({ email: loginProfile['email']}) 
+        .then(async (profile) => { //define what the return in called 
+            const match = await bcrypt.compare(loginProfile['password'], profile['password']);
+            if (!profile || !match) {
                 return res.status(401).json({ error: 'Invalid name or password!' });
             }
-            req.session.user = {
-                id: profile._id,
-                email: profile.email,
-                name: profile.name
+            
+            req.session.user = { //stores this is the session of whever requested this
+                rin: profile['rin']
             };
             req.session.save();
-            res.status(200).json(profile);
+            
+            
+            //status 200: 'OK' -> Successfull
+            res.status(200).json(profile); //sending the profile object returned by the database
         })
         .catch(err => {
+         
             console.error('Database query error:', err);
             res.status(500).json({ error: 'Internal server error' });
         });
 })
 
-app.post('/signup', (req, res) => {
+//allows user to sign up with our page
+//automatically checks if user is registered with any classes using classes database 
+app.post('/signup', async (req, res)  => {
     const newProfile = req.body;
-    db.collection('profiles')
-        .insertOne(newProfile) 
-        .then(profile => {
-            if (!profile) {
-                return res.status(401).json({ error: 'Invalid profile!' });
-            }
-            res.status(200).json(profile);
-        })
-        .catch(err => {
-            console.error('Database query error:', err);
-            res.status(500).json({ error: 'Internal server error' });
-        });
+   
+   try{
+      //checking if already in DB 
+      const emailThere = await db.collection('profiles').findOne({ email: newProfile['email']}) 
+      const rinThere = await db.collection('profiles').findOne({ rin: newProfile['rin']}) 
+
+      
+      if(emailThere != null){
+         res.status(409).json({error: 'An account with this email already exists'})
+      }else if(rinThere != null){
+         res.status(409).json({error: 'An account with this rin already exists'})
+      }else{
+
+         const codes = await getAssoCodes(newProfile['rin'])
+
+         //formatting data right 
+         delete newProfile['year']
+         delete newProfile['major']
+         newProfile['classes'] = codes
+         const hashed = await bcrypt.hash(newProfile['password'], saltRounds);
+         newProfile['password'] = hashed;
+         
+         
+         const profile =  await db.collection('profiles').insertOne(newProfile) 
+      
+         if (!profile.acknowledged) {
+            return res.status(401).json({ error: 'Invalid profile!' });
+         }        
+         res.status(200).json(profile);
+      }
+      
+      
+   }catch (err){
+      console.error('Database query error:', err);
+      res.status(500).json({ error: 'Internal server error' });
+   }
+
+
 
 })
 

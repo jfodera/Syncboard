@@ -1,20 +1,44 @@
 const Signup = () => {
   const [formData, setFormData] = React.useState({
-      name: '',
-      email: '',
-      rin: '',
-      year: '',
-      major: '',
-      password: ''
+      name: 'Test1',
+      email: 'test1@rpi.edu',
+      rin: '174860325',
+      year: '2026',
+      major: 'CS',
+      password: 'Yo-mama3<'
   });
 
+  //as of rn, year and major not stores 
+
   const handleChange = (e) => {
+      //gets the id of the form data being submitted and the value
       const { id, value } = e.target;
+      //Copies what is already in there for all other value fields except ID. 
       setFormData({ ...formData, [id]: value });
   };
 
   const handleSubmit = async (e) => {
+      //no reload 
       e.preventDefault();
+
+      //add in signup requirements because that should be client side
+      /*
+      Password must be: 
+         - at least 8 characters
+         - have at least one number 
+         - at least one special character 
+      */
+
+      if(formData['password'].length < 8){
+         alert("Password must be at least 8 characters")
+         return
+      }else if(!(/\d/.test(formData['password']))){ //regex to test if password contains a digit
+         alert("Password must have at least one number")
+         return
+      }else if(!(/[!@#$%^&*(),.?:{}|<>]/.test(formData['password']))){ //regex to test if password contains at least one of those special characters
+         alert("Password must include at least one of these special characters:\n!@#$%^&*(),.?:{}|<>")
+         return
+      } 
 
       try {
           const response = await fetch('/signup', {
@@ -28,7 +52,7 @@ const Signup = () => {
           const data = await response.json();
           if (response.ok) {
               alert('Signup successful! Redirecting to login...');
-              window.location.href = './login.html';
+              window.location.href = '/';
           } else {
               alert(`Signup failed: ${data.error}`);
           }
