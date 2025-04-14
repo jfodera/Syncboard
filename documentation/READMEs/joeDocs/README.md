@@ -4,7 +4,7 @@
    - make sure task page is good √
    - finish login √
    - hash passwords for signup, edit login √
-   - password requirements for it to be good. 
+   - password requirements for it to be good.  √
    - add login checkers to each page 
    - Login/Sign Up -> Try with session vars already setup, but if that doesn't work use cookies 
    - professors randomizing 
@@ -80,3 +80,5 @@
 
 # Potential future additions 
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
+   - notify users of password requirements so they don't have to trial and error
+   - email verification 

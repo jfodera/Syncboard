@@ -324,7 +324,6 @@ app.post('/signup', async (req, res)  => {
       }else{
 
          const codes = await getAssoCodes(newProfile['rin'])
-         console.log(codes)
 
          //formatting data right 
          delete newProfile['year']

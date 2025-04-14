@@ -5,7 +5,7 @@ const Signup = () => {
       rin: '174860325',
       year: '2026',
       major: 'CS',
-      password: 'Yo-mama3'
+      password: 'Yo-mama3<'
   });
 
   //as of rn, year and major not stores 
@@ -22,6 +22,23 @@ const Signup = () => {
       e.preventDefault();
 
       //add in signup requirements because that should be client side
+      /*
+      Password must be: 
+         - at least 8 characters
+         - have at least one number 
+         - at least one special character 
+      */
+
+      if(formData['password'].length < 8){
+         alert("Password must be at least 8 characters")
+         return
+      }else if(!(/\d/.test(formData['password']))){ //regex to test if password contains a digit
+         alert("Password must have at least one number")
+         return
+      }else if(!(/[!@#$%^&*(),.?:{}|<>]/.test(formData['password']))){ //regex to test if password contains at least one of those special characters
+         alert("Password must include at least one of these special characters:\n!@#$%^&*(),.?:{}|<>")
+         return
+      } 
 
       try {
           const response = await fetch('/signup', {
