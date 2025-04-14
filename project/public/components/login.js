@@ -1,6 +1,6 @@
 const Login = () => {
-  const [email, setEmail] = React.useState('richat@rpi.edu'); //email is set everytime input box changes 
-  const [password, setPassword] = React.useState('giraffe11');
+  const [email, setEmail] = React.useState(''); //email is set everytime input box changes 
+  const [password, setPassword] = React.useState('');
 
   const handleSignIn = async () => {
       if (!email || !password) {
@@ -18,18 +18,12 @@ const Login = () => {
 
          const data = await response.json();
 
-         const rinRes = await fetch('/session/rin', {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-         });
-         var rin = await rinRes.json()
-         rin = rin['rin']
          
-         
+         //response was in teh 200's 
          if (response.ok) {
             window.location.href = '/workspace'; // Redirect to home page
          } else {
+            //if there is a  
             alert(data.message || 'Invalid email or password');
          }
       } catch (error) {

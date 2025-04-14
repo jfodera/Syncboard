@@ -37,6 +37,7 @@ app.use(cors({
 app.use(session({
    //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
    //cookie links the client to the session, session is not a cookie
+   //note: this is not the sesion ID, that is a different cookeie 
    //64 char random string
    secret: crypto.randomBytes(32).toString('hex'),  
    //prevents rewrites if nothing changes
@@ -44,6 +45,7 @@ app.use(session({
    //saves when new session created 
    saveUninitialized: true,
    //cokies being sent are secure as we are on https. 
+   //how session ID is trackerd
    cookie: { secure: false }  
  }));
 
@@ -271,6 +273,7 @@ app.post('/login', (req, res) => {
             res.status(200).json(profile); //sending the profile object returned by the database
         })
         .catch(err => {
+         
             console.error('Database query error:', err);
             res.status(500).json({ error: 'Internal server error' });
         });

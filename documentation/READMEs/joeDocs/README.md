@@ -2,6 +2,10 @@
    - Calendar√
    - resources page√
    - make sure task page is good √
+   - finish login
+   - hash passwords for signup, edit login
+   - password requirements for it to be good. 
+   - add login checkers to each page 
    - Login/Sign Up -> Try with session vars already setup, but if that doesn't work use cookies 
    - professors randomizing 
    - eventually have calendar pull from our AP I 
@@ -43,3 +47,16 @@
    - React Browser, Sessions are stored on server side, so in order to retrieve session variables, react must make API calls 
    - CORS -> Data (like session variables) acsess manager for JS: 
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS&ved=2ahUKEwjNlrPv19eMAxVxvokEHQ1LKegQFnoECBkQAQ&usg=AOvVaw2xmyG8mpAqKyMiOwPBDkob
+
+# Code Chunks: 
+   -          try{
+
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            var rin = await rinRes.json()
+            rin = rin['rin']
+
+         }
