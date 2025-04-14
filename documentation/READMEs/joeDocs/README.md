@@ -2,8 +2,8 @@
    - Calendar√
    - resources page√
    - make sure task page is good √
-   - finish login
-   - hash passwords for signup, edit login
+   - finish login √
+   - hash passwords for signup, edit login √
    - password requirements for it to be good. 
    - add login checkers to each page 
    - Login/Sign Up -> Try with session vars already setup, but if that doesn't work use cookies 
@@ -28,6 +28,7 @@
    - sudo npm install cors
    - change over to VM URL's 
    - set to true when on VM: cookie: { secure: false }  
+   - npm install bcrypt
 
 # App Conventions/Descriptions
    - Class data would be scrapped from somewhere so that the professor doesn't have to hardcode that in. 
@@ -60,6 +61,8 @@
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://stackoverflow.com/questions/29285897/difference-between-for-in-and-for-of-statements&ved=2ahUKEwjo2oHj99eMAxWmvokEHSBWFrsQFnoECBgQAQ&usg=AOvVaw1oRcWABDTPWc4BWsFyXsxa
    - Always encrypt passwords on server side: 
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://medium.com/%40patilchetan2110/password-encryption-and-decryption-in-node-js-using-bcrypt-package-5a7b1952d49d&ved=2ahUKEwil-vrr_NeMAxUSl4kEHTO8HzMQFnoECBUQAQ&usg=AOvVaw0i4FlYUanMMrvR79yv5r3X
+   - password hadhing in bcrypt 
+      - https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
 
 # Code Chunks: 
    -          try{

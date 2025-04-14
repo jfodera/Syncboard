@@ -2,10 +2,13 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session')
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 const fs = require('fs');
 const crypto = require('crypto')
 const app = express();
 const PORT = 3000;
+//for BC cypt 1024 iterations of internal key derivation (good balance between time and secureness)
+const saltRounds = 10;
 const { connectToDb, getDb } = require('./db.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -40,9 +43,9 @@ async function getAssoCodes(stuRin){
       }
    }
    return(classCodes)
-
-
 }
+
+
 
 //Main API Functions
 
@@ -271,7 +274,7 @@ app.put('/profile/:name', (req, res) => {
 
 // *** login stuff ***
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res)  => {
 
    
     const loginProfile = req.body;
@@ -279,9 +282,11 @@ app.post('/login', (req, res) => {
    //  res.json({ message: `Entire DB Populated.` }); 
 
     db.collection('profiles')
-        .findOne({ email: loginProfile['email'], password: loginProfile['password'] }) 
-        .then(profile => { //define what the return in called 
-            if (!profile) {
+         //works as email is a unique identifier in DAtabase 
+        .findOne({ email: loginProfile['email']}) 
+        .then(async (profile) => { //define what the return in called 
+            const match = await bcrypt.compare(loginProfile['password'], profile['password']);
+            if (!profile || !match) {
                 return res.status(401).json({ error: 'Invalid name or password!' });
             }
             
@@ -302,10 +307,12 @@ app.post('/login', (req, res) => {
 })
 
 //allows user to sign up with our page
+//automatically checks if user is registered with any classes using classes database 
 app.post('/signup', async (req, res)  => {
     const newProfile = req.body;
    
    try{
+      //checking if already in DB 
       const emailThere = await db.collection('profiles').findOne({ email: newProfile['email']}) 
       const rinThere = await db.collection('profiles').findOne({ rin: newProfile['rin']}) 
 
@@ -319,16 +326,20 @@ app.post('/signup', async (req, res)  => {
          const codes = await getAssoCodes(newProfile['rin'])
          console.log(codes)
 
-         console.log(newProfile)
-
+         //formatting data right 
+         delete newProfile['year']
+         delete newProfile['major']
+         newProfile['classes'] = codes
+         const hashed = await bcrypt.hash(newProfile['password'], saltRounds);
+         newProfile['password'] = hashed;
          
          
-         // const profile =  await db.collection('profiles').insertOne(newProfile) 
+         const profile =  await db.collection('profiles').insertOne(newProfile) 
       
-         // if (!profile.acknowledged) {
-         //    return res.status(401).json({ error: 'Invalid profile!' });
-         // }        
-         // res.status(200).json(profile);
+         if (!profile.acknowledged) {
+            return res.status(401).json({ error: 'Invalid profile!' });
+         }        
+         res.status(200).json(profile);
       }
       
       

@@ -35,7 +35,7 @@ const Signup = () => {
           const data = await response.json();
           if (response.ok) {
               alert('Signup successful! Redirecting to login...');
-              window.location.href = './login.html';
+              window.location.href = '/';
           } else {
               alert(`Signup failed: ${data.error}`);
           }
