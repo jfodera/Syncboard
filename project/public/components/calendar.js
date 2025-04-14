@@ -1,3 +1,6 @@
+// replace this with session variables
+const sessiongroupid = 2;
+
 function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
   if (!isOpen) return null;
 
@@ -140,11 +143,9 @@ const CalendarComponent = () => {
   const [eventData, setEventData] = React.useState(null);
   const [calendar, setCalendar] = React.useState(null);
   const [events, setEvents] = React.useState([]);
-  // UPDATE THIS ONCE SESSIONS ARE SET UP!!!!!!!!!!!!!!!!!!!!!!!
-  const groupId = 1;
   const fetchEvents = async () => {
     try {
-      const res = await fetch(`/calendar/${groupId}`);
+      const res = await fetch(`/calendar/${sessiongroupid}`);
       const data = await res.json();
       const formattedEvents = data
       .filter(event => !event.deleted)
@@ -175,7 +176,7 @@ const CalendarComponent = () => {
   // run when event is created, post to db
   const handleCreateSubmit = async ({ title, date, starttime, endtime, allDay }) => {
     try {
-      await fetch(`/calendar/${groupId}`, {
+      await fetch(`/calendar/${sessiongroupid}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eventname: title, starttime, endtime, date, allday: allDay }),
@@ -189,10 +190,9 @@ const CalendarComponent = () => {
 
   const handleDeleteEvent = async (eventData) => {
     try {
-      const groupId = eventData.extendedProps.groupid;
       const eventId = eventData.extendedProps.eventid;
   
-      const response = await fetch(`/calendar/${groupId}/${eventId}`, {
+      const response = await fetch(`/calendar/${sessiongroupid}/${eventId}`, {
         method: 'DELETE',
       });
   
@@ -245,7 +245,7 @@ const CalendarComponent = () => {
     };
 
     try {
-      await fetch(`/calendar/${eventData.extendedProps && eventData.extendedProps.groupid}/${eventData.extendedProps && eventData.extendedProps.eventid}`,
+      await fetch(`/calendar/${sessiongroupid}/${eventData.extendedProps && eventData.extendedProps.eventid}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
