@@ -18,6 +18,72 @@ connectToDb((err) => {
     }
 })
 
+
+//helper functions 
+//assumes only students can log in for right now
+async function getAssoCodes(stuRin){
+   //gets entire classes array 
+   let classCodes = []
+   const rpiClasses = await db.collection('classes').find({}).toArray()
+   for(const rpiClass of rpiClasses){
+      
+      for(const rin of rpiClass['studentRINs']){
+         if(rin == stuRin){
+            classCodes.push(rpiClass['crn'])
+         }
+      }
+   }
+   return(classCodes)
+}
+
+
+
+//Main API Functions
+
+app.use(cors({
+
+   //vm: 
+   //local 
+   origin: 'http://localhost:3000', // React app URL
+   credentials: true // Allow cookies (session ID) to be sent
+ }));
+
+
+ //set up session middleware: 
+app.use(session({
+   //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
+   //cookie links the client to the session, session is not a cookie
+   //note: this is not the sesion ID, that is a different cookeie 
+   //64 char random string
+   secret: crypto.randomBytes(32).toString('hex'),  
+   //prevents rewrites if nothing changes
+   resave: false,
+   //saves when new session created 
+   saveUninitialized: true,
+   //cokies being sent are secure as we are on https. 
+   //how session ID is trackerd
+   cookie: { secure: false }  
+ }));
+
+// *** Session Requests ***/
+
+
+// Allow requests from reach app 
+
+
+ //so react can acsess session data (as it is server side:):
+app.get('/session/rin', (req, res) => {
+   if(req.session.user != undefined){
+      res.json({
+         rin: req.session.user.rin
+       });
+   }else{
+      res.json(req.session.user); 
+   }
+ });
+
+
+
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
