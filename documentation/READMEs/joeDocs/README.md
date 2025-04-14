@@ -24,6 +24,10 @@
    - change over to VM URL's 
    - set to true when on VM: cookie: { secure: false }  
 
+# App Conventions/Descriptions
+   - Class data would be scrapped from somewhere so that the professor doesn't have to hardcode that in. 
+   - then when a user signs up, the class data is checked for their rin, if that is 
+
 # Things I learned/Citations : 
    - Viewport width= based off of the visible area of the web browser 
    - https://fullcalendar.io/

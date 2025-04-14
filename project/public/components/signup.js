@@ -1,20 +1,27 @@
 const Signup = () => {
   const [formData, setFormData] = React.useState({
-      name: '',
-      email: '',
-      rin: '',
-      year: '',
-      major: '',
-      password: ''
+      name: 'Joe Fodera',
+      email: 'foderj@rpi.edu',
+      rin: '662061839',
+      year: '2026',
+      major: 'CS',
+      password: 'Yo-mama3'
   });
 
+  //as of rn, year and major not stores 
+
   const handleChange = (e) => {
+      //gets the id of the form data being submitted and the value
       const { id, value } = e.target;
+      //Copies what is already in there for all other value fields except ID. 
       setFormData({ ...formData, [id]: value });
   };
 
   const handleSubmit = async (e) => {
+      //no reload 
       e.preventDefault();
+
+      //add in signup requirements because that should be client side
 
       try {
           const response = await fetch('/signup', {

@@ -279,20 +279,39 @@ app.post('/login', (req, res) => {
         });
 })
 
-app.post('/signup', (req, res) => {
+//allows user to sign up with our page
+app.post('/signup', async (req, res)  => {
     const newProfile = req.body;
-    db.collection('profiles')
-        .insertOne(newProfile) 
-        .then(profile => {
-            if (!profile) {
-                return res.status(401).json({ error: 'Invalid profile!' });
-            }
-            res.status(200).json(profile);
-        })
-        .catch(err => {
-            console.error('Database query error:', err);
-            res.status(500).json({ error: 'Internal server error' });
-        });
+   
+    
+
+   //mess with newProfile JSON here
+
+   try{
+      const emailThere = await db.collection('profiles').findOne({ email: newProfile['email']}) 
+      const rinThere = await db.collection('profiles').findOne({ rin: newProfile['rin']}) 
+
+      
+      if(emailThere != null){
+         res.status(409).json({error: 'An account with this email already exists'})
+      }else if(rinThere != null){
+         res.status(409).json({error: 'An account with this rin already exists'})
+      }else{
+         const profile =  await db.collection('profiles').insertOne(newProfile) 
+      
+         if (!profile.acknowledged) {
+            return res.status(401).json({ error: 'Invalid profile!' });
+         }        
+         res.status(200).json(profile);
+      }
+      
+      
+   }catch (err){
+      console.error('Database query error:', err);
+      res.status(500).json({ error: 'Internal server error' });
+   }
+
+
 
 })
 

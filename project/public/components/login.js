@@ -17,8 +17,7 @@ const Login = () => {
          });
 
          const data = await response.json();
-
-         
+     
          //response was in teh 200's 
          if (response.ok) {
             window.location.href = '/workspace'; // Redirect to home page
