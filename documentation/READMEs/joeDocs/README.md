@@ -17,6 +17,9 @@
    - Have a group and chat API 
    - MERN Stack 
    
+# Good Users to create Key: 
+   - 174860325: in intro to HCI and Lin alg
+   - 435219607: in HCI, Lin Alg, and Web Sci Systems 
 
 # VM Configs: 
    - sudo npm install express-session
