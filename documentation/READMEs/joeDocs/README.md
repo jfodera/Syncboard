@@ -6,7 +6,7 @@
    - hash passwords for signup, edit login √
    - password requirements for it to be good.  √
    - add login checkers to each page 
-   - make sure workspace Cards correlate to the actual class 
+   - make sure workspace Cards correlate to the actual class (grace)
    - professors randomizing 
    - eventually have calendar pull from our AP I 
 
@@ -84,3 +84,4 @@
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
+   - make session validation a module. 

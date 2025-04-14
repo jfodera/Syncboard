@@ -10,20 +10,42 @@ const Profile = ({ name }) => {
     const [isEditing, setIsEditing] = React.useState(false);
 
     // Fetch profile data
-    React.useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/profile/${name}`);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-                setProfile(data);
-            } catch (err) {
-                setError("Failed to fetch profile");
-                console.error(err);
-            }
-        };
+    React.useEffect(async () => {
 
-        fetchProfile();
+      
+      //session valildation 
+      try{
+         const rinRes = await fetch('/session/rin', {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+         });
+         let session = await rinRes.json()
+            
+         if(session['sessionMissing']){
+            //back to login
+            window.location.href = '/';
+         }else{
+            rin = session['rin']
+         }
+      }catch(err){   
+         console.error('Session Validation error:', err);
+      }
+
+
+      const fetchProfile = async () => {
+         try {
+               const response = await fetch(`http://localhost:3000/profile/${name}`);
+               if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+               const data = await response.json();
+               setProfile(data);
+         } catch (err) {
+               setError("Failed to fetch profile");
+               console.error(err);
+         }
+      };
+
+      fetchProfile();
     }, [name]);
 
     // Handle form input changes
