@@ -1,10 +1,10 @@
 const Tasks = () => {
     const [tasks, setTasks] = React.useState([
-        {task: 'Proposal Presentation', status: 'completed'},
-        {task: 'UI Mockups', status: 'completed'},
-        {task: 'Frontend Implementation', status: 'completed'},
-        {task: 'Midterm Presentation', status: 'completed'},
-        {task: 'Backend Implementation', status: 'In Progress'},
+        { task: 'Proposal Presentation', status: 'completed' },
+        { task: 'UI Mockups', status: 'completed' },
+        { task: 'Frontend Implementation', status: 'completed' },
+        { task: 'Midterm Presentation', status: 'completed' },
+        { task: 'Backend Implementation', status: 'In Progress' },
     ]);
 
     const addTask = () => {
@@ -16,18 +16,18 @@ const Tasks = () => {
 
     const handleTaskChange = (index, newName) => {
         const updatedTasks = [...tasks];
-        updatedTasks[index].task = newName; 
-        setTasks(updatedTasks); 
+        updatedTasks[index].task = newName;
+        setTasks(updatedTasks);
     };
 
     return (
         <div>
             <table className="tasks">
-               <tbody>
-                  <tr>
-                     <th>TASK</th>
-                     <th>STATUS</th>
-                  </tr>
+                <tbody>
+                    <tr>
+                        <th>TASK</th>
+                        <th>STATUS</th>
+                    </tr>
                 </tbody>
 
                 <tbody>
@@ -40,21 +40,19 @@ const Tasks = () => {
                                             type="text"
                                             onBlur={(e) => handleTaskChange(index, e.target.value)}
                                         />
-                        
-                                    </form>        
+
+                                    </form>
                                 ) : (
                                     task.task
                                 )}
                             </td>
                             <td>
-                                <DropdownSelect id={`select${index}`} name={`select${index}`} value={task.status}/>
+                                <DropdownSelect id={`select${index}`} name={`select${index}`} value={task.status} />
                             </td>
                         </tr>
-                        
+
                     ))}
                 </tbody>
-
-                
             </table>
 
             <br></br>
@@ -62,6 +60,6 @@ const Tasks = () => {
                 add_circle
             </span>
         </div>
-        
+
     );
 };
