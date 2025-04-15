@@ -15,9 +15,8 @@
       - use that variable to make the calendar work 
       - calendar.js:217
    - professors randomizing 
-   - eventually have calendar pull from our API 
    - verify CSS 
-
+   - not allowed to get passed workspaces unless session groupID variable is set?
 
 
 # Project requirements: 
@@ -101,6 +100,9 @@
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://legacy.reactjs.org/docs/conditional-rendering.html&ved=2ahUKEwj8iPLjxtiMAxUrFVkFHbdIAlgQFnoECBgQAQ&usg=AOvVaw35iJf_iuDEpRKBcK713PlE
    - brackets in any jsx allows you to write js: {console.log(loggedIn)}
    - hook allows you to 'hook' into existing react elements, or edit certain features 
+   - when you have multiple useEffect features: 
+      - they run in order of how they appear in the code, next one not starting until previous one finished 
+      - //second useEffect will NOT run until fetchEvents is run, so will set group session at the beginning of fetchEvents
    
 
 # Code Chunks: 
@@ -109,7 +111,8 @@
 
 # Potential future additions 
 
-   - more profile storage editing 
+   - not allowed to get passed workspaces unless session groupID variable is set
+   - more profile storage editing (storing phone number)
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
