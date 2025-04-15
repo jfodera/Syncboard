@@ -212,7 +212,7 @@ const CalendarComponent = () => {
          headers: { 'Content-Type': 'application/json' },
       });
       let back = await test.json()
-      console.log(back)
+      
       return(back.groupid)
       /* back --> {groupid: 1} where '1' is the current group id */
   }

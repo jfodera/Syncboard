@@ -10,6 +10,7 @@ const PORT = 3000;
 //for BC cypt 1024 iterations of internal key derivation (good balance between time and secureness)
 const saltRounds = 10;
 const { connectToDb, getDb } = require('./db.js');
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
@@ -127,9 +128,28 @@ app.get('/session/groupID', (req, res) => {
 })
 
 
-
+/*allowing reloads*/
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// get groupid and groupname of user
+app.get('/user/teams/:rin', async (req, res) => {
+    const rin = parseInt(req.params.rin);
+    if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
+    try {
+        const groups = await db.collection('groups').find({students: rin}).project({ groupName:1, groupid: 1, _id: 0}).toArray();
+        const groupinfo = groups.map(({ groupName, groupid }) => ({ groupName, groupid }));
+
+        if (!groups) {
+            return res.status(404).json({ error: 'Groups not found' });
+        }
+
+        res.json(groupinfo);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch details' });
+    }
 });
 
 // *** group stuff ***
@@ -140,6 +160,7 @@ app.get('/classes/:rin', async (req, res) => {
     if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
     try {
         const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0 }).toArray();
+
 
         const crns = groups.map(item => item.crn);
 

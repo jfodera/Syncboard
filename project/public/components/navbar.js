@@ -59,7 +59,7 @@ const Navbar = () => {
     }, []);
     return (
         <nav className="navbar">
-            <ReactRouterDOM.Link to="/">
+            <ReactRouterDOM.Link to="/workspace">
             <div className="logo">
                 <span className="logo-full">SyncBoard</span>
                 <span className="logo-short">SB</span>
