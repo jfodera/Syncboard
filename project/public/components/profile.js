@@ -80,7 +80,7 @@ const Profile = () => {
         <div>
             <Homebar />
             <div class="profile-maincontent">
-                <div className="profile-title">Your Profile</div>
+                <h1 className="profile-title">Your Profile</h1>
                 <div className="profile-container">
                     <div className="profile-header">
                     <div className="profile-img">

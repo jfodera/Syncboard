@@ -5,6 +5,9 @@ const Resources = () => {
     const [newResName, setNewResName] = React.useState("");
     const [newResLink, setNewResLink] = React.useState("");
     const [classID, setClassID] = React.useState(null);
+    const [workspaces, setWorkspaces] = React.useState([]);
+    const [className, setClassName] = React.useState('');
+    const [groupName, setGroupName] = React.useState('');
   
     // Validate session on mount
     React.useEffect(() => {
@@ -16,6 +19,7 @@ const Resources = () => {
             headers: { 'Content-Type': 'application/json' },
           });
           const session = await rinRes.json();
+
           if (session.sessionMissing) {
             window.location.href = '/';
           }
@@ -30,6 +34,19 @@ const Resources = () => {
     React.useEffect(() => {
       const fetchGroupID = async () => {
         try {
+          // Validate session and get RIN
+          const rinRes = await fetch('/session/rin', {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+          });
+          const session = await rinRes.json();
+          if (session['sessionMissing']) {
+            window.location.href = '/';
+            return;
+          }
+          const rin = session.rin;
+    
           const res = await fetch('/session/groupID', {
             method: 'GET',
             credentials: 'include',
@@ -39,35 +56,63 @@ const Resources = () => {
           if (data.error) {
             console.error('Error fetching group ID:', data.error);
           } else {
+            console.log('Fetched data:', data);
             setGroupID(data.groupid);
           }
+    
+          // This will not work if groupID is set here because it's async.
+          // We need to move the following logic into a separate useEffect
         } catch (err) {
           console.error('Group ID fetch error:', err);
         }
       };
+    
       fetchGroupID();
-    }, []);
-  
-// getting the class id
-    React.useEffect(() => {
-      if (!groupID) return;
-      const fetchGroupDetails = async () => {
-        try {
-          const groupRes = await fetch(`/groups/${groupID}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const groupData = await groupRes.json();
-          if (groupData.crn) {
-            setClassID(groupData.crn);
-          }
-        } catch (err) {
-          console.error('Error fetching group details:', err);
-        }
-      };
-      fetchGroupDetails();
-    }, [groupID]);
+    }, []); // Only run once on mount
+
+    // This effect runs when groupID is set
+React.useEffect(() => {
+  if (!groupID) return;  // If groupID is null or undefined, exit early.
+
+  const fetchGroupDetails = async () => {
+    try {
+      // Fetch group details using the groupID
+      const groupInfoRes = await fetch(`/groups/${groupID}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const groupInfo = await groupInfoRes.json();
+      setGroupName(groupInfo.groupName);
+      setClassID(groupInfo.crn);
+
+      // Fetch workspaces using RIN
+      const rinRes = await fetch('/session/rin', {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const session = await rinRes.json();
+      const rin = session.rin;
+
+      const classesRes = await fetch(`/classes/${rin}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const classesData = await classesRes.json();
+      setWorkspaces(classesData);
+
+      // Find the class that matches the crn
+      const matchedClass = classesData.find(cls => cls.crn === groupInfo.crn);
+      if (matchedClass) {
+        setClassName(matchedClass.className);
+      }
+    } catch (err) {
+      console.error('Error fetching group details or classes:', err);
+    }
+  };
+
+  fetchGroupDetails();
+}, [groupID]); // This effect runs whenever groupID is updated
   
     // Fetch resources for the given group
     React.useEffect(() => {
@@ -160,8 +205,15 @@ const Resources = () => {
     return (
       <div id="resourcePage">
         <Homebar />
+        <div className="dashboard-name">
+                <h1>
+                    {className && groupName
+                        ? `${className} | ${groupName}`
+                        : 'Loading team name...'}
+                </h1>
+            </div>
         <div className="secondContent">
-          <h1>Links & Resources</h1>
+          <h2>Links & Resources</h2>
           <form onSubmit={handleAddResource} style={{ marginBottom: '20px' }}>
             <h2>Add New Resource</h2>
             <div>
@@ -219,7 +271,7 @@ const Resources = () => {
             </tbody>
           </table>
   
-          <h1>Group Members</h1>
+          <h2>Group Members</h2>
           <table className="resourcesTable">
             <thead>
               <tr>
