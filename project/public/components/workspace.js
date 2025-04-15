@@ -51,7 +51,7 @@ const Workspace = () => {
 
     return (
         <div id="work-Holder">
-            <h2>Your Workspaces</h2>
+            <h1 id="work-header">Your Workspaces</h1>
 
             <div className="workspaces">
                 {workspaces.map((course, i) => (

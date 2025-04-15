@@ -80,56 +80,58 @@ const Profile = () => {
     return (
         <div>
             <Homebar />
-            <div className="profile-title">Your Profile</div>
-            <div className="profile-container">
-                <div className="profile-header">
-                    <div className="profile-picture">
+            <div class="profile-maincontent">
+                <div className="profile-title">Your Profile</div>
+                <div className="profile-container">
+                    <div className="profile-header">
+                    <div className="profile-img">
                         <div className="status-indicator"></div>
                     </div>
-                    <div className="profile-info">
-                        <div className="name">{profile.name}</div>
-                        <div className="email">{profile.email}</div>
+                        <div className="profile-info">
+                            <div className="name">{profile.name}</div>
+                            <div className="email">{profile.email}</div>
+                        </div>
                     </div>
+
+                    {/* Edit Form */}
+                    {isEditing ? (
+
+                        <form className="profile-form" onSubmit={handleSubmit}>
+                            <div className="detail-row">
+                                <label>Name:</label>
+                                <input type="text" name="name" value={profile.name} onChange={handleChange} />
+                            </div>
+                            <div className="detail-row">
+                                <label>Email:</label>
+                                <input type="email" name="email" value={profile.email} onChange={handleChange} />
+                            </div>
+                            <div className="form-actions">
+                                <button type="submit" className="edit-profile-btn">Save</button>
+                                <button type="button" onClick={() => setIsEditing(false)} className="edit-profile-btn">Cancel</button>
+                            </div>
+                        </form>
+                    ) : (
+                        // Display Profile Information
+                        <div className="profile-details">
+                            <div className="detail-row">
+                                <span>Name</span>
+                                <span>{profile.name}</span>
+                            </div>
+                            <hr />
+                            <div className="detail-row">
+                                <span>Email</span>
+                                <span>{profile.email}</span>
+                            </div>
+                            <hr />
+                            <div className="detail-row">
+                                <span>RIN</span>
+                                <span>{profile.rin}</span>
+                            </div>
+                            <hr />
+                            <button onClick={() => setIsEditing(true)} className="edit-profile-btn">Edit Profile</button>
+                        </div>
+                    )}
                 </div>
-
-                {/* Edit Form */}
-                {isEditing ? (
-
-                    <form className="profile-form" onSubmit={handleSubmit}>
-                        <div className="detail-row">
-                            <label>Name:</label>
-                            <input type="text" name="name" value={profile.name} onChange={handleChange} />
-                        </div>
-                        <div className="detail-row">
-                            <label>Email:</label>
-                            <input type="email" name="email" value={profile.email} onChange={handleChange} />
-                        </div>
-                        <div className="form-actions">
-                            <button type="submit" className="edit-profile-btn">Save</button>
-                            <button type="button" onClick={() => setIsEditing(false)} className="edit-profile-btn">Cancel</button>
-                        </div>
-                    </form>
-                ) : (
-                    // Display Profile Information
-                    <div className="profile-details">
-                        <div className="detail-row">
-                            <span>Name</span>
-                            <span>{profile.name}</span>
-                        </div>
-                        <hr />
-                        <div className="detail-row">
-                            <span>Email</span>
-                            <span>{profile.email}</span>
-                        </div>
-                        <hr />
-                        <div className="detail-row">
-                            <span>RIN</span>
-                            <span>{profile.rin}</span>
-                        </div>
-                        <hr />
-                        <button onClick={() => setIsEditing(true)} className="edit-profile-btn">Edit Profile</button>
-                    </div>
-                )}
             </div>
         </div>
     );
