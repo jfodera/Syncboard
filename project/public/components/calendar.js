@@ -1,3 +1,4 @@
+
 // replace this with session variables
 const sessiongroupid = 2;
 
@@ -14,6 +15,7 @@ function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
         <label>Date: <input type="date" id="createevent-date" /></label><br/>
         <div class="modal-allday-wrapper">
           <input type="checkbox" class="modal-allday" id="createevent-allday" /> All Day?<br/>
+
         </div>
         <div id="time-inputs">
           <label>Start Time: <input type="time" id="createevent-start" /></label>
@@ -174,6 +176,7 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
   };
 }
 
+
 // FullCalendar component
 const CalendarComponent = () => {
   const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
@@ -181,6 +184,7 @@ const CalendarComponent = () => {
   const [eventData, setEventData] = React.useState(null);
   const [calendar, setCalendar] = React.useState(null);
   const [events, setEvents] = React.useState([]);
+
   const fetchEvents = async () => {
     try {
       // get all events for a group
@@ -248,6 +252,7 @@ const CalendarComponent = () => {
     } catch (error) {
       console.error('Error deleting event:', error);
     }
+
   };
 
   // run when event is edited, put to db

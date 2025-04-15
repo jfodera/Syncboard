@@ -1,4 +1,29 @@
 const Resources = () =>{
+
+   //fine that this is not async as yes it will not wait for the promise to be fufilled in order to finish executing but valSession is called independently so
+   //once it is carried out window.location will still be executed if neccesary
+   React.useEffect( () => {
+      //session valildation 
+      const valSession = async ()=> {
+         try{
+            
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            let session = await rinRes.json()
+            if(session['sessionMissing']){
+               //back to login
+               window.location.href = '/';
+            }
+         }catch(err){   
+            console.error('Session Validation error:', err);
+         }
+      }
+      valSession();
+   }, []);
+
     return(
         <div id="resourcePage">
             <Homebar/>
@@ -29,7 +54,7 @@ const Resources = () =>{
                         <td>Brainstorming doc</td>
                         <td><a href='https://docs.google.com/document/d/15mUxwvXGMxgvsao7BwfkNKuYYnSgkPwR-mrXDVYYguc/edit?usp=sharing'>Brainstorming Doc Link</a></td>
                     </tr>
-                    
+                  </tbody>
                 </table>
 
 
@@ -65,7 +90,7 @@ const Resources = () =>{
                         <td>mandlp@rpi.edu</td>
                         <td>(123)456-7890</td>
                     </tr>
-                    
+                  </tbody>
                 </table>
             </div>
         </div>

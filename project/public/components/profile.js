@@ -1,48 +1,72 @@
-const Profile = ({ name }) => {
+const Profile = () => {
     const [profile, setProfile] = React.useState({
         name: '',
         email: '',
         rin: '',
-        year: '',
-        major: ''
+        password: '',
     });
     const [error, setError] = React.useState(null);
     const [isEditing, setIsEditing] = React.useState(false);
 
     // Fetch profile data
-    React.useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/profile/${name}`);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const data = await response.json();
-                setProfile(data);
-            } catch (err) {
-                setError("Failed to fetch profile");
-                console.error(err);
-            }
-        };
+    React.useEffect( () => {
+      const valSession = async ()=> {
+         try{
 
-        fetchProfile();
-    }, [name]);
+            const rinRes = await fetch('/session/rin', {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+            let session = await rinRes.json()
+               
+            if(session['sessionMissing']){
+               //back to login
+               window.location.href = '/';
+            }else{
+               return(session['rin']);
+            }
+         }catch(err){   
+            console.error('Session Validation error:', err);
+         }
+      }
+      
+      const fetchProfile = async () => {
+         const rin = await valSession(); 
+
+         
+         try {
+               const response = await fetch(`http://localhost:3000/profile/${rin}`);
+               if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+               const data = await response.json();
+               setProfile(data);
+         } catch (err) {
+               setError("Failed to fetch profile");
+               console.error(err);
+         }
+      };
+
+      fetchProfile();
+    }, []);
 
     // Handle form input changes
+    //e is the element changing
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProfile((prev) => ({ ...prev, [name]: value }));
+        const { name, value } = e.target; //e.target is dom element
+        setProfile((prev) => ({ ...prev, [name]: value })); //keeps all other object as same properties, just redefines what changes 
     };
 
     // Handle form submission (update profile)
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         try {
-            const response = await fetch(`http://localhost:3000/profile/${name}`, {
+            const response = await fetch(`http://localhost:3000/profile/${profile.rin}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(profile)
             });
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            alert("Profile updated successfully!");
             setIsEditing(false);
         } catch (err) {
             setError("Failed to update profile");
@@ -51,7 +75,7 @@ const Profile = ({ name }) => {
     };
 
     if (error) return <div>{error}</div>;
-    if (!profile.name) return <div>Loading...</div>;
+    if (profile.name == '') return <div>Loading...</div>;
 
     return (
         <div>
@@ -70,6 +94,7 @@ const Profile = ({ name }) => {
 
                 {/* Edit Form */}
                 {isEditing ? (
+                  
                     <form className="profile-form" onSubmit={handleSubmit}>
                         <div className="detail-row">
                             <label>Name:</label>
@@ -79,22 +104,9 @@ const Profile = ({ name }) => {
                             <label>Email:</label>
                             <input type="email" name="email" value={profile.email} onChange={handleChange} />
                         </div>
-                        <div className="detail-row">
-                            <label>RIN:</label>
-                            <input type="text" name="rin" value={profile.rin} onChange={handleChange} />
-                        </div>
-                        <div className="detail-row">
-                            <label>Year:</label>
-                            <input type="text" name="year" value={profile.year} onChange={handleChange} />
-                        </div>
-                        <div className="detail-row">
-                            <label>Major:</label>
-                            <input type="text" name="major" value={profile.major} onChange={handleChange} />
-                        </div>
-
                         <div className="form-actions">
-                            <button type="submit" class="edit-profile-btn">Save</button>
-                            <button type="button" onClick={() => setIsEditing(false)} class="edit-profile-btn">Cancel</button>
+                            <button type="submit" className="edit-profile-btn">Save</button>
+                            <button type="button" onClick={() => setIsEditing(false)} className="edit-profile-btn">Cancel</button>
                         </div>
                     </form>
                 ) : (
@@ -115,16 +127,7 @@ const Profile = ({ name }) => {
                             <span>{profile.rin}</span>
                         </div>
                         <hr />
-                        <div className="detail-row">
-                            <span>Year</span>
-                            <span>{profile.year}</span>
-                        </div>
-                        <hr />
-                        <div className="detail-row">
-                            <span>Major</span>
-                            <span>{profile.major}</span>
-                        </div>
-                        <button onClick={() => setIsEditing(true)} class="edit-profile-btn">Edit Profile</button>
+                        <button onClick={() => setIsEditing(true)} className="edit-profile-btn">Edit Profile</button>
                     </div>
                 )}
             </div>

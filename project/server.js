@@ -1,14 +1,23 @@
 const express = require('express');
+const path = require('path');
+const session = require('express-session')
+const cors = require('cors');
+const bcrypt = require('bcrypt');
 const fs = require('fs');
+const crypto = require('crypto')
 const app = express();
 const PORT = 3000;
-const path = require('path');
+//for BC cypt 1024 iterations of internal key derivation (good balance between time and secureness)
+const saltRounds = 10;
 const { connectToDb, getDb } = require('./db.js');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 let db;
+//calls connect to DB, once that conection is sucessfull getDb assigns db from getDb 
+//runs as soon as node server is called 
 connectToDb((err) => {
+   //calls function in different file 
     if (!err){
         db = getDb();
         console.log("Successful database connection!")
@@ -18,11 +27,122 @@ connectToDb((err) => {
     }
 })
 
+
+//helper functions 
+//assumes only students can log in for right now
+async function getAssoCodes(stuRin){
+   //gets entire classes array 
+   let classCodes = []
+   const rpiClasses = await db.collection('classes').find({}).toArray()
+   for(const rpiClass of rpiClasses){
+      
+      for(const rin of rpiClass['studentRINs']){
+         if(rin == stuRin){
+            classCodes.push(rpiClass['crn'])
+         }
+      }
+   }
+   return(classCodes)
+}
+
+
+
+
+
+//Main API Functions
+
+app.use(cors({
+
+   //vm: 
+   //local 
+   origin: 'http://localhost:3000', // React app URL
+   credentials: true // Allow cookies (session ID) to be sent
+ }));
+
+
+ //set up session middleware: 
+app.use(session({
+   //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
+   //cookie links the client to the session, session is not a cookie
+   //note: this is not the sesion ID, that is a different cookeie 
+   //64 char random string
+   secret: crypto.randomBytes(32).toString('hex'),  
+   //prevents rewrites if nothing changes
+   resave: false,
+   //saves when new session created 
+   saveUninitialized: true,
+   //cokies being sent are secure as we are on https. 
+   //how session ID is trackerd
+   cookie: { secure: false }  
+ }));
+
+// *** Session Requests ***/
+
+
+// Allow requests from reach app 
+
+//updating session status to logge out
+app.put('/logout', (req, res) => {
+   req.session.user = undefined; 
+   res.json({'message': 'successfully logged out.'}); 
+});
+
+ //so react can acsess session data (as it is server side:):
+app.get('/session/rin', (req, res) => {
+   
+   if(req.session.user != undefined){
+      res.json({
+         'sessionMissing': false,
+         rin: req.session.user.rin
+       });
+   }else{
+      res.json({'sessionMissing': true}); 
+   }
+      // res.json({
+      //    'sessionMissing': false,
+      //    rin: 621231
+      //  });
+   
+ });
+
+
+
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // *** group stuff ***
+
+// get groups from RIN
+app.get('/groups/:rin', async (req, res) => {
+    const rin = parseInt(req.params.rin);
+    if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
+    try {
+        const groups = await db.collection('groups').find({students: rin}).project({ groupid: 1, groupName: 1, crn: 1, _id: 0}).toArray();
+
+        const crns = groups.map(item => item.crn);
+
+        //get each course in groups, get the names from the crn
+        let classPromises = crns.map(async (crn) => {
+            const course = await db.collection('classes').findOne({crn: crn}, {projection: { className: 1, _id: 0 }});
+            return course;
+        });
+
+        let classes = await Promise.all(classPromises);
+
+        const allclasses = classes.map(item => item.className);
+
+        if (!groups) {
+            return res.status(404).json({ error: 'Groups not found' });
+        }
+
+        res.json(allclasses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch details' });
+    }
+});
+
 
 // list all groups in a specific section (by crn)
 app.get('/groups/all/:crn', async (req, res) => {
@@ -138,11 +258,12 @@ app.get('/profile', (req, res) => {
         });
 });
 
-app.get('/profile/:name', (req, res) => {
-    const profileName = req.params.name;
+//get user based off rin 
+app.get('/profile/:rin', (req, res) => {
+    const profileRin = req.params.rin;
 
     db.collection('profiles')
-        .findOne({name: profileName})
+        .findOne({rin: profileRin})
         .then(response => {
             res.status(200).json(response);
         })
@@ -151,13 +272,14 @@ app.get('/profile/:name', (req, res) => {
         });
 });
 
-app.put('/profile/:name', (req, res) => {
+//edit user 
+app.put('/profile/:rin', (req, res) => {
     const updatedProfile = req.body;
     delete updatedProfile._id; 
-    const profileName = req.params.name;
+    const profileRin = req.params.rin;
 
     db.collection('profiles')
-        .updateOne({name: profileName}, {$set: updatedProfile})
+        .updateOne({rin: profileRin}, {$set: updatedProfile})
         .then(result => {
             if (result.modifiedCount === 0) {
                 return res.status(404).json({ error: 'Profile not found!' });
@@ -172,43 +294,80 @@ app.put('/profile/:name', (req, res) => {
 
 // *** login stuff ***
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res)  => {
+
+   
     const loginProfile = req.body;
+   //  res.json({ message: `Entire DB Populated.` }); 
 
     db.collection('profiles')
-        .findOne({ email: loginProfile['email'], password: loginProfile['password'] }) 
-        .then(profile => {
-            if (!profile) {
+         //works as email is a unique identifier in DAtabase 
+        .findOne({ email: loginProfile['email']}) 
+        .then(async (profile) => { //define what the return in called 
+            const match = await bcrypt.compare(loginProfile['password'], profile['password']);
+            if (!profile || !match) {
                 return res.status(401).json({ error: 'Invalid name or password!' });
             }
-            req.session.user = {
-                id: profile._id,
-                email: profile.email,
-                name: profile.name
+            
+            req.session.user = { //stores this is the session of whever requested this
+                rin: profile['rin']
             };
             req.session.save();
-            res.status(200).json(profile);
+            
+            
+            //status 200: 'OK' -> Successfull
+            res.status(200).json(profile); //sending the profile object returned by the database
         })
         .catch(err => {
+         
             console.error('Database query error:', err);
             res.status(500).json({ error: 'Internal server error' });
         });
 })
 
-app.post('/signup', (req, res) => {
+//allows user to sign up with our page
+//automatically checks if user is registered with any classes using classes database 
+app.post('/signup', async (req, res)  => {
     const newProfile = req.body;
-    db.collection('profiles')
-        .insertOne(newProfile) 
-        .then(profile => {
-            if (!profile) {
-                return res.status(401).json({ error: 'Invalid profile!' });
-            }
-            res.status(200).json(profile);
-        })
-        .catch(err => {
-            console.error('Database query error:', err);
-            res.status(500).json({ error: 'Internal server error' });
-        });
+   
+   try{
+      //checking if already in DB 
+      const emailThere = await db.collection('profiles').findOne({ email: newProfile['email']}) 
+      const rinThere = await db.collection('profiles').findOne({ rin: newProfile['rin']}) 
+
+      
+      if(emailThere != null){
+         res.status(409).json({error: 'An account with this email already exists'})
+      }else if(rinThere != null){
+         res.status(409).json({error: 'An account with this rin already exists'})
+      }else{
+
+         const codes = await getAssoCodes(newProfile['rin'])
+         
+
+         //formatting data right 
+         delete newProfile['year']
+         delete newProfile['major']
+         newProfile['classes'] = codes
+         const hashed = await bcrypt.hash(newProfile['password'], saltRounds);
+         newProfile['password'] = hashed;
+         
+         
+         const profile =  await db.collection('profiles').insertOne(newProfile) 
+      
+         if (!profile.acknowledged) {
+            return res.status(401).json({ error: 'Invalid profile!' });
+         }        
+         res.status(200).json(profile);
+      }
+      
+      
+   }catch (err){
+      console.error('Database query error:', err);
+      res.status(500).json({ error: 'Internal server error' });
+   }
+
+
 
 })
 

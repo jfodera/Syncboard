@@ -17,7 +17,8 @@ const App = () => {
 
                     {/* <ReactRouterDOM.Route path="/home/dashboard" component={Dashboard} /> */}
                     <ReactRouterDOM.Route path="/class/resources" component={Resources} />
-                    <ReactRouterDOM.Route path="/class/profile" render={() => <Profile name="Emily Chen"/>} />
+                    {/* no props -> use component */}
+                    <ReactRouterDOM.Route path="/class/profile" component={Profile} />
             </div>
             <Footer />
         </ReactRouterDOM.BrowserRouter>
