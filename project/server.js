@@ -258,11 +258,12 @@ app.get('/profile', (req, res) => {
         });
 });
 
-app.get('/profile/:name', (req, res) => {
-    const profileName = req.params.name;
+//get user based off rin 
+app.get('/profile/:rin', (req, res) => {
+    const profileRin = req.params.rin;
 
     db.collection('profiles')
-        .findOne({name: profileName})
+        .findOne({rin: profileRin})
         .then(response => {
             res.status(200).json(response);
         })
@@ -271,13 +272,14 @@ app.get('/profile/:name', (req, res) => {
         });
 });
 
-app.put('/profile/:name', (req, res) => {
+//edit user 
+app.put('/profile/:rin', (req, res) => {
     const updatedProfile = req.body;
     delete updatedProfile._id; 
-    const profileName = req.params.name;
+    const profileRin = req.params.rin;
 
     db.collection('profiles')
-        .updateOne({name: profileName}, {$set: updatedProfile})
+        .updateOne({rin: profileRin}, {$set: updatedProfile})
         .then(result => {
             if (result.modifiedCount === 0) {
                 return res.status(404).json({ error: 'Profile not found!' });

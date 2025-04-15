@@ -104,9 +104,11 @@
 
 # Potential future additions 
 
+   - more profile storage editing 
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
    - make session validation a module. 
    - remove all window.locations for smother navigation
       - figure Out what to replace with
+   - add back in storage of major/class, and editing functionality in 'future' folder
