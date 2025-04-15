@@ -81,7 +81,7 @@ app.use(session({
 
 // Allow requests from reach app 
 
-//updating session status to logge out
+//updating session status to logged out
 app.put('/logout', (req, res) => {
     req.session.user = undefined;
     res.json({ 'message': 'successfully logged out.' });
@@ -98,12 +98,33 @@ app.get('/session/rin', (req, res) => {
     } else {
         res.json({ 'sessionMissing': true });
     }
-    // res.json({
-    //    'sessionMissing': false,
-    //    rin: 621231
-    //  });
+
 
 });
+
+//setting the session group ID 
+app.put('/session/groupID', (req, res) => {
+   //impossible (i think?) 
+   if (req.session.user == undefined) {
+      res.json({ 'error': 'user is not logged in' });
+   }else{
+      const groupCont = req.body;
+      req.session.user.groupid = groupCont['groupid']
+      console.log(req.session.user.groupid)
+      
+      res.json({ message: 'Group Session assigned' });
+   }
+})
+
+//getting the session group ID 
+app.get('/session/groupID', (req, res) => {
+   //impossible (i think?) 
+   if (req.session.user == undefined) {
+      res.json({ 'error': 'user is not logged in' });
+   }else{
+      res.json({ groupid : req.session.user.groupid });
+   }
+})
 
 
 
@@ -113,8 +134,8 @@ app.get('/', function (req, res) {
 
 // *** group stuff ***
 
-// get groups from RIN
-app.get('/groups/:rin', async (req, res) => {
+// get classes from RIN
+app.get('/classes/:rin', async (req, res) => {
     const rin = parseInt(req.params.rin);
     if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
     try {
@@ -124,23 +145,44 @@ app.get('/groups/:rin', async (req, res) => {
 
         //get each course in groups, get the names from the crn
         let classPromises = crns.map(async (crn) => {
-            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0 } });
+            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0, crn: 1} });
             return course;
         });
 
         let classes = await Promise.all(classPromises);
 
-        const allclasses = classes.map(item => item.className);
+      //   const allclasses = classes.map(item => item.className);
 
         if (!groups) {
             return res.status(404).json({ error: 'Groups not found' });
         }
 
-        res.json(allclasses);
+        res.json(classes);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch details' });
     }
+});
+
+
+// get group ID's from RIN
+app.get('/groups/fromrin/:rin', async (req, res) => {
+   const rin = parseInt(req.params.rin);
+   if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
+   try {
+       const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0 }).toArray();
+
+
+       if (!groups) {
+           return res.status(404).json({ error: 'Issue Querying groups' });
+       }
+      //  console.log(groups)
+
+       res.json(groups);
+   } catch (error) {
+       console.error(error);
+       res.status(500).json({ error: 'Failed to fetch details' });
+   }
 });
 
 

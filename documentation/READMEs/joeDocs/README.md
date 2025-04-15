@@ -7,12 +7,16 @@
    - password requirements for it to be good.  √
    - add login checkers to each page  √
    - make sure workspace Cards correlate to the actual class (grace) √
-   - logout button, cannot acsess login page if already logged in
+   - logout button, cannot acsess login page if already logged in √
    - actual calendar representation 
+      - Adding onclick to the card so that is sets the current session groupID 
+      - when user clicks into class on workspace page, set a session variable for group-id user is currently in
+      - whenever a new class is clicked on reset that variable
+      - use that variable to make the calendar work 
+      - calendar.js:217
    - professors randomizing 
-   - eventually have calendar pull from our API 
    - verify CSS 
-
+   - not allowed to get passed workspaces unless session groupID variable is set?
 
 
 # Project requirements: 
@@ -96,6 +100,9 @@
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://legacy.reactjs.org/docs/conditional-rendering.html&ved=2ahUKEwj8iPLjxtiMAxUrFVkFHbdIAlgQFnoECBgQAQ&usg=AOvVaw35iJf_iuDEpRKBcK713PlE
    - brackets in any jsx allows you to write js: {console.log(loggedIn)}
    - hook allows you to 'hook' into existing react elements, or edit certain features 
+   - when you have multiple useEffect features: 
+      - they run in order of how they appear in the code, next one not starting until previous one finished 
+      - //second useEffect will NOT run until fetchEvents is run, so will set group session at the beginning of fetchEvents
    
 
 # Code Chunks: 
@@ -104,11 +111,13 @@
 
 # Potential future additions 
 
-   - more profile storage editing 
+   - not allowed to get passed workspaces unless session groupID variable is set
+   - more profile storage editing (storing phone number)
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
-   - make session validation a module. 
+   - make session validation with RIN  a module. 
    - remove all window.locations for smother navigation
       - figure Out what to replace with
    - add back in storage of major/class, and editing functionality in 'future' folder
+   - ALLOW COLOR SUPPORT FOR MORE THAN 3 CLASSES 

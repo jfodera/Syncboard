@@ -1,6 +1,6 @@
 const Login = () => {
-    const [email, setEmail] = React.useState(''); //email is set everytime input box changes 
-    const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('test1@rpi.edu'); //email is set everytime input box changes 
+  const [password, setPassword] = React.useState('Yo-mama3<');
 
     const handleSignIn = async () => {
         if (!email || !password) {

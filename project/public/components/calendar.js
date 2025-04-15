@@ -1,6 +1,6 @@
 
 // replace this with session variables
-const sessiongroupid = 2;
+let sessiongroupid = 0;
 
 // modal for creating new event
 function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
@@ -179,43 +179,85 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
 
 // FullCalendar component
 const CalendarComponent = () => {
-    const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
-    const [isEditModalOpen, setEditModalOpen] = React.useState(false);
-    const [eventData, setEventData] = React.useState(null);
-    const [calendar, setCalendar] = React.useState(null);
-    const [events, setEvents] = React.useState([]);
+  
+  const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
+  const [isEditModalOpen, setEditModalOpen] = React.useState(false);
+  const [eventData, setEventData] = React.useState(null);
+  const [calendar, setCalendar] = React.useState(null);
+  const [events, setEvents] = React.useState([]);
+   
+  const getRin = async ()=> {
+      try{
+         const rinRes = await fetch('/session/rin', {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+         });
+         let session = await rinRes.json()
+            
+         //should be impossible 
+         if(session['sessionMissing']){
+            console.error('no session var set');
+         }else{
+            return(session['rin'])
+         }
+      }catch(err){   
+         console.error('Session Validation error:', err);
+      }
+   }
 
-    const fetchEvents = async () => {
-        try {
-            // get all events for a group
-            const res = await fetch(`/calendar/${sessiongroupid}`);
-            const data = await res.json();
-            const formattedEvents = data
-                .filter(event => !event.deleted)
-                .map(event => {
-                    const { eventname, date, starttime, endtime, eventid, groupid, allday } = event;
-                    return {
-                        // format "all day" events and time-bound events correctly
-                        id: eventid,
-                        title: eventname,
-                        start: allday ? date : `${date}T${starttime}`,
-                        end: allday ? null : `${date}T${endtime}`,
-                        allDay: allday,
-                        extendedProps: {
-                            groupid,
-                            eventid,
-                            allday,
-                            starttime,
-                            endtime,
-                            date
-                        },
-                    };
-                });
-            setEvents(formattedEvents);
-        } catch (error) {
-            console.error('Error fetching events:', error);
-        }
-    };
+  const getGroupID = async () => {
+      const test = await fetch('/session/groupID', {
+         method: 'GET',
+         headers: { 'Content-Type': 'application/json' },
+      });
+      let back = await test.json()
+      console.log(back)
+      return(back.groupid)
+      /* back --> {groupid: 1} where '1' is the current group id */
+  }
+
+  const fetchEvents = async () => {
+    sessiongroupid = await getGroupID()
+
+    try {
+      const rin = await getRin()
+      const profile = await fetch(`/profile/${rin}`, {
+         method: 'GET',
+         credentials: 'include',
+         headers: { 'Content-Type': 'application/json' },
+      });
+      // const sessiongroupid = profile[]
+      
+      // get all events for a group
+      const res = await fetch(`/calendar/${sessiongroupid}`);
+      const data = await res.json();
+      const formattedEvents = data
+      .filter(event => !event.deleted)
+      .map(event => {
+        const { eventname, date, starttime, endtime, eventid, groupid, allday } = event;
+        return {
+          // format "all day" events and time-bound events correctly
+          id: eventid,
+          title: eventname,
+          start: allday ? date : `${date}T${starttime}`,
+          end: allday ? null : `${date}T${endtime}`, 
+          allDay: allday,
+          extendedProps: {
+            groupid,
+            eventid,
+            allday,
+            starttime,
+            endtime,
+            date
+          },
+        };
+      });
+      setEvents(formattedEvents);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
     // run when event is created, post to db
     const handleCreateSubmit = async ({ title, date, starttime, endtime, allDay }) => {
@@ -246,7 +288,7 @@ const CalendarComponent = () => {
                 throw new Error('Failed to delete event');
             }
 
-            console.log('Event deleted successfully');
+            // console.log('Event deleted successfully');
             await fetchEvents();
             setEditModalOpen(false);
         } catch (error) {
@@ -309,12 +351,15 @@ const CalendarComponent = () => {
         }
     };
 
-
+    //second useEffect will NOT run until fetchEvents is run, so will set group session at the beginning of fetchEvents
     React.useEffect(() => {
+
         fetchEvents();
+        
     }, []);
 
     React.useEffect(() => {
+      // console.log(sessiongroupid)
         const calendarEl = document.getElementById('calendar');
         if (!calendarEl) return;
         const newCalendar = new FullCalendar.Calendar(calendarEl, {
@@ -339,9 +384,13 @@ const CalendarComponent = () => {
                 setEditModalOpen(true);
             },
         });
+
+
         newCalendar.render();
         setCalendar(newCalendar);
+
         return () => newCalendar.destroy();
+
     }, [events]);
 
     return (
