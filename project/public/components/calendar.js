@@ -179,14 +179,43 @@ function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
 
 // FullCalendar component
 const CalendarComponent = () => {
+  
   const [isCreateModalOpen, setCreateModalOpen] = React.useState(false);
   const [isEditModalOpen, setEditModalOpen] = React.useState(false);
   const [eventData, setEventData] = React.useState(null);
   const [calendar, setCalendar] = React.useState(null);
   const [events, setEvents] = React.useState([]);
+   
+  const getRin = async ()=> {
+      try{
+         const rinRes = await fetch('/session/rin', {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+         });
+         let session = await rinRes.json()
+            
+         //should be impossible 
+         if(session['sessionMissing']){
+            console.error('no session var set');
+         }else{
+            return(session['rin'])
+         }
+      }catch(err){   
+         console.error('Session Validation error:', err);
+      }
+   }
 
   const fetchEvents = async () => {
     try {
+      const rin = await getRin()
+      const profile = await fetch(`/profile/${rin}`, {
+         method: 'GET',
+         credentials: 'include',
+         headers: { 'Content-Type': 'application/json' },
+      });
+      // const sessiongroupid = profile[]
+      
       // get all events for a group
       const res = await fetch(`/calendar/${sessiongroupid}`);
       const data = await res.json();

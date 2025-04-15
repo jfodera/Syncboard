@@ -7,8 +7,13 @@
    - password requirements for it to be good.  √
    - add login checkers to each page  √
    - make sure workspace Cards correlate to the actual class (grace) √
-   - logout button, cannot acsess login page if already logged in
+   - logout button, cannot acsess login page if already logged in √
    - actual calendar representation 
+      - Adding onclick to the card so that is sets the current session groupID 
+      - when user clicks into class on workspace page, set a session variable for group-id user is currently in
+      - whenever a new class is clicked on reset that variable
+      - use that variable to make the calendar work 
+      - calendar.js:217
    - professors randomizing 
    - eventually have calendar pull from our API 
    - verify CSS 
@@ -108,7 +113,7 @@
    - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
-   - make session validation a module. 
+   - make session validation with RIN  a module. 
    - remove all window.locations for smother navigation
       - figure Out what to replace with
    - add back in storage of major/class, and editing functionality in 'future' folder
