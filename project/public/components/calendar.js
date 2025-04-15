@@ -318,7 +318,7 @@ const CalendarComponent = () => {
       },
       initialView: 'dayGridMonth',
       headerToolbar: {
-        left: 'prev,next today',
+        left: 'prev,next',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek',
       },

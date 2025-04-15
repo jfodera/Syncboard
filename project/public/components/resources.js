@@ -1,10 +1,10 @@
 const Resources = () =>{
     return(
-        <div>
+        <div id="resourcePage">
             <Homebar/>
             <div className="secondContent">
-            <h2>Links & Resources</h2>
-                <table>
+                <h1>Links & Resources</h1>
+                <table className="resourcesTable">
                     <tr>
                         <th>DESCRIPTION</th>
                         <th>LINK</th>
@@ -32,11 +32,9 @@ const Resources = () =>{
                     
                 </table>
 
-                <br></br>
 
-
-                <h2>Contact Information</h2>
-                <table>
+                <h1>Contact Information</h1>
+                <table className="resourcesTable">
                     <tr>
                         <th>NAME</th>
                         <th>ROLE</th>
