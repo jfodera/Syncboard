@@ -43,7 +43,7 @@ const Card = ({title, color, crn}) => {
                headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify({groupid: group.groupid})
             });
-
+            window.location.href = '/class';
 
          }
       }
