@@ -8,15 +8,17 @@
    - add login checkers to each page  √
    - make sure workspace Cards correlate to the actual class (grace) √
    - logout button, cannot acsess login page if already logged in √
-   - actual calendar representation 
+   - actual calendar representation  √
       - Adding onclick to the card so that is sets the current session groupID 
       - when user clicks into class on workspace page, set a session variable for group-id user is currently in
       - whenever a new class is clicked on reset that variable
       - use that variable to make the calendar work 
       - calendar.js:217
+   - make sure all other pages work 
+   - not allowed to get passed workspaces unless session groupID variable is set?
    - professors randomizing 
    - verify CSS 
-   - not allowed to get passed workspaces unless session groupID variable is set?
+   
 
 
 # Project requirements: 
@@ -58,6 +60,7 @@
    - sudo npm install crypto
    - change over to VM URL's 
    - set to true when on VM: cookie: { secure: false }  
+   - fix browser errors when going back and fourth between pages 
 
 # App Conventions/Descriptions
    - Class data would be scrapped from somewhere so that the professor doesn't have to hardcode that in. 
