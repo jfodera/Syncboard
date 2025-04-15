@@ -81,6 +81,11 @@ app.use(session({
 
 // Allow requests from reach app 
 
+//updating session status to logge out
+app.put('/logout', (req, res) => {
+   req.session.user = undefined; 
+   res.json({'message': 'successfully logged out.'}); 
+});
 
  //so react can acsess session data (as it is server side:):
 app.get('/session/rin', (req, res) => {

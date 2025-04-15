@@ -59,6 +59,7 @@
    - Class data would be scrapped from somewhere so that the professor doesn't have to hardcode that in. 
    - then when a user signs up, the class data is checked for their rin, if that is 
    - on the workspace page, classes only show up if you are already in a groupa s that is the whole entire point of the appplication 
+   - used react router DOM for smooth navigation 
 
 # Things I learned/Citations : 
    - Viewport width= based off of the visible area of the web browser 
@@ -94,6 +95,7 @@
    - Conditionals in line with JSX 
       - https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://legacy.reactjs.org/docs/conditional-rendering.html&ved=2ahUKEwj8iPLjxtiMAxUrFVkFHbdIAlgQFnoECBgQAQ&usg=AOvVaw35iJf_iuDEpRKBcK713PlE
    - brackets in any jsx allows you to write js: {console.log(loggedIn)}
+   - hook allows you to 'hook' into existing react elements, or edit certain features 
    
 
 # Code Chunks: 
@@ -106,3 +108,5 @@
    - notify users of password requirements so they don't have to trial and error
    - email verification 
    - make session validation a module. 
+   - remove all window.locations for smother navigation
+      - figure Out what to replace with
