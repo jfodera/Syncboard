@@ -207,6 +207,8 @@ const CalendarComponent = () => {
    }
 
   const fetchEvents = async () => {
+   const sessiongroupid = 
+
     try {
       const rin = await getRin()
       const profile = await fetch(`/profile/${rin}`, {
@@ -338,8 +340,9 @@ const CalendarComponent = () => {
         }
     };
 
-
+    //second useEffect will NOT run until fetchEvents is run, so will set group session at the beginning of fetchEvents
     React.useEffect(() => {
+
         fetchEvents();
     }, []);
 
@@ -368,9 +371,13 @@ const CalendarComponent = () => {
                 setEditModalOpen(true);
             },
         });
+
+
         newCalendar.render();
         setCalendar(newCalendar);
+
         return () => newCalendar.destroy();
+
     }, [events]);
 
     return (
