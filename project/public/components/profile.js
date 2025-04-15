@@ -75,7 +75,6 @@ const Profile = () => {
     };
 
     if (error) return <div>{error}</div>;
-    if (profile.name == '') return <div>Loading...</div>;
 
     return (
         <div>
