@@ -1,6 +1,7 @@
 const Workspace = () => {
    //workspaces initialized to empty array , this represents the array of courses the student is in 
     const [workspaces, setWorkspaces] = React.useState([]); 
+    const [groups, setGroups] = React.useState([]);
 
     const colors = ["--orange", "--yellow", "--blue"];
    
@@ -34,10 +35,17 @@ const Workspace = () => {
       
       const fetchClasses = async () =>{
          let rin = await valSession();
+         //get the class names that the user is in
          fetch(`/groups/${rin}`, { method: 'GET' })
          .then(response=>response.json())
          .then(data => {
             setWorkspaces(data);
+         });
+         //get the groupids that is user is in
+         fetch(`/user/teams/${rin}`, { method: 'GET' })
+         .then(response=>response.json())
+         .then(data => {
+            setGroups(data);
          });
       }
       fetchClasses(); 
@@ -51,7 +59,7 @@ const Workspace = () => {
              
             <div className="workspaces">
                 {workspaces.map((course, i) => (
-                    <Card key={i} title={course} color={colors[i]} />
+                    <Card key={i} title={course} color={colors[i]} group={groups[i].groupid} groupName={groups[i].groupName} />
                 ))}
                 
             </div>

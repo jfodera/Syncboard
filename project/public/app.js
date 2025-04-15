@@ -21,6 +21,9 @@
 // const provider = new GoogleAuthProvider();  // Google Auth Provider
   
 const App = () => {
+    //don't show the footer for messages
+    const [showfooter, setshowfooter] = React.useState(true); 
+
     return (
 
          // Presents page based on whats currently in URL, loads into route 
@@ -41,7 +44,7 @@ const App = () => {
                     <ReactRouterDOM.Route path="/class" exact component={Dashboard} />
 
                     {/* <ReactRouterDOM.Route path="/home/dashboard" component={Dashboard} /> */}
-                    {/* <ReactRouterDOM.Route path="/class/chat" component={Chat} /> */}
+                    <ReactRouterDOM.Route path="/class/chat" component={Chat} />
                     <ReactRouterDOM.Route path="/class/resources" component={Resources} />
                     <ReactRouterDOM.Route path="/class/profile" render={() => <Profile name="Emily Chen"/>} />
             </div>

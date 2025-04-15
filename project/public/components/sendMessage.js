@@ -1,6 +1,4 @@
-//note to self, now we want the user to login with group chats that they are in
-// need to read the groupid from mongodb and when the user logged in, we check the groups they are in
-
+//another note to self, delete the footer from the content page
 const SendMessage = () => {
     const [message, setMessage] = React.useState("");
 
@@ -12,8 +10,9 @@ const SendMessage = () => {
         }
 
         const uid = getCookie('uid');
+        const groupid = getCookie('groupid');
 
-        await window.addDoc(window.collection(window.db, "messages"), {
+        await window.addDoc(window.collection(window.doc(window.db, "groups", groupid), "messages"), {
           text: message,
           name: getCookie('name'),
           avatar: "../userProfile.jpeg",

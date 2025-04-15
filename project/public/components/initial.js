@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
     import { getAuth, GoogleAuthProvider, signInWithPopup, getRedirectResult, signInWithRedirect } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
-    import { getFirestore, addDoc, collection, serverTimestamp, query, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
+    import { getFirestore, addDoc, collection, serverTimestamp, query, orderBy, onSnapshot, doc } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
 
     // Your Firebase config object
     const firebaseConfig = {
@@ -28,6 +28,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebas
     window.getRedirectResult = getRedirectResult; 
     window.db = db;
     window.collection = collection;
+    window.doc = doc;
     window.query = query;
     window.addDoc = addDoc;
     window.serverTimestamp = serverTimestamp;
