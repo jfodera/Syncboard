@@ -29,12 +29,14 @@ const Dashboard = () => {
       <Homebar />
       <div className="mainContent">
       <div className="left">
-        <h2>Team Calendar</h2>
-        <CalendarComponent />
+        <h1>Team Calendar</h1>
+        <div class="fullCal-component">
+         <CalendarComponent />
+        </div>
     </div>
 
         <div className="right">
-          <h2>Tasks</h2>
+          <h1>Tasks</h1>
           <Tasks />
         </div>
       </div>

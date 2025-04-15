@@ -318,9 +318,12 @@ const CalendarComponent = () => {
     const calendarEl = document.getElementById('calendar');
     if (!calendarEl) return;
     const newCalendar = new FullCalendar.Calendar(calendarEl, {
+      contentHeight: 450,
+      windowResize: function(arg) {
+      },
       initialView: 'dayGridMonth',
       headerToolbar: {
-        left: 'prev,next today',
+        left: 'prev,next',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek',
       },

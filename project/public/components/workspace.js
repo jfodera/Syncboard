@@ -1,9 +1,10 @@
 const Workspace = () => {
 
+
    //workspaces initialized to empty array , this represents the array of courses the student is in 
     const [workspaces, setWorkspaces] = React.useState([]); 
 
-    const colors = ["--orange", "--yellow", "--blue"];
+    const colors = ["--coral", "--yellow", "--blue"];
    
     //runs on mount and when dependecies in dependency array change (there are none)
     React.useEffect( () => {
