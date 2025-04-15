@@ -1,14 +1,23 @@
 {
-    "groups":[
+    "groups": [
         {
             "id": 1,
             "name": "SyncBoard",
             "description": "Our project focuses on streamlining team project management.",
             "visibility": "public",
-            "tags": ["best", "project", "ever"],
+            "tags": [
+                "best",
+                "project",
+                "ever"
+            ],
             "creator": "Student",
-            "members": ["Aditya", "Morgan", "Ryan", "Grace", "Joe"]
-            
+            "members": [
+                "Aditya",
+                "Morgan",
+                "Ryan",
+                "Grace",
+                "Joe"
+            ]
         }
     ],
     "nextId": 2
