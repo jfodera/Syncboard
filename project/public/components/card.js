@@ -52,7 +52,7 @@
             headers: { 'Content-Type': 'application/json' },
          });
 
-         let groupIDBack = await groupIDRes.json()
+         let groupIDBack = await groupIDres.json()
          let group = groupIDBack.groupid
 
          //get group name 
@@ -73,6 +73,7 @@
          document.cookie = `groupid=${encodeURIComponent(group)}; expires=${expiryDate.toUTCString()}; path=/`;
          document.cookie = `groupname=${encodeURIComponent(groupName)}; expires=${expiryDate.toUTCString()}; path=/`;
 
+         window.location.href = '/class'; //only after everything is done do we go to the next page 
       } 
 
          
@@ -82,7 +83,6 @@
               <div className="card-header" style={{ backgroundColor: `var(${color})` }}></div>
               <div className="card-body">
                  <h3>{title}</h3>
-                 <p>{groupName}</p>
               </div>
         </div>
     );
