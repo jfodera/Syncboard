@@ -3,19 +3,19 @@ const DropdownSelect = ({ id, name, value }) => {
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-     
+
         switch (selectedValue) {
             case "1":
-                setColor("var(--blue)"); 
+                setColor("var(--blue)");
                 break;
             case "2":
-                setColor("var(--yellow)"); 
+                setColor("var(--yellow)");
                 break;
             default:
                 setColor("");
         }
     };
-    
+
 
 
     return (

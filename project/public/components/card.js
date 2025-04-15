@@ -29,5 +29,5 @@ const Card = ({title, color}) => {
               </div>
            </ReactRouterDOM.Link>
         </div>
-   );
+    );
 };

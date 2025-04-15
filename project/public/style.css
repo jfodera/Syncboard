@@ -1,24 +1,41 @@
 :root {
-    --orange: #F78154;
+    --coral: #ff8056;
     --offwhite: #f8f8f8;
     --shadow: rgba(0, 0, 0, 0.1);
     --blue: #8cc0e8;
     --yellow: #FFC858;
     --darkgrey: #333;
     --lightgrey: #666;
+
+    /* fullcalendar styling */
+    --fc-button-text-color: black;
+    --fc-button-bg-color: var(--blue);
+    --fc-button-border-color: var(--darkgrey);
+    --fc-button-hover-bg-color: #6da2cb;
+    --fc-button-hover-border-color: var(--darkgrey);
+    --fc-button-active-bg-color: #6da2cb;
+    --fc-button-active-border-color: var(--darkgrey);
+
+    --fc-event-bg-color: var(--coral);
+    --fc-event-border-color: #e7693f;
+    --fc-event-selected-overlay-color: rgba(255, 200, 88, 0.25);
 }
 
 body {
     height: 100%;
-    /* font-family: Verdana, sans-serif; */
     font-family: "Lexend Deca", serif;
     background-color: var(--offwhite);
     margin: 0;
     padding: 0;
 }
 
+main {
+    flex: 1;
+}
+
 .content {
     padding-bottom: 50px;
+
 }
 
 h2 {
@@ -40,7 +57,7 @@ h2 {
 .logo {
     font-size: 1.5em;
     font-weight: bold;
-    color: var(--orange);
+    color: var(--coral);
     text-decoration: none;
 }
 
@@ -60,7 +77,8 @@ a {
 }
 
 .logout {
-    color: var(--orange);
+    color: var(--coral);
+    font-weight: bold;
     cursor: pointer;
 }
 
@@ -111,11 +129,13 @@ a {
 /* footer */
 .footer {
     width: 100%;
+    background-color: white;
+    width: 100%;
     box-sizing: border-box;
     background-color: var(--offwhite);
     color: var(--lightgrey);
     text-align: center;
-    padding: 1rem;
+    height: 100px;
 }
 
 .bar {
@@ -125,6 +145,8 @@ a {
     gap: var(--gap-8, 32px);
     background: var(--gray-50, #F9FAFB);
     width: 100%;
+    box-shadow: 0 0 8px var(--shadow);
+
     padding: var(--pad-3, 12px) 72px;
     box-sizing: border-box;
 }
@@ -156,14 +178,18 @@ th {
 }
 
 table {
+    border: 1px solid;
+    border-radius: 10px;
+    background-color: white;
     width: 90%;
 }
 
 .secondContent {
     min-height: 100vh;
-    background-color: white;
+    background-color: var(--offwhite);
     padding-top: 30px;
     padding-left: 72px;
+    margin-bottom: 55px;
 }
 
 .secondContent h2 {
@@ -264,15 +290,15 @@ iframe {
 }
 
 .edit-profile-btn:hover {
-    background-color: #ff8056;
-    /* Light coral (matches "SyncBoard" logo) */
-    border: 1px solid #ff8056;
+    background-color: var(--coral);
+    border: 1px solid var(--coral);
     color: white;
 }
 
 .left {
-    width: 80%;
-    margin-right: 5%;
+    width: 90%;
+    margin-right: 2.5%;
+
 }
 
 .mainContent {
@@ -356,9 +382,9 @@ select {
 
 .modal-delete-btn {
     margin-top: 25px;
-    border: 1px solid var(--orange);
+    border: 1px solid var(--coral);
     background-color: white;
-    color: var(--orange);
+    color: var(--coral);
     font-weight: bold;
     padding: 8px 12px;
     border-radius: 4px;
@@ -366,10 +392,9 @@ select {
 
 .modal-save-btn {
     margin-top: 25px;
+    border: 1px solid var(--coral);
+    background-color: var(--coral);
 
-    border: none;
-
-    background-color: var(--orange);
     border-radius: 4px;
     color: var(--offwhite);
     font-weight: bold;
@@ -448,6 +473,8 @@ select {
     align-items: center;
     gap: 24px;
     box-sizing: border-box;
+    margin-bottom: 55px;
+
 }
 
 .input-group {
@@ -572,8 +599,58 @@ input {
         padding: 20px;
     }
 
-    h2 {
+    h1 {
         margin-left: 5%;
+    }
+
+    .left,
+    .tasks {
+        width: 100%;
+        margin: 0;
+    }
+
+    .fc-button-group {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        border: none;
+        overflow: hidden;
+    }
+
+    .fc-button-group .fc-button {
+        margin: 0 !important;
+        border: 1px solid #000;
+    }
+
+    .fc-button {
+        font-size: small !important;
+        padding: 4px 8px !important;
+    }
+
+    .fc-toolbar-title {
+        font-size: 1.3rem !important;
+    }
+
+    .resourcesTable {
+        margin-left: 0px;
+        font-size: small;
+    }
+
+    .secondContent {
+        padding: 0px;
+        padding-left: 5%;
     }
 }
 
+/* Calendar */
+.fullCal-component {
+    padding: 24px;
+    border: solid 1px;
+    border-radius: 10px;
+}
+
+/* Resources */
+.resourcesTable {
+    width: 95%;
+    margin-bottom: 55px;
+}

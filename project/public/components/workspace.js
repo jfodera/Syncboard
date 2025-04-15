@@ -1,40 +1,41 @@
 const Workspace = () => {
 
-   //workspaces initialized to empty array , this represents the array of courses the student is in 
-    const [workspaces, setWorkspaces] = React.useState([]); 
+
+    //workspaces initialized to empty array , this represents the array of courses the student is in 
+    const [workspaces, setWorkspaces] = React.useState([]);
     const [rin, setRin] = React.useState(''); 
 
-    const colors = ["--orange", "--yellow", "--blue"];
+    const colors = ["--coral", "--yellow", "--blue"];
    
-   const setGroupID = () =>{
+      
+    const setGroupID = () =>{
       console.log(rin)
    };
-
     //runs on mount and when dependecies in dependency array change (there are none)
-    React.useEffect( () => {
-      
+    React.useEffect(() => {
 
-      const valSession = async ()=> {
-         try{
 
-            const rinRes = await fetch('/session/rin', {
-               method: 'GET',
-               credentials: 'include',
-               headers: { 'Content-Type': 'application/json' },
-            });
-            let session = await rinRes.json()
-               
-            if(session['sessionMissing']){
-               //back to login
-               window.location.href = '/';
-            }else{
-               return(session['rin'])
+        const valSession = async () => {
+            try {
+
+                const rinRes = await fetch('/session/rin', {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                let session = await rinRes.json()
+
+                if (session['sessionMissing']) {
+                    //back to login
+                    window.location.href = '/';
+                } else {
+                    return (session['rin'])
+                }
+            } catch (err) {
+                console.error('Session Validation error:', err);
             }
-         }catch(err){   
-            console.error('Session Validation error:', err);
-         }
-      }
-      
+        }
+
 
       //uses groups to present what classes the student is in as there is no 'group homepage' if you are not in a good 
       const fetchGroups = async () =>{
@@ -49,19 +50,19 @@ const Workspace = () => {
       fetchGroups(); 
 
 
-   }, []);
+    }, []);
 
     return (
         <div id="work-Holder">
             <h2>Your Workspaces</h2>
-             
+
             <div className="workspaces">
                 {workspaces.map((course, i) => (
                     <Card key={i} title={course} color={colors[i]} />
                 ))}
-                
+
             </div>
         </div>
-        
+
     );
 };
