@@ -67,9 +67,6 @@ const Login = () => {
                         Don’t have an account? Sign up now!
                     </button>
                 </ReactRouterDOM.Link>
-                <a href="#" className="forgot-password">
-                    Forgot password?
-                </a>
             </div>
         </div>
     );
