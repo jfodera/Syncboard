@@ -166,7 +166,7 @@ app.get('/classes/:rin', async (req, res) => {
 
 
 // get group ID's from RIN
-app.get('/groups/:rin', async (req, res) => {
+app.get('/groups/fromrin/:rin', async (req, res) => {
    const rin = parseInt(req.params.rin);
    if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
    try {

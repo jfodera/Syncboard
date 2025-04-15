@@ -1,6 +1,6 @@
 
 // replace this with session variables
-const sessiongroupid = 2;
+let sessiongroupid = 0;
 
 // modal for creating new event
 function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
@@ -206,8 +206,19 @@ const CalendarComponent = () => {
       }
    }
 
+  const getGroupID = async () => {
+      const test = await fetch('/session/groupID', {
+         method: 'GET',
+         headers: { 'Content-Type': 'application/json' },
+      });
+      let back = await test.json()
+      console.log(back)
+      return(back.groupid)
+      /* back --> {groupid: 1} where '1' is the current group id */
+  }
+
   const fetchEvents = async () => {
-   const sessiongroupid = 
+    sessiongroupid = await getGroupID()
 
     try {
       const rin = await getRin()
@@ -277,7 +288,7 @@ const CalendarComponent = () => {
                 throw new Error('Failed to delete event');
             }
 
-            console.log('Event deleted successfully');
+            // console.log('Event deleted successfully');
             await fetchEvents();
             setEditModalOpen(false);
         } catch (error) {
@@ -344,9 +355,11 @@ const CalendarComponent = () => {
     React.useEffect(() => {
 
         fetchEvents();
+        
     }, []);
 
     React.useEffect(() => {
+      // console.log(sessiongroupid)
         const calendarEl = document.getElementById('calendar');
         if (!calendarEl) return;
         const newCalendar = new FullCalendar.Calendar(calendarEl, {
