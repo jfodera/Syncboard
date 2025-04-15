@@ -1,16 +1,13 @@
+/* ONLY WORKS WITH 3 CLASSES MAX FOR RIGHT NOW DUE TO COLOR */
+
 const Workspace = () => {
 
 
     //workspaces initialized to empty array , this represents the array of courses the student is in 
     const [workspaces, setWorkspaces] = React.useState([]);
-    const [rin, setRin] = React.useState(''); 
 
     const colors = ["--coral", "--yellow", "--blue"];
-   
-      
-    const setGroupID = () =>{
-      console.log(rin)
-   };
+
     //runs on mount and when dependecies in dependency array change (there are none)
     React.useEffect(() => {
 
@@ -40,12 +37,12 @@ const Workspace = () => {
       //uses groups to present what classes the student is in as there is no 'group homepage' if you are not in a good 
       const fetchGroups = async () =>{
          let rin = await valSession();
-         setRin(rin)
-         fetch(`/groups/${rin}`, { method: 'GET' })
+         fetch(`/classes/${rin}`, { method: 'GET' })
          .then(response=>response.json())
          .then(data => {
             setWorkspaces(data);
          });
+         
       }
       fetchGroups(); 
 
@@ -58,7 +55,7 @@ const Workspace = () => {
 
             <div className="workspaces">
                 {workspaces.map((course, i) => (
-                    <Card key={i} title={course} color={colors[i]} />
+                    <Card key={i} title={course['className']} crn={course['crn']} color={colors[i]} />
                 ))}
 
             </div>

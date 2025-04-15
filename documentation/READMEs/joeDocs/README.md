@@ -117,3 +117,4 @@
    - remove all window.locations for smother navigation
       - figure Out what to replace with
    - add back in storage of major/class, and editing functionality in 'future' folder
+   - ALLOW COLOR SUPPORT FOR MORE THAN 3 CLASSES 
