@@ -199,12 +199,12 @@ a {
     text-decoration: none;
 }
 
-.menu {
+.main-menu {
     display: flex;
-    gap: 20px;
+    gap: 36px;
 }
 
-.menu a {
+.main-menu a {
     text-decoration: none;
     color: var(--darkgrey);
     font-weight: bold;
@@ -832,3 +832,66 @@ input {
     color: var(--coral);
 }
 
+/* Modal Styling */
+.resources-modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .resources-modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--darkgrey);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 0.5rem;
+  }
+  
+  .resources-close {
+    color: var(--darkgrey);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .addResourceBtn {
+    font-weight: bold;
+    margin-top: 24px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    background-color: var(--coral);
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  #linksheader {
+    display:flex;
+    position: relative;
+    justify-content: space-between;
+    width: 95%;
+  }
+
+  .openResourceModal {
+    position: absolute;
+    bottom: 12px;
+    right: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: var(--coral);
+    color: var(--offwhite);
+    font-weight: bold;
+    border:none;
+  }
+
+  .openResourceModal:hover {
+    background-color: #d76640;
+  }

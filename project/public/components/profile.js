@@ -78,7 +78,7 @@ const Profile = () => {
 
     return (
         <div>
-            <Homebar />
+            {/* <Homebar /> */}
             <div class="profile-maincontent">
                 <h1 className="profile-title">Your Profile</h1>
                 <div className="profile-container">

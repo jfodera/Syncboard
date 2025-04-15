@@ -65,11 +65,13 @@ const Navbar = () => {
                 <span className="logo-short">SB</span>
             </div>
             </ReactRouterDOM.Link>
-            <div className="menu">
-                {/* <a href="#">Home</a> */}
+            <div className="main-menu">
+                <ReactRouterDOM.Link to="/workspace">Home</ReactRouterDOM.Link>
+                <ReactRouterDOM.Link to="/class/profile">Profile</ReactRouterDOM.Link>
                 {/* <a href="#">Professor Tools</a> */}
+                {loggedIn && (<div onClick={handleLogOut} className="logout" >Logout</div>)}
             </div>
-            {loggedIn && (<div onClick={handleLogOut} className="logout" >Logout</div>)}
+            
         </nav>
     );
 };

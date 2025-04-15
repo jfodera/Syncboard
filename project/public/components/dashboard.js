@@ -64,7 +64,7 @@ const Dashboard = () => {
             <div className="dashboard-name">
                 <h1>
                     {className && groupName
-                        ? `${className} | ${groupName}`
+                        ? `${className}: ${groupName}`
                         : 'Loading team name...'}
                 </h1>
             </div>

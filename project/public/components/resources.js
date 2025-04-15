@@ -1,303 +1,319 @@
 const Resources = () => {
-    const [resources, setResources] = React.useState([]);
-    const [groupID, setGroupID] = React.useState(null);
-    const [members, setMembers] = React.useState([]);
-    const [newResName, setNewResName] = React.useState("");
-    const [newResLink, setNewResLink] = React.useState("");
-    const [classID, setClassID] = React.useState(null);
-    const [workspaces, setWorkspaces] = React.useState([]);
-    const [className, setClassName] = React.useState('');
-    const [groupName, setGroupName] = React.useState('');
-  
-    // Validate session on mount
-    React.useEffect(() => {
-      const validateSession = async () => {
-        try {
-          const rinRes = await fetch('/session/rin', {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const session = await rinRes.json();
+  const [resources, setResources] = React.useState([]);
+  const [groupID, setGroupID] = React.useState(null);
+  const [members, setMembers] = React.useState([]);
+  const [newResName, setNewResName] = React.useState("");
+  const [newResLink, setNewResLink] = React.useState("");
+  const [classID, setClassID] = React.useState(null);
+  const [workspaces, setWorkspaces] = React.useState([]);
+  const [className, setClassName] = React.useState('');
+  const [groupName, setGroupName] = React.useState('');
+  const [isModalOpen, setIsModalOpen] = React.useState(false); // State for modal visibility
 
-          if (session.sessionMissing) {
-            window.location.href = '/';
-          }
-        } catch (err) {
-          console.error('Session validation error:', err);
-        }
-      };
-      validateSession();
-    }, []);
-  
-    // Get the group ID from the session
-    React.useEffect(() => {
-      const fetchGroupID = async () => {
-        try {
-          // Validate session and get RIN
-          const rinRes = await fetch('/session/rin', {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const session = await rinRes.json();
-          if (session['sessionMissing']) {
-            window.location.href = '/';
-            return;
-          }
-          const rin = session.rin;
-    
-          const res = await fetch('/session/groupID', {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const data = await res.json();
-          if (data.error) {
-            console.error('Error fetching group ID:', data.error);
-          } else {
-            console.log('Fetched data:', data);
-            setGroupID(data.groupid);
-          }
-    
-          // This will not work if groupID is set here because it's async.
-          // We need to move the following logic into a separate useEffect
-        } catch (err) {
-          console.error('Group ID fetch error:', err);
-        }
-      };
-    
-      fetchGroupID();
-    }, []); // Only run once on mount
-
-    // This effect runs when groupID is set
-React.useEffect(() => {
-  if (!groupID) return;  // If groupID is null or undefined, exit early.
-
-  const fetchGroupDetails = async () => {
-    try {
-      // Fetch group details using the groupID
-      const groupInfoRes = await fetch(`/groups/${groupID}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const groupInfo = await groupInfoRes.json();
-      setGroupName(groupInfo.groupName);
-      setClassID(groupInfo.crn);
-
-      // Fetch workspaces using RIN
-      const rinRes = await fetch('/session/rin', {
-        method: 'GET',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const session = await rinRes.json();
-      const rin = session.rin;
-
-      const classesRes = await fetch(`/classes/${rin}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const classesData = await classesRes.json();
-      setWorkspaces(classesData);
-
-      // Find the class that matches the crn
-      const matchedClass = classesData.find(cls => cls.crn === groupInfo.crn);
-      if (matchedClass) {
-        setClassName(matchedClass.className);
-      }
-    } catch (err) {
-      console.error('Error fetching group details or classes:', err);
-    }
-  };
-
-  fetchGroupDetails();
-}, [groupID]); // This effect runs whenever groupID is updated
-  
-    // Fetch resources for the given group
-    React.useEffect(() => {
-      if (!groupID) return;
-      const fetchResources = async () => {
-        try {
-          const res = await fetch(`/resources/${groupID}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const data = await res.json();
-          setResources(data);
-        } catch (err) {
-          console.error('Error fetching resources:', err);
-        }
-      };
-      fetchResources();
-    }, [groupID]);
-  
-    // Fetch group members for the given group
-    React.useEffect(() => {
-      if (!groupID) return;
-      const fetchGroupMembers = async () => {
-        try {
-          const groupRes = await fetch(`/groups/${groupID}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const groupData = await groupRes.json();
-          if (groupData.students && groupData.students.length > 0) {
-            const memberPromises = groupData.students.map((rin) =>
-              fetch(`/profile/${rin}`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-              }).then((res) => res.json())
-            );
-            const membersData = await Promise.all(memberPromises);
-            setMembers(membersData);
-          } else {
-            setMembers([]);
-          }
-        } catch (err) {
-          console.error('Error fetching group members:', err);
-        }
-      };
-      fetchGroupMembers();
-    }, [groupID]);
-  
-    // Handle resource form submission
-    const handleAddResource = async (e) => {
-      e.preventDefault();
-      if (!newResName || !newResLink || !classID) {
-        alert("Please fill in all fields.");
-        return;
-      }
+  // Validate session on mount
+  React.useEffect(() => {
+    const validateSession = async () => {
       try {
-        const res = await fetch(`/resources/${groupID}`, {
-          method: 'POST',
+        const rinRes = await fetch('/session/rin', {
+          method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            resourcename: newResName,
-            link: newResLink,
-            classid: classID,
-          }),
+        });
+        const session = await rinRes.json();
+
+        if (session.sessionMissing) {
+          window.location.href = '/';
+        }
+      } catch (err) {
+        console.error('Session validation error:', err);
+      }
+    };
+    validateSession();
+  }, []);
+
+  // Get the group ID from the session
+  React.useEffect(() => {
+    const fetchGroupID = async () => {
+      try {
+        const rinRes = await fetch('/session/rin', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const session = await rinRes.json();
+        if (session['sessionMissing']) {
+          window.location.href = '/';
+          return;
+        }
+        const rin = session.rin;
+
+        const res = await fetch('/session/groupID', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
         });
         const data = await res.json();
         if (data.error) {
-          alert("Error adding resource: " + data.error);
+          console.error('Error fetching group ID:', data.error);
         } else {
-          const updatedResources = await fetch(`/resources/${groupID}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          const resourcesData = await updatedResources.json();
-          setResources(resourcesData);
-          setNewResName("");
-          setNewResLink("");
+          setGroupID(data.groupid);
         }
       } catch (err) {
-        console.error('Error adding resource:', err);
-        alert("Error adding resource.");
+        console.error('Group ID fetch error:', err);
       }
     };
-  
-    return (
-      <div id="resourcePage">
-        <Homebar />
-        <div className="dashboard-name">
-                <h1>
-                    {className && groupName
-                        ? `${className} | ${groupName}`
-                        : 'Loading team name...'}
-                </h1>
+
+    fetchGroupID();
+  }, []); // Only run once on mount
+
+  // This effect runs when groupID is set
+  React.useEffect(() => {
+    if (!groupID) return;  // If groupID is null or undefined, exit early.
+
+    const fetchGroupDetails = async () => {
+      try {
+        const groupInfoRes = await fetch(`/groups/${groupID}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const groupInfo = await groupInfoRes.json();
+        setGroupName(groupInfo.groupName);
+        setClassID(groupInfo.crn);
+
+        // Fetch workspaces using RIN
+        const rinRes = await fetch('/session/rin', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const session = await rinRes.json();
+        const rin = session.rin;
+
+        const classesRes = await fetch(`/classes/${rin}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const classesData = await classesRes.json();
+        setWorkspaces(classesData);
+
+        // Find the class that matches the crn
+        const matchedClass = classesData.find(cls => cls.crn === groupInfo.crn);
+        if (matchedClass) {
+          setClassName(matchedClass.className);
+        }
+      } catch (err) {
+        console.error('Error fetching group details or classes:', err);
+      }
+    };
+
+    fetchGroupDetails();
+  }, [groupID]); // This effect runs whenever groupID is updated
+
+  // Fetch resources for the given group
+  React.useEffect(() => {
+    if (!groupID) return;
+    const fetchResources = async () => {
+      try {
+        const res = await fetch(`/resources/${groupID}`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+        setResources(data);
+      } catch (err) {
+        console.error('Error fetching resources:', err);
+      }
+    };
+    fetchResources();
+  }, [groupID]);
+
+  // Fetch group members for the given group
+  React.useEffect(() => {
+    if (!groupID) return;
+    const fetchGroupMembers = async () => {
+      try {
+        const groupRes = await fetch(`/groups/${groupID}`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const groupData = await groupRes.json();
+        if (groupData.students && groupData.students.length > 0) {
+          const memberPromises = groupData.students.map((rin) =>
+            fetch(`/profile/${rin}`, {
+              method: 'GET',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+            }).then((res) => res.json())
+          );
+          const membersData = await Promise.all(memberPromises);
+          setMembers(membersData);
+        } else {
+          setMembers([]);
+        }
+      } catch (err) {
+        console.error('Error fetching group members:', err);
+      }
+    };
+    fetchGroupMembers();
+  }, [groupID]);
+
+  // Handle resource form submission
+  const handleAddResource = async (e) => {
+    e.preventDefault();
+    if (!newResName || !newResLink || !classID) {
+      alert("Please fill in all fields.");
+      return;
+    }
+    try {
+      const res = await fetch(`/resources/${groupID}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          resourcename: newResName,
+          link: newResLink,
+          classid: classID,
+        }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        alert("Error adding resource: " + data.error);
+      } else {
+        const updatedResources = await fetch(`/resources/${groupID}`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const resourcesData = await updatedResources.json();
+        setResources(resourcesData);
+        setNewResName("");
+        setNewResLink("");
+        setIsModalOpen(false); // Close the modal after successful submission
+      }
+    } catch (err) {
+      console.error('Error adding resource:', err);
+      alert("Error adding resource.");
+    }
+  };
+
+  // Toggle modal visibility
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  return (
+    <div id="resourcePage">
+      <Homebar />
+      <div className="dashboard-name">
+        <h1>
+          {className && groupName
+            ? `${className}: ${groupName}`
+            : 'Loading team name...'}
+        </h1>
+      </div>
+      <div className="secondContent">
+        <div id="linksheader">
+            <h2>Links & Resources</h2>
+            {/* Button to open the modal */}
+            <button class="openResourceModal" onClick={toggleModal}>Add New Resource</button>
+        </div>
+
+        {/* Modal */}
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <span className="resources-close" onClick={toggleModal}>&times;</span>
+              <h2>Add New Resource</h2>
+              <form onSubmit={handleAddResource}>
+              <div className="input-group">
+                <div>
+                  <label>Resource Name:</label>
+                  <input
+                    type="text"
+                    value={newResName}
+                    onChange={(e) => setNewResName(e.target.value)}
+                    placeholder="Enter resource name"
+                  />
+                </div>
+                <div>
+                  <label>Link:</label>
+                  <input
+                    type="text"
+                    value={newResLink}
+                    onChange={(e) => setNewResLink(e.target.value)}
+                    placeholder="Enter URL"
+                  />
+                </div>
+                </div>
+                <button className="addResourceBtn" type="submit">Add Resource</button>
+              </form>
             </div>
-        <div className="secondContent">
-          <h2>Links & Resources</h2>
-          <form onSubmit={handleAddResource} style={{ marginBottom: '20px' }}>
-            <h2>Add New Resource</h2>
-            <div>
-              <label>Resource Name:</label>
-              <input
-                type="text"
-                value={newResName}
-                onChange={(e) => setNewResName(e.target.value)}
-                placeholder="Enter resource name"
-              />
-            </div>
-            <div>
-              <label>Link:</label>
-              <input
-                type="text"
-                value={newResLink}
-                onChange={(e) => setNewResLink(e.target.value)}
-                placeholder="Enter URL"
-              />
-            </div>
-            <button type="submit">Add Resource</button>
-          </form>
-          <table className="resourcesTable">
-            <thead>
+          </div>
+        )}
+
+        {/* Resources Table */}
+        <table className="resourcesTable">
+          <thead>
+            <tr>
+              <th>DESCRIPTION</th>
+              <th>LINK</th>
+            </tr>
+          </thead>
+          <tbody>
+            {resources.length > 0 ? (
+              resources.map((resource) => (
+                <tr key={resource.resourceid}>
+                  <td>{resource.resourcename}</td>
+                  <td>
+                    <a
+                      href={
+                        resource.link.startsWith('http')
+                          ? resource.link
+                          : `http://${resource.link}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {resource.link}
+                    </a>
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
-                <th>DESCRIPTION</th>
-                <th>LINK</th>
+                <td colSpan="2">No resources found.</td>
               </tr>
-            </thead>
-            <tbody>
-              {resources.length > 0 ? (
-                resources.map((resource) => (
-                  <tr key={resource.resourceid}>
-                    <td>{resource.resourcename}</td>
-                    <td>
-                      <a
-                        href={
-                          resource.link.startsWith('http')
-                            ? resource.link
-                            : `http://${resource.link}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {resource.link}
-                      </a>
-                    </td>
+            )}
+          </tbody>
+        </table>
+
+        {/* Group Members Table */}
+        <h2>Group Members</h2>
+        <table className="resourcesTable">
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>EMAIL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {members && members.filter(m => m != null).length > 0 ? (
+              members
+                .filter((member) => member && member.rin)
+                .map((member) => (
+                  <tr key={member.rin}>
+                    <td>{member.name || 'Unknown'}</td>
+                    <td>{member.email || 'Unknown'}</td>
                   </tr>
                 ))
-              ) : (
-                <tr>
-                  <td colSpan="2">No resources found.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-  
-          <h2>Group Members</h2>
-          <table className="resourcesTable">
-            <thead>
+            ) : (
               <tr>
-                <th>NAME</th>
-                <th>EMAIL</th>
+                <td colSpan="2">No group members found.</td>
               </tr>
-            </thead>
-            <tbody>
-              {members && members.filter(m => m != null).length > 0 ? (
-                members
-                  .filter((member) => member && member.rin)
-                  .map((member) => (
-                    <tr key={member.rin}>
-                      <td>{member.name || 'Unknown'}</td>
-                      <td>{member.email || 'Unknown'}</td>
-                    </tr>
-                  ))
-              ) : (
-                <tr>
-                  <td colSpan="2">No group members found.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            )}
+          </tbody>
+        </table>
       </div>
-    );
-  };
-  
+    </div>
+  );
+};
