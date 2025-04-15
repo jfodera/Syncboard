@@ -61,19 +61,25 @@ app.use(cors({
 
 
 //set up session middleware: 
+const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
+
 app.use(session({
     //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
     //cookie links the client to the session, session is not a cookie
     //note: this is not the sesion ID, that is a different cookeie 
     //64 char random string
-    secret: crypto.randomBytes(32).toString('hex'),
+    secret: SESSION_SECRET,
     //prevents rewrites if nothing changes
     resave: false,
     //saves when new session created 
-    saveUninitialized: true,
+    saveUninitialized: false, 
     //cokies being sent are secure as we are on https. 
     //how session ID is trackerd
-    cookie: { secure: false }
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',  // true in production (requires HTTPS)
+        httpOnly: true,   // Prevent access via JavaScript
+        sameSite: 'strict' // Helps mitigate CSRF
+    }
 }));
 
 // *** Session Requests ***/
@@ -337,35 +343,27 @@ app.put('/profile/:rin', (req, res) => {
 // *** login stuff ***
 
 app.post('/login', async (req, res) => {
-
-
     const loginProfile = req.body;
-    //  res.json({ message: `Entire DB Populated.` }); 
+    try {
+        // Fetch profile by email – if none exists, avoid calling bcrypt.compare on a null value.
+        const profile = await db.collection('profiles').findOne({ email: loginProfile.email });
+        if (!profile) {
+            return res.status(401).json({ error: 'Invalid email or password!' });
+        }
+        const match = await bcrypt.compare(loginProfile.password, profile.password);
+        if (!match) {
+            return res.status(401).json({ error: 'Invalid email or password!' });
+        }
+        // Successful authentication
+        req.session.user = { rin: profile.rin };
+        req.session.save();
+        res.status(200).json(profile);
+    } catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
-    db.collection('profiles')
-        //works as email is a unique identifier in DAtabase 
-        .findOne({ email: loginProfile['email'] })
-        .then(async (profile) => { //define what the return in called 
-            const match = await bcrypt.compare(loginProfile['password'], profile['password']);
-            if (!profile || !match) {
-                return res.status(401).json({ error: 'Invalid name or password!' });
-            }
-
-            req.session.user = { //stores this is the session of whever requested this
-                rin: profile['rin']
-            };
-            req.session.save();
-
-
-            //status 200: 'OK' -> Successfull
-            res.status(200).json(profile); //sending the profile object returned by the database
-        })
-        .catch(err => {
-
-            console.error('Database query error:', err);
-            res.status(500).json({ error: 'Internal server error' });
-        });
-})
 
 //allows user to sign up with our page
 //automatically checks if user is registered with any classes using classes database 
