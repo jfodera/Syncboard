@@ -1,8 +1,10 @@
-const Navbar = () => {
+const Navbar = (props) => {
 
     //hooks
     const [loggedIn, setLoggedIn] = React.useState(false);
 
+    const pathname = props.location.pathname;
+    const isAuthPage = pathname === "/" || pathname === "/signup";
 
     const handleLogOut = async () => {
 
@@ -60,18 +62,23 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <ReactRouterDOM.Link to="/workspace">
-            <div className="logo">
-                <span className="logo-full">SyncBoard</span>
-                <span className="logo-short">SB</span>
-            </div>
+                <div className="logo">
+                    <span className="logo-full">SyncBoard</span>
+                    <span className="logo-short">SB</span>
+                </div>
             </ReactRouterDOM.Link>
-            <div className="main-menu">
-                <ReactRouterDOM.Link to="/workspace">Home</ReactRouterDOM.Link>
-                <ReactRouterDOM.Link to="/class/profile">Profile</ReactRouterDOM.Link>
-                {/* <a href="#">Professor Tools</a> */}
-                {loggedIn && (<div onClick={handleLogOut} className="logout" >Logout</div>)}
-            </div>
-            
+
+            {!isAuthPage && (
+                <div className="main-menu">
+                    <ReactRouterDOM.Link to="/workspace">Home</ReactRouterDOM.Link>
+                    <ReactRouterDOM.Link to="/class/profile">Profile</ReactRouterDOM.Link>
+                    {loggedIn && (
+                        <div onClick={handleLogOut} className="logout">
+                            Logout
+                        </div>
+                    )}
+                </div>
+            )}
         </nav>
     );
 };

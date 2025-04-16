@@ -28,7 +28,10 @@ const App = () => {
 
         // Presents page based on whats currently in URL, loads into route 
         <ReactRouterDOM.BrowserRouter>
-            <Navbar />
+            <ReactRouterDOM.Route
+                path="/"
+                render={({ location }) => <Navbar location={location} />}
+            />
             <div className="content">
                 {/* Default route (this will be shown first when the app loads) */}
 
