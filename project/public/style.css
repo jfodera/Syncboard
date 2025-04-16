@@ -941,3 +941,11 @@ input {
         width: 65vw;
     }
 }
+
+.time-input {
+    display: block;
+  }
+  
+  .hide-time-inputs .time-input {
+    display: none;
+  }
