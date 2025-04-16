@@ -33,7 +33,6 @@ const Login = () => {
 
     return (
         <div className="container">
-
             <div className="welcome-text">Welcome to SyncBoard!</div>
             <div className="login-container">
                 <div className="login-title">Log In</div>
