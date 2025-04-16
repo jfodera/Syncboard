@@ -215,7 +215,7 @@ const Resources = () => {
         <div id="linksheader">
             <h2>Links & Resources</h2>
             {/* Button to open the modal */}
-            <button class="openResourceModal" onClick={toggleModal}>Add New Resource</button>
+            <button class="openResourceModal" onClick={toggleModal}>Add Resource +</button>
         </div>
 
         {/* Modal */}
@@ -223,7 +223,7 @@ const Resources = () => {
           <div className="modal-overlay">
             <div className="modal">
               <span className="resources-close" onClick={toggleModal}>&times;</span>
-              <h2>Add New Resource</h2>
+              <h2>Add Resource</h2>
               <form onSubmit={handleAddResource}>
               <div className="input-group">
                 <div>
