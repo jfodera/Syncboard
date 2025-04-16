@@ -241,7 +241,6 @@ const CalendarComponent = () => {
       let back = await test.json()
       
       return(back.groupid)
-      /* back --> {groupid: 1} where '1' is the current group id */
   }
 
   const fetchEvents = async () => {
@@ -254,7 +253,6 @@ const CalendarComponent = () => {
          credentials: 'include',
          headers: { 'Content-Type': 'application/json' },
       });
-      // const sessiongroupid = profile[]
       
       // get all events for a group
       const res = await fetch(`/calendar/${sessiongroupid}`);

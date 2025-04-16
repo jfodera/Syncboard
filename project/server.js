@@ -165,14 +165,14 @@ app.get('/classes/:rin', async (req, res) => {
     const rin = parseInt(req.params.rin);
     if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
     try {
-        const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0 }).toArray();
+        const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0, prefix:1, coursecode:1 }).toArray();
 
 
         const crns = groups.map(item => item.crn);
 
         //get each course in groups, get the names from the crn
         let classPromises = crns.map(async (crn) => {
-            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0, crn: 1} });
+            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0, crn: 1, prefix:1, coursecode:1} });
             return course;
         });
 
