@@ -39,7 +39,7 @@ Since we didn't use a UI library like Flowbite or Bootstrap, I made the whole th
 
 - Every page/component works on smaller screens now
 - Used `@media` rules to adjust layout/fonts/buttons as needed
-- Resources that helped:
+- Sources:
   - https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries
   - https://www.w3schools.com/css/css_rwd_intro.asp
 
