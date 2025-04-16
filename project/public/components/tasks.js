@@ -28,14 +28,53 @@ const Tasks = () => {
         }
     }, [groupId]);
 
-    const addTask = () => {
-        setTasks([...tasks, { task: 'Placeholder', status: 'To do' }]);
+    const addTask = async () => {
+        if (groupId === null) return;
+    
+        try {
+            const response = await fetch(`/tasks/${groupId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ task: 'Placeholder' }),
+            });
+    
+            if (!response.ok) throw new Error('Failed to create task');
+    
+            const data = await response.json();
+            const newTask = {
+                taskid: data.taskId,
+                task: 'Placeholder',
+                status: 'To do',
+                isEditing: true, // Mark it for text input
+            };
+    
+            setTasks([...tasks, newTask]);
+        } catch (error) {
+            console.error('Error adding task:', error);
+        }
     };
-
-    const handleTaskChange = (index, newName) => {
-        const updatedTasks = [...tasks];
-        updatedTasks[index].task = newName;
-        setTasks(updatedTasks);
+    
+    const handleTaskChange = async (index, newName) => {
+        const taskToUpdate = tasks[index];
+    
+        try {
+            await fetch(`/tasks/${groupId}/${taskToUpdate.taskid}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ task: newName }),
+            });
+    
+            const updatedTasks = [...tasks];
+            updatedTasks[index].task = newName;
+            updatedTasks[index].isEditing = false;
+            setTasks(updatedTasks);
+        } catch (err) {
+            console.error('Error updating task name:', err);
+        }
     };
 
     return (
@@ -50,29 +89,43 @@ const Tasks = () => {
                     </tbody>
 
                     <tbody className="tasks-body">
-                        {tasks.map((task, index) => (
-                            <tr key={index}>
-                                <td>
-                                    {task.task === 'Placeholder' ? (
-                                        <form>
-                                            <input
-                                                type="text"
-                                                onBlur={(e) => handleTaskChange(index, e.target.value)}
-                                            />
-                                        </form>
-                                    ) : (
-                                        task.task
-                                    )}
-                                </td>
-                                <td className="status-selector">
-                                    <DropdownSelect
-                                        id={`select${index}`}
-                                        name={`select${index}`}
-                                        value={task.status}
-                                    />
-                                </td>
-                            </tr>
-                        ))}
+                    {tasks.map((task, index) => (
+                        <tr key={index}>
+                            <td>
+                                {task.isEditing ? (
+                                    <form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            const value = e.target.elements[`input${index}`].value.trim();
+                                            if (value) {
+                                                handleTaskChange(index, value);
+                                            }
+                                        }}
+                                    >
+                                        <input
+                                            name={`input${index}`}
+                                            type="text"
+                                            autoFocus
+                                            defaultValue=""
+                                            onBlur={(e) => {
+                                                const value = e.target.value.trim();
+                                                if (value) handleTaskChange(index, value);
+                                            }}
+                                        />
+                                    </form>
+                                ) : (
+                                    task.task
+                                )}
+                            </td>
+                            <td className="status-selector">
+                                <DropdownSelect
+                                    id={`select${index}`}
+                                    name={`select${index}`}
+                                    value={task.status}
+                                />
+                            </td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
             </div>
