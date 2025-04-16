@@ -1,11 +1,33 @@
 const Tasks = () => {
-    const [tasks, setTasks] = React.useState([
-        { task: 'Proposal Presentation', status: 'completed' },
-        { task: 'UI Mockups', status: 'completed' },
-        { task: 'Frontend Implementation', status: 'completed' },
-        { task: 'Midterm Presentation', status: 'completed' },
-        { task: 'Backend Implementation', status: 'In Progress' },
-    ]);
+
+    const [groupID, setGroupID] = React.useState([]);
+    const [tasks, setTasks] = React.useState([]);
+
+    React.useEffect(() => {
+        const fetchGroupID = async () => {
+            try {
+                const response = await fetch('/session/groupID', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                const data = await response.json();
+                setGroupID(data.groupid); 
+            } catch (error) {
+                console.error('Error fetching groupID:', error);
+            }
+        };
+    
+        fetchGroupID();
+    }, []);
+
+    React.useEffect(() => {
+        fetch(`/tasks/${groupID}`)
+            .then(res => res.json())
+            .then(data => {
+                setTasks(data);
+            })
+            .catch(err => console.error('Failed to fetch group ID:', err));
+    }, []);
 
     const addTask = () => {
         setTasks([

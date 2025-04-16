@@ -111,7 +111,6 @@ app.get('/session/rin', (req, res) => {
 
 //setting the session group ID 
 app.put('/session/groupID', (req, res) => {
-   //impossible (i think?) 
    if (req.session.user == undefined) {
       res.json({ 'error': 'user is not logged in' });
    }else{
@@ -125,7 +124,6 @@ app.put('/session/groupID', (req, res) => {
 
 //getting the session group ID 
 app.get('/session/groupID', (req, res) => {
-   //impossible (i think?) 
    if (req.session.user == undefined) {
       res.json({ 'error': 'user is not logged in' });
    }else{
