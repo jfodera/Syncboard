@@ -29,134 +29,6 @@ body {
     padding: 0;
 }
 
-@media only screen and (max-width: 768px) {
-
-    .navbar {
-        flex-direction: row;
-        gap: 10px;
-        padding: 10px 20px;
-    }
-
-    .bar {
-        margin-left: 0px;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 20px;
-    }
-
-    .menu-toggle {
-        align-items: right;
-        display: block;
-    }
-
-    .bar-links {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .bar-links.open {
-        display: flex;
-    }
-
-    .menu {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .workspaces {
-        flex-direction: column;
-        width: 90%;
-        margin: 20px auto;
-    }
-
-    .card {
-        width: 90%;
-        margin: 10px auto;
-    }
-
-    iframe {
-        width: 100%;
-        height: auto;
-    }
-
-    .mainContent {
-        flex-direction: column;
-        margin: 0 5%;
-    }
-
-    .login-container,
-    .signup-container {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .logo-full {
-        display: none;
-      }
-    
-    .logo-short {
-        display: inline;
-    }
-
-
-    h1 {
-        margin-top: 48px;
-        margin-left: 5%;
-    }
-
-    .left,
-    .tasks {
-        width: 100%;
-        margin: 0;
-    }
-
-    .fc-button-group {
-        display: flex;
-        flex-direction: row;
-        padding: 0;
-        border: none;
-        overflow: hidden;
-    }
-
-    .fc-button-group .fc-button {
-        margin: 0 !important;
-        border: 1px solid #000;
-    }
-
-    .fc-button {
-        font-size: small !important;
-        padding: 4px 8px !important;
-    }
-
-    .fc-toolbar-title {
-        font-size: 1.3rem !important;
-    }
-
-    .resourcesTable {
-        margin-left: 0px;
-        font-size: small;
-    }
-
-    .secondContent {
-        padding: 0px;
-        padding-left: 5%;
-    }
-
-    .profile-container {
-        width: 85%;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .footer {
-        position: fixed;
-        bottom: 0;
-    }
-}
-
 .content {
     flex: 1;
 }
@@ -649,7 +521,7 @@ select {
     margin-top: 25px;
     border: 1px solid var(--coral);
     background-color: var(--coral);
-
+    margin-right: 8px;
     border-radius: 4px;
     color: var(--offwhite);
     font-weight: bold;
@@ -909,3 +781,155 @@ input {
   .openResourceModal:hover {
     background-color: #d76640;
   }
+
+  @media only screen and (max-width: 768px) {
+
+    .navbar {
+        flex-direction: row;
+        gap: 10px;
+        padding: 10px 20px;
+    }
+
+    .bar {
+        margin-left: 0px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+    }
+
+    .menu-toggle {
+        align-items: right;
+        display: block;
+    }
+
+    .bar-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .bar-links.open {
+        display: flex;
+    }
+
+    .menu {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .workspaces {
+        flex-direction: column;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .card {
+        width: 90%;
+        margin: 10px auto;
+    }
+
+    iframe {
+        width: 100%;
+        height: auto;
+    }
+
+    .mainContent {
+        flex-direction: column;
+        margin: 0 5%;
+    }
+
+    .login-container,
+    .signup-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .logo-full {
+        display: none;
+      }
+    
+    .logo-short {
+        display: inline;
+    }
+
+
+    h1 {
+        margin-top: 48px;
+        text-align: center;
+    }
+
+    .left,
+    .tasks-wrapper {
+        overflow-x: auto;
+        width: 90vw;
+        margin: 0;
+    }
+
+    .tasks-module {
+        margin-bottom: 96px;
+    }
+
+    .tasks-wrapper {
+        border: 1px solid var(--darkgrey);
+        border-radius: 16px;
+    }
+
+    .tasks {
+        border:none;
+        min-width: 90vw;
+    }
+
+    select {
+        width: 40vw;
+    }
+
+    .fc-button-group {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        border: none;
+        overflow: hidden;
+    }
+
+    .fc-button-group .fc-button {
+        margin: 0 !important;
+        border: 1px solid #000;
+    }
+
+    .fc-button {
+        font-size: small !important;
+        padding: 4px 8px !important;
+    }
+
+    .fc-toolbar-title {
+        font-size: 1.3rem !important;
+    }
+
+    .resourcesTable {
+        margin-left: 0px;
+        font-size: small;
+    }
+
+    .secondContent {
+        padding: 0px;
+        padding-left: 5%;
+    }
+
+    .profile-container {
+        width: 85%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .modal {
+        margin: 0;
+        width: 65vw;
+    }
+}

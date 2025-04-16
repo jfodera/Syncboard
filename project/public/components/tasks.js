@@ -21,16 +21,17 @@ const Tasks = () => {
     };
 
     return (
-        <div>
+        <div className="tasks-module">
+            <div className="tasks-wrapper">
             <table className="tasks">
-                <tbody>
+                <tbody className="tasks-body">
                     <tr>
                         <th>TASK</th>
-                        <th>STATUS</th>
+                        <th className="status-selector">STATUS</th>
                     </tr>
                 </tbody>
 
-                <tbody>
+                <tbody className="tasks-body">
                     {tasks.map((task, index) => (
                         <tr key={index}>
                             <td>
@@ -46,7 +47,7 @@ const Tasks = () => {
                                     task.task
                                 )}
                             </td>
-                            <td>
+                            <td className="status-selector">
                                 <DropdownSelect id={`select${index}`} name={`select${index}`} value={task.status} />
                             </td>
                         </tr>
@@ -54,6 +55,7 @@ const Tasks = () => {
                     ))}
                 </tbody>
             </table>
+            </div>
 
             <br></br>
             <span className="material-symbols-outlined circle" onClick={addTask}>
