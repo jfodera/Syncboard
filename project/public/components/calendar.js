@@ -17,20 +17,24 @@ function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
     header.textContent = 'Create Event';
     form.appendChild(header);
     
-    const createField = (labelText, inputType, inputId, placeholder = '') => {
+    const createField = (labelText, inputType, inputId, wrapperClass = '') => {
+        const wrapper = document.createElement('div');
+        if (wrapperClass) wrapper.className = wrapperClass;
+    
         const label = document.createElement('label');
         label.textContent = labelText;
+    
         const input = document.createElement('input');
         input.type = inputType;
         input.id = inputId;
-        input.placeholder = placeholder;
+    
         label.appendChild(input);
-        form.appendChild(label);
-        form.appendChild(document.createElement('br'));
+        wrapper.appendChild(label);
+        form.appendChild(wrapper);
         return input;
     };
 
-    const titleInput = createField('Event Name: ', 'text', 'createevent-title', 'New Event');
+    const titleInput = createField('Event Name: ', 'text', 'createevent-title');
     const dateInput = createField('Date: ', 'date', 'createevent-date');
 
     const allDayWrapper = document.createElement('div');
@@ -42,11 +46,9 @@ function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
     allDayWrapper.appendChild(document.createTextNode(' All Day?'));
     form.appendChild(allDayWrapper);
 
-    const timeContainer = document.createElement('div');
-    timeContainer.id = 'time-inputs';
-    createField('Start Time: ', 'time', 'createevent-start');
-    createField('End Time: ', 'time', 'createevent-end');
-    form.appendChild(timeContainer);
+    
+    const startInput = createField('Start Time: ', 'time', 'createevent-start', 'time-input');
+    const endInput = createField('End Time: ', 'time', 'createevent-end', 'time-input');
 
     const submitButton = document.createElement('button');
     submitButton.type = 'submit';
@@ -67,6 +69,24 @@ function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
 
     allDayCheckbox.addEventListener('change', () => {
         timeContainer.style.display = allDayCheckbox.checked ? 'none' : 'block';
+    });
+
+    if (allDayCheckbox.checked) {
+        form.classList.add('hide-time-inputs');
+        startInput.disabled = true;
+        endInput.disabled = true;
+    }
+    
+    allDayCheckbox.addEventListener('change', () => {
+        if (allDayCheckbox.checked) {
+            form.classList.add('hide-time-inputs');
+            startInput.disabled = true;
+            endInput.disabled = true;
+        } else {
+            form.classList.remove('hide-time-inputs');
+            startInput.disabled = false;
+            endInput.disabled = false;
+        }
     });
     
     form.onsubmit = async (e) => {
@@ -241,7 +261,6 @@ const CalendarComponent = () => {
       let back = await test.json()
       
       return(back.groupid)
-      /* back --> {groupid: 1} where '1' is the current group id */
   }
 
   const fetchEvents = async () => {
@@ -254,7 +273,6 @@ const CalendarComponent = () => {
          credentials: 'include',
          headers: { 'Content-Type': 'application/json' },
       });
-      // const sessiongroupid = profile[]
       
       // get all events for a group
       const res = await fetch(`/calendar/${sessiongroupid}`);

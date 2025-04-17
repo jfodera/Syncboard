@@ -124,7 +124,7 @@ a {
 
 .card-body h3 {
     margin: 0;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     font-size: 1.1rem;
     font-weight: bold;
     color: var(--darkgrey);
@@ -134,6 +134,14 @@ a {
     margin: 4px 0;
     font-size: 0.9rem;
     color: var(--lightgrey);
+}
+
+.course-info {
+    color: var(--lightgrey);
+}
+
+.course-info h4{
+    margin:0;
 }
 
 /* footer */
@@ -933,3 +941,11 @@ input {
         width: 65vw;
     }
 }
+
+.time-input {
+    display: block;
+  }
+  
+  .hide-time-inputs .time-input {
+    display: none;
+  }
