@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js';
-    import { getAuth, GoogleAuthProvider, signInWithPopup, getRedirectResult, signInWithRedirect } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
+    import { signInAnonymously, getAuth, GoogleAuthProvider, signInWithPopup, getRedirectResult, signInWithRedirect } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js';
     import { getFirestore, addDoc, collection, serverTimestamp, query, orderBy, onSnapshot, doc } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
 
     // Your Firebase config object
@@ -34,3 +34,4 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebas
     window.serverTimestamp = serverTimestamp;
     window.orderBy = orderBy;
     window.onSnapshot = onSnapshot;
+    window.signInAnonymously = signInAnonymously;

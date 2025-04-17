@@ -1,3 +1,5 @@
+// styling for later, different colors for different users on the left
+
 function addSpace(name){
     if (name.includes("%20")){
         return name.replace(/%20/g, " ");
@@ -6,12 +8,32 @@ function addSpace(name){
 }
 
 const Message = ({ message }) => {
-    const userId = getCookie('uid');
     const newName = addSpace(message.name);
+    const [rin, setRin] = React.useState(null);
+
+    React.useEffect(() => {
+      const getRin = async () => {
+        try {
+          const rinRes = await fetch('/session/rin', {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
+          const session = await rinRes.json();
   
+          if (session.sessionMissing) {
+            //back to login
+            window.location.href = '/';
+          } else {
+            setRin(session.rin);
+          }
+        } catch (err) {
+          console.error('Session Validation error:', err);
+        }
+      };
+  
+      getRin();
+    }, []);
+    
     return (
       <div
-        className={`chat-bubble ${message.uid === userId ? "right" : ""}`}>
+        className={`chat-bubble ${String(message.rin) === String(rin) ? "right" : ""}`}>
         <img
           className="chat-bubble__left"
           src={"../userProfile.jpeg"}
