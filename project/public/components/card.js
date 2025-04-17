@@ -1,4 +1,6 @@
-   const Card = ({title, color, crn}) => {
+   const Card = ({title, color, coursecode, crn}) => {
+      const [cardGroupName, setGroupName] = React.useState([]);
+
       const getRin = async ()=> {
          try{
    
@@ -19,6 +21,46 @@
             console.error('Session Validation error:', err);
          }
       }
+
+      const getGroupName = async () => {
+         try {
+            const rin = await getRin();
+      
+            // Get list of groupIDs user is in
+            const res = await fetch(`/groups/fromrin/${rin}`, {
+               method: 'GET',
+               credentials: 'include',
+               headers: { 'Content-Type': 'application/json' },
+            });
+      
+            const groups = await res.json();
+      
+            // Find the group matching the CRN
+            const targetGroup = groups.find(group => group.crn == crn);
+            if (!targetGroup) return;
+      
+            const groupid = targetGroup.groupid;
+      
+            // Fetch group name
+            const groupNameRes = await fetch(`/groups/${groupid}`, {
+               method: 'GET',
+               headers: { 'Content-Type': 'application/json' },
+            });
+      
+            const groupObj = await groupNameRes.json();
+      
+            if (groupObj.groupName) {
+               setGroupName(groupObj.groupName);
+            }
+      
+         } catch (err) {
+            console.error('Error fetching group name:', err);
+         }
+      };
+
+      React.useEffect(() => {
+         getGroupName();
+      }, []);
    
       const setGroupSesh = async() =>{
          const rin = await getRin()
@@ -43,8 +85,6 @@
                });
             }
          }
-         
-
 
          //get id we just set
          const groupIDres = await fetch('/session/groupID', {
@@ -83,6 +123,11 @@
               <div className="card-header" style={{ backgroundColor: `var(${color})` }}></div>
               <div className="card-body">
                  <h3>{title}</h3>
+                 <div className="course-info">
+                  <h4>{cardGroupName}</h4>
+                  <p>{coursecode}</p>
+                 </div>
+                 
               </div>
         </div>
     );

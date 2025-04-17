@@ -133,7 +133,6 @@ app.get('/session/rin', (req, res) => {
 
 //setting the session group ID 
 app.put('/session/groupID', (req, res) => {
-   //impossible (i think?) 
    if (req.session.user == undefined) {
       res.json({ 'error': 'user is not logged in' });
    }else{
@@ -147,7 +146,6 @@ app.put('/session/groupID', (req, res) => {
 
 //getting the session group ID 
 app.get('/session/groupID', (req, res) => {
-   //impossible (i think?) 
    if (req.session.user == undefined) {
       res.json({ 'error': 'user is not logged in' });
    }else{
@@ -187,14 +185,14 @@ app.get('/classes/:rin', async (req, res) => {
     const rin = parseInt(req.params.rin);
     if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
     try {
-        const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0 }).toArray();
+        const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0, prefix:1, coursecode:1 }).toArray();
 
 
         const crns = groups.map(item => item.crn);
 
         //get each course in groups, get the names from the crn
         let classPromises = crns.map(async (crn) => {
-            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0, crn: 1} });
+            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0, crn: 1, prefix:1, coursecode:1} });
             return course;
         });
 
@@ -693,14 +691,24 @@ app.get('/tasks/:groupid/:taskid', async (req, res) => {
 app.post('/tasks/:groupid', async (req, res) => {
     const groupid = parseInt(req.params.groupid);
     if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
+
     const { task } = req.body;
     if (!task) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
+
     try {
         const lastTask = await db.collection('tasks').find().sort({ taskid: -1 }).limit(1).toArray();
         const newTaskId = lastTask.length > 0 ? lastTask[0].taskid + 1 : 1;
-        const newTask = { task, groupid, taskid: newTaskId, completed: false };
+
+        const newTask = {
+            task,
+            groupid,
+            taskid: newTaskId,
+            status: 'To do',   
+            completed: false
+        };
+
         const result = await db.collection('tasks').insertOne(newTask);
         res.json({ message: 'Task created', taskId: newTaskId });
     } catch (error) {
@@ -708,6 +716,7 @@ app.post('/tasks/:groupid', async (req, res) => {
         res.status(500).json({ error: 'Failed to create task' });
     }
 });
+
 
 
 // update an event by groupID and taskID

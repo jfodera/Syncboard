@@ -2,7 +2,6 @@
 
 const Workspace = () => {
 
-
     //workspaces initialized to empty array , this represents the array of courses the student is in 
     const [workspaces, setWorkspaces] = React.useState([]);
 
@@ -46,7 +45,6 @@ const Workspace = () => {
       }
       fetchGroups(); 
 
-
     }, []);
 
     return (
@@ -55,7 +53,13 @@ const Workspace = () => {
 
             <div className="workspaces">
                 {workspaces.map((course, i) => (
-                    <Card key={i} title={course['className']} crn={course['crn']} color={colors[i]} />
+                    <Card
+                        key={i}
+                        title={course['className']}
+                        coursecode={course['prefix'] + '-' + course['coursecode']}
+                        crn={course['crn']}
+                        color={colors[i]}
+                    />
                 ))}
 
             </div>
