@@ -1,5 +1,3 @@
-import { escapeHTML } from './utils/sanitize';
-
 const Signup = () => {
     const [formData, setFormData] = React.useState({
         name: '',
@@ -16,7 +14,7 @@ const Signup = () => {
         //gets the id of the form data being submitted and the value
         const { id, value } = e.target;
         //Copies what is already in there for all other value fields except ID. 
-        setFormData({ ...formData, [id]: escapeHTML(value) });
+        setFormData({ ...formData, [id]: value });
     };
 
     const handleSubmit = async (e) => {
