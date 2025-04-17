@@ -1,28 +1,24 @@
 const DropdownSelect = ({ id, name, value, onChange }) => {
-    // Map status text to your numeric values
     const statusToValue = {
         "To Do": "3",
         "In Progress": "2",
         "Completed": "1"
     };
 
-    // Map numeric values to status text
     const valueToStatus = {
         "1": "Completed",
         "2": "In Progress",
         "3": "To Do"
     };
 
-    // Map status values to colors
     const statusColors = {
         "1": "var(--yellow)",
         "2": "var(--lightblue)",
-        "3": "none"
+        "3": ""
     };
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-        // Call the parent's onChange with the text status
         onChange({
             target: {
                 value: valueToStatus[selectedValue]
@@ -35,7 +31,7 @@ const DropdownSelect = ({ id, name, value, onChange }) => {
             <select
                 name={name}
                 id={id}
-                value={statusToValue[value] || "3"} // Convert status text to numeric value
+                value={statusToValue[value] || "3"} 
                 onChange={handleChange}
                 style={{ backgroundColor: statusColors[statusToValue[value]] || "" }}
             >

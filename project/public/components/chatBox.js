@@ -3,9 +3,7 @@ const ChatBox = () => {
     const scroll = React.useRef();
 
     React.useEffect(() => {
-        console.log("ChatBox"); 
         const groupid = getCookie('groupid');
-        console.log(groupid);
 
         const q = window.query(
           window.collection(window.doc(window.db, "groups", groupid), "messages"),
@@ -20,8 +18,6 @@ const ChatBox = () => {
           const sortedMessages = fetchedMessages.sort(
             (a, b) => a.createdAt - b.createdAt
           );
-
-          console.log("Messages:", sortedMessages); 
 
           setMessages(sortedMessages);
         });
