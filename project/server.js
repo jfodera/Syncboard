@@ -13,6 +13,28 @@ const { connectToDb, getDb } = require('./db.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+// server.js (near top, after app.use(express.json());)
+
+const sanitizeHtml = require('sanitize-html');
+
+// sanitize all incoming string inputs (body, query, params)
+app.use((req, res, next) => {
+  ['body', 'query', 'params'].forEach((location) => {
+    if (req[location]) {
+      for (const key of Object.keys(req[location])) {
+        const val = req[location][key];
+        if (typeof val === 'string') {
+          req[location][key] = sanitizeHtml(val, {
+            allowedTags: [],           // strip out all HTML tags
+            allowedAttributes: {}      // strip out all attributes
+          });
+        }
+      }
+    }
+  });
+  next();
+});
+
 
 let db;
 //calls connect to DB, once that conection is sucessfull getDb assigns db from getDb 
