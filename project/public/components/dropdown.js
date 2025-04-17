@@ -1,30 +1,47 @@
-const DropdownSelect = ({ id, name, value }) => {
-    const [color, setColor] = React.useState("");
+const DropdownSelect = ({ id, name, value, onChange }) => {
+    // Map status text to your numeric values
+    const statusToValue = {
+        "To Do": "3",
+        "In Progress": "2",
+        "Completed": "1"
+    };
+
+    // Map numeric values to status text
+    const valueToStatus = {
+        "1": "Completed",
+        "2": "In Progress",
+        "3": "To Do"
+    };
+
+    // Map status values to colors
+    const statusColors = {
+        "1": "var(--green)",
+        "2": "var(--yellow)",
+        "3": "var(--blue)"
+    };
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-
-        switch (selectedValue) {
-            case "1":
-                setColor("var(--blue)");
-                break;
-            case "2":
-                setColor("var(--yellow)");
-                break;
-            default:
-                setColor("");
-        }
+        // Call the parent's onChange with the text status
+        onChange({
+            target: {
+                value: valueToStatus[selectedValue]
+            }
+        });
     };
-
-
 
     return (
         <div className="select">
-            <select defaultValue="3" name={name} id={id} onChange={handleChange} style={{ backgroundColor: color }}>
-                <option>Status</option>
-                <option value="1">Completed</option>
-                <option value="2">In Progress</option>
+            <select
+                name={name}
+                id={id}
+                value={statusToValue[value] || "3"} // Convert status text to numeric value
+                onChange={handleChange}
+                style={{ backgroundColor: statusColors[statusToValue[value]] || "" }}
+            >
                 <option value="3">To Do</option>
+                <option value="2">In Progress</option>
+                <option value="1">Completed</option>
             </select>
         </div>
     );

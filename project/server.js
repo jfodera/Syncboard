@@ -669,14 +669,24 @@ app.get('/tasks/:groupid/:taskid', async (req, res) => {
 app.post('/tasks/:groupid', async (req, res) => {
     const groupid = parseInt(req.params.groupid);
     if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
+
     const { task } = req.body;
     if (!task) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
+
     try {
         const lastTask = await db.collection('tasks').find().sort({ taskid: -1 }).limit(1).toArray();
         const newTaskId = lastTask.length > 0 ? lastTask[0].taskid + 1 : 1;
-        const newTask = { task, groupid, taskid: newTaskId, completed: false };
+
+        const newTask = {
+            task,
+            groupid,
+            taskid: newTaskId,
+            status: 'To do',   
+            completed: false
+        };
+
         const result = await db.collection('tasks').insertOne(newTask);
         res.json({ message: 'Task created', taskId: newTaskId });
     } catch (error) {
@@ -684,6 +694,7 @@ app.post('/tasks/:groupid', async (req, res) => {
         res.status(500).json({ error: 'Failed to create task' });
     }
 });
+
 
 
 // update an event by groupID and taskID

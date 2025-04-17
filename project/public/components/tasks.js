@@ -46,8 +46,8 @@ const Tasks = () => {
             const newTask = {
                 taskid: data.taskId,
                 task: 'Placeholder',
-                status: 'To do',
-                isEditing: true, // Mark it for text input
+                status: 'To Do', // Make sure this matches your dropdown options
+                isEditing: true,
             };
     
             setTasks([...tasks, newTask]);
@@ -74,6 +74,28 @@ const Tasks = () => {
             setTasks(updatedTasks);
         } catch (err) {
             console.error('Error updating task name:', err);
+        }
+    };
+
+    const handleStatusChange = async (index, newStatus) => {
+        const updatedTasks = [...tasks];
+        updatedTasks[index].status = newStatus;
+        setTasks(updatedTasks);
+    
+        const taskid = updatedTasks[index].taskid;
+        try {
+            await fetch(`/tasks/${groupId}/${taskid}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+        } catch (err) {
+            console.error('Failed to update task status:', err);
+            // Revert if there's an error
+            updatedTasks[index].status = tasks[index].status;
+            setTasks(updatedTasks);
         }
     };
 
@@ -118,11 +140,13 @@ const Tasks = () => {
                                 )}
                             </td>
                             <td className="status-selector">
-                                <DropdownSelect
-                                    id={`select${index}`}
-                                    name={`select${index}`}
-                                    value={task.status}
-                                />
+                            <DropdownSelect
+                                id={`select${index}`}
+                                name={`select${index}`}
+                                value={task.status}
+                                onChange={(e) => handleStatusChange(index, e.target.value)}
+                                disabled={task.isUpdating}
+                            />
                             </td>
                         </tr>
                     ))}
