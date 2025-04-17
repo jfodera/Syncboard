@@ -547,6 +547,7 @@ select {
     font-weight: bold;
     padding: 8px 12px;
     border-radius: 4px;
+    margin-right: 8px;
 }
 
 .modal-save-btn {
