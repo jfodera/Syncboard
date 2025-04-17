@@ -15,9 +15,9 @@ const DropdownSelect = ({ id, name, value, onChange }) => {
 
     // Map status values to colors
     const statusColors = {
-        "1": "var(--green)",
-        "2": "var(--yellow)",
-        "3": "var(--blue)"
+        "1": "var(--yellow)",
+        "2": "var(--lightblue)",
+        "3": "none"
     };
 
     const handleChange = (e) => {
