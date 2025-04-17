@@ -67,7 +67,7 @@ const Signup = () => {
             <div className="welcome-text">Welcome to SyncBoard!</div>
             <form className="signup-container" onSubmit={handleSubmit}>
                 <div className="login-title">Sign Up</div>
-                {['name', 'email', 'RIN', 'password'].map((field, index) => (
+                {['name', 'email', 'rin', 'password'].map((field, index) => (
                     <div className="input-group" key={index}>
                         <label htmlFor={field}>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
                         <input
