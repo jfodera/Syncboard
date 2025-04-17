@@ -1,5 +1,3 @@
-// styling for later, different colors for different users on the left
-
 function addSpace(name){
     if (name.includes("%20")){
         return name.replace(/%20/g, " ");
@@ -7,11 +5,29 @@ function addSpace(name){
     return name
 }
 
+const groupid = getCookie('groupid');
+
 const Message = ({ message }) => {
     const newName = addSpace(message.name);
     const [rin, setRin] = React.useState(null);
+    const [userColors, setUserColors] = React.useState(new Map());
+
+    const colors = ["--coral","--yellow","--blue","--green", "--purple"];
 
     React.useEffect(() => {
+      // get the rins for the group and assign them colors in a map to display different color for user in messages
+      const mapColors = async () => {
+        const groupInfo = await fetch(`/groups/${groupid}`, {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
+        const response = await groupInfo.json();
+
+        let colorMap = new Map();
+        response.students.forEach((student, index) => {
+          colorMap.set(student, colors[index % colors.length]);
+        });
+        setUserColors(new Map(colorMap));
+      };
+      mapColors();
+      
       const getRin = async () => {
         try {
           const rinRes = await fetch('/session/rin', {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
@@ -30,10 +46,20 @@ const Message = ({ message }) => {
   
       getRin();
     }, []);
+
+    const getColor = (messagerin) => {
+      if (String(messagerin) !== String(rin)) {
+        const color = `var(${userColors.get(Number(messagerin))})`;
+        return color;
+      }
+      return 'var(--offwhite)'; 
+    };
+  
     
     return (
       <div
-        className={`chat-bubble ${String(message.rin) === String(rin) ? "right" : ""}`}>
+        className={`chat-bubble ${String(message.rin) === String(rin) ? "right" : ""}`}
+        style={String(message.rin) !== String(rin) ? { backgroundColor: getColor(message.rin) } : {}}>
         <img
           className="chat-bubble__left"
           src={"../userProfile.jpeg"}
