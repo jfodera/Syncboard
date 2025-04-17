@@ -13,6 +13,28 @@ const { connectToDb, getDb } = require('./db.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+// server.js (near top, after app.use(express.json());)
+
+const sanitizeHtml = require('sanitize-html');
+
+// sanitize all incoming string inputs (body, query, params)
+app.use((req, res, next) => {
+  ['body', 'query', 'params'].forEach((location) => {
+    if (req[location]) {
+      for (const key of Object.keys(req[location])) {
+        const val = req[location][key];
+        if (typeof val === 'string') {
+          req[location][key] = sanitizeHtml(val, {
+            allowedTags: [],           // strip out all HTML tags
+            allowedAttributes: {}      // strip out all attributes
+          });
+        }
+      }
+    }
+  });
+  next();
+});
+
 
 let db;
 //calls connect to DB, once that conection is sucessfull getDb assigns db from getDb 
@@ -62,19 +84,25 @@ app.use(cors({
 
 
 //set up session middleware: 
+const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
+
 app.use(session({
     //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
     //cookie links the client to the session, session is not a cookie
     //note: this is not the sesion ID, that is a different cookeie 
     //64 char random string
-    secret: crypto.randomBytes(32).toString('hex'),
+    secret: SESSION_SECRET,
     //prevents rewrites if nothing changes
     resave: false,
     //saves when new session created 
-    saveUninitialized: true,
+    saveUninitialized: false, 
     //cokies being sent are secure as we are on https. 
     //how session ID is trackerd
-    cookie: { secure: false }
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',  // true in production (requires HTTPS)
+        httpOnly: true,   // Prevent access via JavaScript
+        sameSite: 'strict' // Helps mitigate CSRF
+    }
 }));
 
 // *** Session Requests ***/
@@ -105,7 +133,6 @@ app.get('/session/rin', (req, res) => {
 
 //setting the session group ID 
 app.put('/session/groupID', (req, res) => {
-   //impossible (i think?) 
    if (req.session.user == undefined) {
       res.json({ 'error': 'user is not logged in' });
    }else{
@@ -119,7 +146,6 @@ app.put('/session/groupID', (req, res) => {
 
 //getting the session group ID 
 app.get('/session/groupID', (req, res) => {
-   //impossible (i think?) 
    if (req.session.user == undefined) {
       res.json({ 'error': 'user is not logged in' });
    }else{
@@ -159,14 +185,14 @@ app.get('/classes/:rin', async (req, res) => {
     const rin = parseInt(req.params.rin);
     if (isNaN(rin)) return res.status(400).json({ error: 'Invalid RIN' });
     try {
-        const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0 }).toArray();
+        const groups = await db.collection('groups').find({ students: rin }).project({ groupid: 1, groupName: 1, crn: 1, _id: 0, prefix:1, coursecode:1 }).toArray();
 
 
         const crns = groups.map(item => item.crn);
 
         //get each course in groups, get the names from the crn
         let classPromises = crns.map(async (crn) => {
-            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0, crn: 1} });
+            const course = await db.collection('classes').findOne({ crn: crn }, { projection: { className: 1, _id: 0, crn: 1, prefix:1, coursecode:1} });
             return course;
         });
 
@@ -358,35 +384,27 @@ app.put('/profile/:rin', (req, res) => {
 // *** login stuff ***
 
 app.post('/login', async (req, res) => {
-
-
     const loginProfile = req.body;
-    //  res.json({ message: `Entire DB Populated.` }); 
+    try {
+        // Fetch profile by email – if none exists, avoid calling bcrypt.compare on a null value.
+        const profile = await db.collection('profiles').findOne({ email: loginProfile.email });
+        if (!profile) {
+            return res.status(401).json({ error: 'Invalid email or password!' });
+        }
+        const match = await bcrypt.compare(loginProfile.password, profile.password);
+        if (!match) {
+            return res.status(401).json({ error: 'Invalid email or password!' });
+        }
+        // Successful authentication
+        req.session.user = { rin: profile.rin };
+        req.session.save();
+        res.status(200).json(profile);
+    } catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
-    db.collection('profiles')
-        //works as email is a unique identifier in DAtabase 
-        .findOne({ email: loginProfile['email'] })
-        .then(async (profile) => { //define what the return in called 
-            const match = await bcrypt.compare(loginProfile['password'], profile['password']);
-            if (!profile || !match) {
-                return res.status(401).json({ error: 'Invalid name or password!' });
-            }
-
-            req.session.user = { //stores this is the session of whever requested this
-                rin: profile['rin']
-            };
-            req.session.save();
-
-
-            //status 200: 'OK' -> Successfull
-            res.status(200).json(profile); //sending the profile object returned by the database
-        })
-        .catch(err => {
-
-            console.error('Database query error:', err);
-            res.status(500).json({ error: 'Internal server error' });
-        });
-})
 
 //allows user to sign up with our page
 //automatically checks if user is registered with any classes using classes database 
@@ -673,14 +691,24 @@ app.get('/tasks/:groupid/:taskid', async (req, res) => {
 app.post('/tasks/:groupid', async (req, res) => {
     const groupid = parseInt(req.params.groupid);
     if (isNaN(groupid)) return res.status(400).json({ error: 'Invalid group ID' });
+
     const { task } = req.body;
     if (!task) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
+
     try {
         const lastTask = await db.collection('tasks').find().sort({ taskid: -1 }).limit(1).toArray();
         const newTaskId = lastTask.length > 0 ? lastTask[0].taskid + 1 : 1;
-        const newTask = { task, groupid, taskid: newTaskId, completed: false };
+
+        const newTask = {
+            task,
+            groupid,
+            taskid: newTaskId,
+            status: 'To do',   
+            completed: false
+        };
+
         const result = await db.collection('tasks').insertOne(newTask);
         res.json({ message: 'Task created', taskId: newTaskId });
     } catch (error) {
@@ -688,6 +716,7 @@ app.post('/tasks/:groupid', async (req, res) => {
         res.status(500).json({ error: 'Failed to create task' });
     }
 });
+
 
 
 // update an event by groupID and taskID

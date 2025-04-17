@@ -1,30 +1,43 @@
-const DropdownSelect = ({ id, name, value }) => {
-    const [color, setColor] = React.useState("");
+const DropdownSelect = ({ id, name, value, onChange }) => {
+    const statusToValue = {
+        "To Do": "3",
+        "In Progress": "2",
+        "Completed": "1"
+    };
+
+    const valueToStatus = {
+        "1": "Completed",
+        "2": "In Progress",
+        "3": "To Do"
+    };
+
+    const statusColors = {
+        "1": "var(--yellow)",
+        "2": "var(--lightblue)",
+        "3": ""
+    };
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-
-        switch (selectedValue) {
-            case "1":
-                setColor("var(--blue)");
-                break;
-            case "2":
-                setColor("var(--yellow)");
-                break;
-            default:
-                setColor("");
-        }
+        onChange({
+            target: {
+                value: valueToStatus[selectedValue]
+            }
+        });
     };
-
-
 
     return (
         <div className="select">
-            <select defaultValue="3" name={name} id={id} onChange={handleChange} style={{ backgroundColor: color }}>
-                <option>Status</option>
-                <option value="1">Completed</option>
-                <option value="2">In Progress</option>
+            <select
+                name={name}
+                id={id}
+                value={statusToValue[value] || "3"} 
+                onChange={handleChange}
+                style={{ backgroundColor: statusColors[statusToValue[value]] || "" }}
+            >
                 <option value="3">To Do</option>
+                <option value="2">In Progress</option>
+                <option value="1">Completed</option>
             </select>
         </div>
     );

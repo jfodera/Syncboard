@@ -78,9 +78,9 @@ const Profile = () => {
 
     return (
         <div>
-            <Homebar />
+            {/* <Homebar /> */}
             <div class="profile-maincontent">
-                <div className="profile-title">Your Profile</div>
+                <h1 className="profile-title">Your Profile</h1>
                 <div className="profile-container">
                     <div className="profile-header">
                     <div className="profile-img">
@@ -105,8 +105,8 @@ const Profile = () => {
                                 <input type="email" name="email" value={profile.email} onChange={handleChange} />
                             </div>
                             <div className="form-actions">
-                                <button type="submit" className="edit-profile-btn">Save</button>
-                                <button type="button" onClick={() => setIsEditing(false)} className="edit-profile-btn">Cancel</button>
+                                <button type="submit" className="edit-profile-btn-save">Save</button>
+                                <button type="button" onClick={() => setIsEditing(false)} className="edit-profile-btn-cancel">Cancel</button>
                             </div>
                         </form>
                     ) : (
@@ -127,7 +127,7 @@ const Profile = () => {
                                 <span>{profile.rin}</span>
                             </div>
                             <hr />
-                            <button onClick={() => setIsEditing(true)} className="edit-profile-btn">Edit Profile</button>
+                            <button onClick={() => setIsEditing(true)} className="edit-profile-btn-save">Edit Profile</button>
                         </div>
                     )}
                 </div>

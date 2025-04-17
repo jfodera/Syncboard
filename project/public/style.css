@@ -4,6 +4,8 @@
     --shadow: rgba(0, 0, 0, 0.1);
     --blue: #8cc0e8;
     --yellow: #FFC858;
+    --lightyellow: #ffe7b7;
+    --lightblue: #c8e7ff;
     --darkgrey: #333;
     --lightgrey: #666;
 
@@ -35,8 +37,18 @@ body {
 
 h1 {
     color: var(--darkgrey);
-    margin-top: 60px;
-    margin-left: 2.5%;
+    margin-top: 32px;
+}
+
+h2 {
+    color: var(--darkgrey);
+    margin-top: 24px;
+}
+
+.dashboard-name {
+    margin-top:0;
+    width: 100%;
+    text-align: center;
 }
 
 /* nav */
@@ -60,12 +72,12 @@ a {
     text-decoration: none;
 }
 
-.menu {
+.main-menu {
     display: flex;
-    gap: 20px;
+    gap: 36px;
 }
 
-.menu a {
+.main-menu a {
     text-decoration: none;
     color: var(--darkgrey);
     font-weight: bold;
@@ -91,8 +103,8 @@ a {
     padding-bottom: 180px;
 }
 
-#work-header {
-    margin: 36px 0px 36px 72px;
+#work-header, .profile-title {
+    margin-left: 2.5%;
 }
 
 /* cards  */
@@ -114,7 +126,7 @@ a {
 
 .card-body h3 {
     margin: 0;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     font-size: 1.1rem;
     font-weight: bold;
     color: var(--darkgrey);
@@ -124,6 +136,14 @@ a {
     margin: 4px 0;
     font-size: 0.9rem;
     color: var(--lightgrey);
+}
+
+.course-info {
+    color: var(--lightgrey);
+}
+
+.course-info h4{
+    margin:0;
 }
 
 /* footer */
@@ -137,13 +157,13 @@ a {
 }
 
 .bar {
+    margin-left: 0px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     background: var(--gray-50, #F9FAFB);
     width: 100%;
     box-shadow: 0 0 8px var(--shadow);
-    padding: var(--pad-3, 12px) 72px;
+    padding: 12px 32px;
     box-sizing: border-box;
     position: relative;
 }
@@ -174,7 +194,6 @@ th {
 table,
 th,
 td {
-
     border-bottom: 1px solid #ddd;
     text-align: left;
 }
@@ -204,19 +223,14 @@ table {
 
 .secondContent h1 {
     margin: 0;
-    padding-bottom: 10px;
 }
 
 /* profile */
-.profile-title {
-    color: black;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 40px;
+/* .profile-title {
     word-wrap: break-word;
     margin-left: 3%;
     margin-bottom: 24px;
-}
+} */
 
 .profile-container {
     border: 1px solid var(--darkgrey);
@@ -258,6 +272,7 @@ table {
 }
 
 .profile-info .name {
+    color: var(--darkgrey);
     font-size: 24px;
     font-weight: bold;
 }
@@ -293,8 +308,21 @@ hr {
     margin-left: 36px;
 }
 
-.edit-profile-btn {
+.edit-profile-btn-save, .edit-profile-btn-cancel {
     margin-top: 16px;
+    margin-right: 12px;
+    background-color: var(--coral);
+    border: 1px solid var(--coral);
+    border-radius: 8px;
+    color: var(--offwhite);
+    font-weight: bold;
+    font-size: 14px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-profile-btn-cancel {
     background-color: white;
     border: 1px solid var(--coral);
     border-radius: 8px;
@@ -312,9 +340,13 @@ iframe {
     height: 90vh;
 }
 
-.edit-profile-btn:hover {
-    background-color: var(--coral);
+.edit-profile-btn-save:hover {
+    background-color: #dc6239;
     color: white;
+}
+
+.edit-profile-btn-cancel:hover {
+    background-color: #f5f5f5;
 }
 
 .left {
@@ -369,9 +401,29 @@ select {
 }
 
 
-/* chat -------------------------------------------------------------------------------------------------------- */
-  
-  /* chat component */
+/* Chat */
+
+.group-class-info {
+    text-align: center;
+}
+
+.chat-box {
+    position: fixed;
+    bottom: 124px;
+    left: 5%;
+    width: 90vw;
+    border: 1px solid var(--darkgrey);
+    overflow-y: scroll;
+    height:58vh;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.App {
+    height: 86vh;
+}
+
   .messages-wrapper {
     padding: 30px;
     margin-bottom: 60px;
@@ -383,7 +435,7 @@ select {
     color: #1c2c4c;
     width: max-content;
     max-width: calc(100% - 50px);
-    box-shadow: -2px 2px 1px 1px #4c768d;
+    box-shadow: -2px 2px 1px 1px var(--coral);
     display: flex;
     align-items: flex-start;
     margin-bottom: 20px;
@@ -392,7 +444,7 @@ select {
     margin-left: auto;
     border-radius: 20px 20px 0 20px;
     background-color: #fff;
-    box-shadow: -2px 2px 1px 1px #88dded;
+    box-shadow: -2px 2px 1px 1px var(--blue);
   }
   .chat-bubble__left {
     width: 35px;
@@ -414,20 +466,21 @@ select {
     text-align: right;
   }
   
-  /* send message */
   .send-message {
     position: fixed;
-    bottom: 0px;
-    width: 100%;
-    padding: 20px 30px;
-    background-color: #4c768d;
+    bottom: 48px;
+    left:5%;
+    width: 90%;
+    background-color: var(--offwhite);
     display: flex;
+    border: 1px solid var(--darkgrey);
+    border-radius: 10px;
   }
   .send-message > input {
     height: 40px;
+    border:none;
     padding: 10px 10px;
-    border-radius: 5px 0 0 5px;
-    border: none;
+    border-radius:10px 0 0 10px;
     flex-grow: 1;
     background-color: white;
     color: #1c2c4c;
@@ -438,18 +491,19 @@ select {
   }
   .send-message > :is(input, button):focus {
     outline: none;
-    border-bottom: 1px solid #7cc5d9;
+    padding: 10px 10px;
   }
   .send-message > button {
-    width: 70px;
-    height: 40px;
-    padding: 5px 10px;
-    border-radius: 0 5px 5px 0;
-    color: #242443;
-    border: 1px solid #7cc5d9;
-    background-color: #7cc5d9;
-    font-weight: 600;
+    width: 100px;
+    padding: 10px 10px;
+    border-radius: 0 10px 10px 0;
+    color: white;
+    background-color: var(--coral);
+    border:none;
+    font-weight: bolder;
   }
+
+/* Modals */
 
 .modal-overlay {
     position: fixed;
@@ -493,13 +547,14 @@ select {
     font-weight: bold;
     padding: 8px 12px;
     border-radius: 4px;
+    margin-right: 8px;
 }
 
 .modal-save-btn {
     margin-top: 25px;
     border: 1px solid var(--coral);
     background-color: var(--coral);
-
+    margin-right: 8px;
     border-radius: 4px;
     color: var(--offwhite);
     font-weight: bold;
@@ -520,6 +575,14 @@ select {
     margin: 0;
     transform: scale(1.2);
 }
+
+.time-input {
+    display: block;
+  }
+  
+  .hide-time-inputs .time-input {
+    display: none;
+  }
 
 /* Login */
 .container {
@@ -679,8 +742,88 @@ input {
     box-sizing: border-box;
 }
 
+/* Calendar */
+.fullCal-component {
+    padding: 24px;
+    border: solid 1px;
+    border-radius: 10px;
+}
 
-@media only screen and (max-width: 768px) {
+/* Resources */
+.resourcesTable {
+    width: 95%;
+    margin-bottom: 55px;
+}
+
+.resourcesTable a {
+    color: var(--coral);
+}
+
+.resources-modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .resources-modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--darkgrey);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 0.5rem;
+  }
+  
+  .resources-close {
+    color: var(--darkgrey);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .addResourceBtn {
+    font-weight: bold;
+    margin-top: 24px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    background-color: var(--coral);
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  #linksheader {
+    display:flex;
+    position: relative;
+    justify-content: space-between;
+    width: 95%;
+  }
+
+  .openResourceModal {
+    position: absolute;
+    bottom: 12px;
+    right: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: var(--coral);
+    color: var(--offwhite);
+    font-weight: bold;
+    border:none;
+  }
+
+  .openResourceModal:hover {
+    background-color: #d76640;
+  }
+
+  /* Mobile CSS */
+  @media only screen and (max-width: 768px) {
 
     .navbar {
         flex-direction: row;
@@ -689,6 +832,7 @@ input {
     }
 
     .bar {
+        margin-left: 0px;
         flex-direction: column;
         align-items: flex-start;
         padding: 10px 20px;
@@ -753,13 +897,34 @@ input {
 
 
     h1 {
-        margin-left: 5%;
+        margin-top: 48px;
+        text-align: center;
+        font-size: x-large;
     }
 
     .left,
-    .tasks {
-        width: 100%;
+    .tasks-wrapper {
+        overflow-x: auto;
+        width: 90vw;
         margin: 0;
+    }
+
+    .tasks-module {
+        margin-bottom: 96px;
+    }
+
+    .tasks-wrapper {
+        border: 1px solid var(--darkgrey);
+        border-radius: 16px;
+    }
+
+    .tasks {
+        border:none;
+        min-width: 90vw;
+    }
+
+    select {
+        width: 40vw;
     }
 
     .fc-button-group {
@@ -804,21 +969,25 @@ input {
         position: fixed;
         bottom: 0;
     }
+
+    .modal {
+        margin: 0;
+        width: 65vw;
+    }
+
+    .chat-box {
+        height: 56vh;
+    }
+
+    .send-message {
+        bottom: 72px;
+        height: 36px;
+    }
+
+    .send-message > input, .send-message > input:focus {
+        padding:0;
+        font-size: small;
+        height: 36px;
+    }
 }
 
-/* Calendar */
-.fullCal-component {
-    padding: 24px;
-    border: solid 1px;
-    border-radius: 10px;
-}
-
-/* Resources */
-.resourcesTable {
-    width: 95%;
-    margin-bottom: 55px;
-}
-
-.resourcesTable a {
-    color: var(--coral);
-}

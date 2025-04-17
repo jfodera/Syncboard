@@ -5,74 +5,121 @@ let sessiongroupid = 0;
 // modal for creating new event
 function CreateEventModal({ isOpen, onClose, onSubmit, eventData }) {
     if (!isOpen) return null;
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    
+    const form = document.createElement('form');
+    form.id = 'create-event-form';
+    form.className = 'modal';
+    
+    const header = document.createElement('h3');
+    header.textContent = 'Create Event';
+    form.appendChild(header);
+    
+    const createField = (labelText, inputType, inputId, wrapperClass = '') => {
+        const wrapper = document.createElement('div');
+        if (wrapperClass) wrapper.className = wrapperClass;
+    
+        const label = document.createElement('label');
+        label.textContent = labelText;
+    
+        const input = document.createElement('input');
+        input.type = inputType;
+        input.id = inputId;
+    
+        label.appendChild(input);
+        wrapper.appendChild(label);
+        form.appendChild(wrapper);
+        return input;
+    };
 
-    const container = document.createElement('div');
-    container.innerHTML = `
-    <div class="modal-overlay">
-      <form id="create-event-form" class="modal">
-        <h3>Create Event</h3>
-        <label>Event Name: <input type="text" id="createevent-title" placeholder="New Event"/></label><br/>
-        <label>Date: <input type="date" id="createevent-date" /></label><br/>
-        <div class="modal-allday-wrapper">
-          <input type="checkbox" class="modal-allday" id="createevent-allday" /> All Day?<br/>
+    const titleInput = createField('Event Name: ', 'text', 'createevent-title');
+    const dateInput = createField('Date: ', 'date', 'createevent-date');
 
-        </div>
-        <div id="time-inputs">
-          <label>Start Time: <input type="time" id="createevent-start" /></label>
-          <label>End Time: <input type="time" id="createevent-end" /></label>
-        </div><br/>
-        <button type="submit" class="modal-save-btn" id="submit-createevent">Submit</button>
-        <button type="button" class="modal-close-btn" id="close-create-modal">Close</button>
-      </form>
-    </div>
-  `;
+    const allDayWrapper = document.createElement('div');
+    allDayWrapper.className = 'modal-allday-wrapper';
+    const allDayCheckbox = document.createElement('input');
+    allDayCheckbox.type = 'checkbox';
+    allDayCheckbox.id = 'createevent-allday';
+    allDayWrapper.appendChild(allDayCheckbox);
+    allDayWrapper.appendChild(document.createTextNode(' All Day?'));
+    form.appendChild(allDayWrapper);
 
-    document.body.appendChild(container);
-    document.getElementById("createevent-date").value = eventData.date;
-    const allDayCheckbox = document.getElementById('createevent-allday');
-    const timeInputs = document.getElementById('time-inputs');
+    
+    const startInput = createField('Start Time: ', 'time', 'createevent-start', 'time-input');
+    const endInput = createField('End Time: ', 'time', 'createevent-end', 'time-input');
+
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.className = 'modal-save-btn';
+    submitButton.textContent = 'Submit';
+    form.appendChild(submitButton);
+
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'modal-close-btn';
+    closeButton.textContent = 'Close';
+    form.appendChild(closeButton);
+    
+    overlay.appendChild(form);
+    document.body.appendChild(overlay);
+
+    dateInput.value = eventData.date;
 
     allDayCheckbox.addEventListener('change', () => {
-        if (allDayCheckbox.checked) {
-            timeInputs.style.display = 'none';
-        } else {
-            timeInputs.style.display = 'block';
-        }
+        timeContainer.style.display = allDayCheckbox.checked ? 'none' : 'block';
     });
 
-    document.getElementById('create-event-form').onsubmit = async (e) => {
+    if (allDayCheckbox.checked) {
+        form.classList.add('hide-time-inputs');
+        startInput.disabled = true;
+        endInput.disabled = true;
+    }
+    
+    allDayCheckbox.addEventListener('change', () => {
+        if (allDayCheckbox.checked) {
+            form.classList.add('hide-time-inputs');
+            startInput.disabled = true;
+            endInput.disabled = true;
+        } else {
+            form.classList.remove('hide-time-inputs');
+            startInput.disabled = false;
+            endInput.disabled = false;
+        }
+    });
+    
+    form.onsubmit = async (e) => {
         e.preventDefault();
-        const title = document.getElementById('createevent-title').value.trim();
-        const date = document.getElementById('createevent-date').value;
+        const title = titleInput.value.trim();
+        const date = dateInput.value;
         const allDay = allDayCheckbox.checked;
         const starttime = allDay ? null : document.getElementById('createevent-start').value;
         const endtime = allDay ? null : document.getElementById('createevent-end').value;
-        // make sure title and date exist
+        
         if (!title || !date) {
             alert('Event name and date are required.');
             return;
         }
-        // if all day is not checked, start and end times are required
-        if (!allDay) {
-            if (!starttime || !endtime) {
-                alert('Start and end time are required unless the event is all day.');
-                return;
-            }
-            // make sure end time is after start time
-            if (endtime <= starttime) {
-                alert('End time must be after start time.');
-                return;
-            }
+        if (!allDay && (!starttime || !endtime)) {
+            alert('Start and end time required for non-all-day events.');
+            return;
+        }
+        if (!allDay && endtime <= starttime) {
+            alert('End time must be after start time.');
+            return;
         }
         await onSubmit({ title, date, starttime, endtime, allDay });
-        document.body.removeChild(container);
+        document.body.removeChild(overlay);
     };
 
-    document.getElementById('close-create-modal').onclick = () => {
-        document.body.removeChild(container);
+    // Close modal handler
+    closeButton.onclick = () => {
+        document.body.removeChild(overlay);
         onClose();
     };
 }
+
 
 // modal for editing existing events
 function EditEventModal({ isOpen, onClose, onSubmit, onDelete, eventData }) {
@@ -214,7 +261,6 @@ const CalendarComponent = () => {
       let back = await test.json()
       
       return(back.groupid)
-      /* back --> {groupid: 1} where '1' is the current group id */
   }
 
   const fetchEvents = async () => {
@@ -227,7 +273,6 @@ const CalendarComponent = () => {
          credentials: 'include',
          headers: { 'Content-Type': 'application/json' },
       });
-      // const sessiongroupid = profile[]
       
       // get all events for a group
       const res = await fetch(`/calendar/${sessiongroupid}`);
