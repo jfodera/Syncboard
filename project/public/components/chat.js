@@ -1,5 +1,109 @@
 const Chat = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [classID, setClassID] = React.useState(null);
+  const [workspaces, setWorkspaces] = React.useState([]);
+  const [className, setClassName] = React.useState('');
+  const [groupName, setGroupName] = React.useState('');
+  const [groupID, setGroupID] = React.useState(null);
+
+  // Validate session on mount
+  React.useEffect(() => {
+    const validateSession = async () => {
+      try {
+        const rinRes = await fetch('/session/rin', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const session = await rinRes.json();
+
+        if (session.sessionMissing) {
+          window.location.href = '/';
+        }
+      } catch (err) {
+        console.error('Session validation error:', err);
+      }
+    };
+    validateSession();
+  }, []);
+
+  // Get the group ID from the session
+  React.useEffect(() => {
+    const fetchGroupID = async () => {
+      try {
+        const rinRes = await fetch('/session/rin', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const session = await rinRes.json();
+        if (session['sessionMissing']) {
+          window.location.href = '/';
+          return;
+        }
+        const rin = session.rin;
+
+        const res = await fetch('/session/groupID', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+        if (data.error) {
+          console.error('Error fetching group ID:', data.error);
+        } else {
+          setGroupID(data.groupid);
+        }
+      } catch (err) {
+        console.error('Group ID fetch error:', err);
+      }
+    };
+
+    fetchGroupID();
+  }, []); // Only run once on mount
+
+  // This effect runs when groupID is set
+  React.useEffect(() => {
+    if (!groupID) return;  // If groupID is null or undefined, exit early.
+
+    const fetchGroupDetails = async () => {
+      try {
+        const groupInfoRes = await fetch(`/groups/${groupID}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const groupInfo = await groupInfoRes.json();
+        setGroupName(groupInfo.groupName);
+        setClassID(groupInfo.crn);
+
+        // Fetch workspaces using RIN
+        const rinRes = await fetch('/session/rin', {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const session = await rinRes.json();
+        const rin = session.rin;
+
+        const classesRes = await fetch(`/classes/${rin}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const classesData = await classesRes.json();
+        setWorkspaces(classesData);
+
+        // Find the class that matches the crn
+        const matchedClass = classesData.find(cls => cls.crn === groupInfo.crn);
+        if (matchedClass) {
+          setClassName(matchedClass.className);
+        }
+      } catch (err) {
+        console.error('Error fetching group details or classes:', err);
+      }
+    };
+
+    fetchGroupDetails();
+  }, [groupID]); // This effect runs whenever groupID is updated
 
   React.useEffect(() => {
     const signInAnonymouslyAndCheckCookies = async () => {
@@ -17,7 +121,7 @@ const Chat = () => {
         document.cookie = `uid=${encodeURIComponent(user.uid)}; expires=${expiryDate.toUTCString()}; path=/`;
        
         setIsLoggedIn(true);
-        alert("You are logged in!");
+        // alert("You are logged in!");
         
       } catch (error) {
         // If user is not signed in and cookies don't have user info, check cookies
@@ -38,6 +142,14 @@ const Chat = () => {
 
   return (
     <div className="App">
+      <Homebar />
+      <div class="group-class-info">
+        <h1>
+            {className && groupName
+              ? `${className}: ${groupName}`
+              : 'Loading team name...'}
+          </h1>
+      </div>
       {isLoggedIn ? (<ChatBox />) : (<div>Fetching chat logs</div>)}
     </div>
   );
