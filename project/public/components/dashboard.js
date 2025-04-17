@@ -43,7 +43,6 @@ const Dashboard = () => {
                     headers: { 'Content-Type': 'application/json' },
                 });
                 const classesData = await classesRes.json();
-                console.log(className);
                 setWorkspaces(classesData);
                 // Find the class that matches the crn
                 const matchedClass = classesData.find(cls => cls.crn === groupInfo.crn);

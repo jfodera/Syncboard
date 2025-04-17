@@ -9,6 +9,10 @@ const Resources = () => {
   const [className, setClassName] = React.useState('');
   const [groupName, setGroupName] = React.useState('');
   const [isModalOpen, setIsModalOpen] = React.useState(false); // State for modal visibility
+  const [selectedResource, setSelectedResource] = React.useState(null);
+  const [editResName, setEditResName] = React.useState('');
+  const [editResLink, setEditResLink] = React.useState('');
+
 
   // Validate session on mount
   React.useEffect(() => {
@@ -201,6 +205,71 @@ const Resources = () => {
   // Toggle modal visibility
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
+  const openEditModal = (resource) => {
+    setSelectedResource(resource);
+    setEditResName(resource.resourcename);
+    setEditResLink(resource.link);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editResName || !editResLink) {
+      alert("Please fill in all fields.");
+      return;
+    }
+  
+    try {
+      const res = await fetch(`/resources/${groupID}/${selectedResource.resourceid}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          resourcename: editResName,
+          link: editResLink,
+        }),
+      });
+  
+      if (res.ok) {
+        const updatedResources = await fetch(`/resources/${groupID}`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const resourcesData = await updatedResources.json();
+        setResources(resourcesData);
+        setIsModalOpen(false);
+        setSelectedResource(null);
+      } else {
+        alert("Failed to update resource.");
+      }
+    } catch (err) {
+      console.error('Update error:', err);
+      alert("Error updating resource.");
+    }
+  };
+  
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/resources/${groupID}/${selectedResource.resourceid}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      });
+  
+      if (res.ok) {
+        setResources(resources.filter(r => r.resourceid !== selectedResource.resourceid));
+        setIsModalOpen(false);
+        setSelectedResource(null);
+      } else {
+        alert("Failed to delete resource.");
+      }
+    } catch (err) {
+      console.error('Delete error:', err);
+      alert("Error deleting resource.");
+    }
+  };
+  
+
   return (
     <div id="resourcePage">
       <Homebar />
@@ -220,18 +289,22 @@ const Resources = () => {
 
         {/* Modal */}
         {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <span className="resources-close" onClick={toggleModal}>&times;</span>
-              <h2>Add Resource</h2>
-              <form onSubmit={handleAddResource}>
+        <div className="modal-overlay">
+          <div className="modal">
+            <span className="resources-close" onClick={() => { setIsModalOpen(false); setSelectedResource(null); }}>&times;</span>
+            <h2>{selectedResource ? 'Edit Resource' : 'Add Resource'}</h2>
+            <form onSubmit={selectedResource ? (e) => { e.preventDefault(); handleSaveEdit(); } : handleAddResource}>
               <div className="input-group">
                 <div>
                   <label>Resource Name:</label>
                   <input
                     type="text"
-                    value={newResName}
-                    onChange={(e) => setNewResName(e.target.value)}
+                    value={selectedResource ? editResName : newResName}
+                    onChange={(e) =>
+                      selectedResource
+                        ? setEditResName(e.target.value)
+                        : setNewResName(e.target.value)
+                    }
                     placeholder="Enter resource name"
                   />
                 </div>
@@ -239,17 +312,30 @@ const Resources = () => {
                   <label>Link:</label>
                   <input
                     type="text"
-                    value={newResLink}
-                    onChange={(e) => setNewResLink(e.target.value)}
+                    value={selectedResource ? editResLink : newResLink}
+                    onChange={(e) =>
+                      selectedResource
+                        ? setEditResLink(e.target.value)
+                        : setNewResLink(e.target.value)
+                    }
                     placeholder="Enter URL"
                   />
                 </div>
+              </div>
+
+              {selectedResource ? (
+                <div className="modal-btn-group">
+                  <button type="button" className="modal-save-btn" onClick={handleSaveEdit}>Save</button>
+                  <button type="button" className="modal-delete-btn" onClick={handleDelete}>Delete</button>
+                  <button type="button" className="modal-close-btn" onClick={() => { setIsModalOpen(false); setSelectedResource(null); }}>Cancel</button>
                 </div>
+              ) : (
                 <button className="addResourceBtn" type="submit">Add Resource</button>
-              </form>
-            </div>
+              )}
+            </form>
           </div>
-        )}
+        </div>
+      )}
 
         {/* Resources Table */}
         <table className="resourcesTable">
@@ -263,7 +349,9 @@ const Resources = () => {
             {resources.length > 0 ? (
               resources.map((resource) => (
                 <tr key={resource.resourceid}>
-                  <td>{resource.resourcename}</td>
+                <td onClick={() => openEditModal(resource)} style={{ cursor: 'pointer'}}>
+                  {resource.resourcename}
+                </td>
                   <td>
                     <a
                       href={

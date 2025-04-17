@@ -50,3 +50,7 @@ Worked on pulling group names and class info to display in the dashboards based 
 
 - Nothing super complex, just pulling data based on logged-in user/group
 - Joe did most of this but it was cool to learn about sessions and how that all works. 
+
+## Task Editing & Deleting
+
+Just reworked my code from the calendar to make editing/deleting tasks possible. 
