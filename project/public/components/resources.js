@@ -353,7 +353,7 @@ const Resources = () => {
                   {resource.resourcename}
                 </td>
                   <td>
-                    <a
+                    <a 
                       href={
                         resource.link.startsWith('http')
                           ? resource.link
