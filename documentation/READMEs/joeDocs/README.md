@@ -19,6 +19,19 @@
    - professors randomizing 
    - verify CSS 
    
+# Demo Script: 
+   - Login with account that already exists
+   - explain the workspaces page and how that data loads, what happens when I click on a workspace
+      - where groups and classes are coming from -> show DB items
+   - Morgan talks about calendar and functionalities 
+   - Ryan talks about tasks and adds some fake ones 
+      - adds some new ones
+   - Grace hits the chat (explains everything)
+   - Aditya does resouces team 
+   - I talk about profile and inability to edit rin because it would break everything 
+   - create lebron, explain how fetching of classes work and the entirety of the flow of importing classes and groups 
+   - Lebrons Account, showing that it automatically adds him into the classes 
+   - Mobile Morgan 
 
 
 # Project requirements: 
@@ -32,12 +45,12 @@
    - 1 group from each course 
    - some overlap where one user is in multiple groups 
 
-   - 174860325: in intro to HCI and Lin alg
+   - 174860325: in intro to HCI and Interface Design
       ```
       email: 'test1@rpi.edu'
       password: 'Yo-mama3<'
       ```
-   - 435219607: in HCI, Lin Alg, and Web Sci Systems 
+   - 435219607: in HCI, Interface Design, and Web Sci Systems 
       ```
       email: 'test2@rpi.edu'
       password: 'im-Inall3Ha?'
@@ -47,7 +60,11 @@
       email: 'test3@rpi.edu'
       password: 'final0ne!>'
       ```
-   
+   - 231507496 Interface Design, Web Sci System 
+      ```
+      email: 'test4@rpi.edu'
+      password: '2lebron3!'
+      ```
    - 662018329: Web Sci Systems dev instructor 
 
    
@@ -116,7 +133,7 @@
 
    - not allowed to get passed workspaces unless session groupID variable is set
    - more profile storage editing (storing phone number)
-   - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
+   - if adding 'teacher page' just add a dropdown for signup/login to specify whether student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
    - make session validation with RIN  a module. 
