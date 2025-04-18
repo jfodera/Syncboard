@@ -12,7 +12,7 @@ const Message = ({ message }) => {
     const [rin, setRin] = React.useState(null);
     const [userColors, setUserColors] = React.useState(new Map());
 
-    const colors = ["--coral","--yellow","--blue","--lightyellow", "--lightblue"];
+    const colors = ["--yellow","--blue","--lightyellow", "--lightblue"];
 
     React.useEffect(() => {
       // get the rins for the group and assign them colors in a map to display different color for user in messages
