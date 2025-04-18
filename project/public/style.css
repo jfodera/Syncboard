@@ -823,8 +823,7 @@ input {
   }
 
   .emailLink a {
-    color: var(--darkgrey);
-    text-decoration: underline;
+    color: var(--coral);
   }
 
   /* Mobile CSS */
