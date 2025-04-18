@@ -19,6 +19,19 @@
    - professors randomizing 
    - verify CSS 
    
+# Demo Script: 
+   - Login with account that already exists
+   - explain the workspaces page and how that data loads, what happens when I click on a workspace
+      - where groups and classes are coming from -> show DB items
+   - Morgan talks about calendar and functionalities 
+   - Ryan talks about tasks and adds some fake ones 
+      - adds some new ones
+   - Grace hits the chat (explains everything)
+   - Aditya does resouces team 
+   - I talk about profile and inability to edit rin because it would break everything 
+   - create lebron, explain how fetching of classes work and the entirety of the flow of importing classes and groups 
+   - Lebrons Account, showing that it automatically adds him into the classes 
+   - Mobile Morgan 
 
 
 # Project requirements: 
@@ -120,7 +133,7 @@
 
    - not allowed to get passed workspaces unless session groupID variable is set
    - more profile storage editing (storing phone number)
-   - if adding 'teacher page' just add a dropdown for signup/login to specify weather student or teacher 
+   - if adding 'teacher page' just add a dropdown for signup/login to specify whether student or teacher 
    - notify users of password requirements so they don't have to trial and error
    - email verification 
    - make session validation with RIN  a module. 
