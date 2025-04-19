@@ -5,7 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SyncBoard</title>
-
+    <script>
+        // globally available sanitizer
+        window.escapeHTML = function(str) {
+          const div = document.createElement('div');
+          div.textContent = str;
+          return div.innerHTML;
+        };
+      </script>
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <!-- <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
