@@ -1,4 +1,3 @@
-
 const Signup = () => {
     const [formData, setFormData] = React.useState({
         name: '',
@@ -15,7 +14,7 @@ const Signup = () => {
         //gets the id of the form data being submitted and the value
         const { id, value } = e.target;
         //Copies what is already in there for all other value fields except ID. 
-        setFormData({ ...formData, [id]: window.escapeHTML(value) });
+        setFormData({ ...formData, [id]: escapeHTML(value) });
     };
 
     const handleSubmit = async (e) => {
@@ -68,7 +67,7 @@ const Signup = () => {
             <div className="welcome-text">Welcome to SyncBoard!</div>
             <form className="signup-container" onSubmit={handleSubmit}>
                 <div className="login-title">Sign Up</div>
-                {['name', 'email', 'RIN', 'password'].map((field, index) => (
+                {['name', 'email', 'rin', 'password'].map((field, index) => (
                     <div className="input-group" key={index}>
                         <label htmlFor={field}>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
                         <input

@@ -353,7 +353,7 @@ const Resources = () => {
                   {resource.resourcename}
                 </td>
                   <td>
-                    <a
+                    <a 
                       href={
                         resource.link.startsWith('http')
                           ? resource.link
@@ -391,7 +391,13 @@ const Resources = () => {
                 .map((member) => (
                   <tr key={member.rin}>
                     <td>{member.name || 'Unknown'}</td>
-                    <td>{member.email || 'Unknown'}</td>
+                    <td className="emailLink">
+                      {member.email ? (
+                        <a href={`mailto:${member.email}`}>{member.email}</a>
+                      ) : (
+                        'Unknown'
+                      )}
+                    </td>
                   </tr>
                 ))
             ) : (
