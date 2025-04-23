@@ -14,7 +14,7 @@ const Signup = () => {
         //gets the id of the form data being submitted and the value
         const { id, value } = e.target;
         //Copies what is already in there for all other value fields except ID. 
-        setFormData({ ...formData, [id]: escapeHTML(value) });
+        setFormData({ ...formData, [id]: window.escapeHTML(value) });
     };
 
     const handleSubmit = async (e) => {
