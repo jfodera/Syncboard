@@ -34,7 +34,7 @@ const Navbar = (props) => {
         const valSession = async () => {
             try {
 
-                const rinRes = await fetch('/session/rin', {
+                const rinRes = await fetch('/node/session/rin', {
                     method: 'GET',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
