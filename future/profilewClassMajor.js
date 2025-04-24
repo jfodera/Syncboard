@@ -35,7 +35,7 @@ const Profile = ({ name }) => {
 
         const fetchProfile = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/profile/${name}`);
+                const response = await fetch(`https://syncboard.eastus.cloudapp.azure.com/profile/${name}`);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
                 setProfile(data);
@@ -58,7 +58,9 @@ const Profile = ({ name }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3000/profile/${name}`, {
+            const response = await fetch(`https://syncboard.eastus.cloudapp.azure.com/node/profile/${name}`, {
+            //local
+               // const response = await fetch(`http://localhost:3000/profile/${name}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(profile)
