@@ -1,9 +1,8 @@
 # ITWS-4500-S25-syncboard
 
-# Team Google Drive
-https://drive.google.com/drive/folders/1mZXf-QwrH_6nG2-lNvb3Ns0FX67eTz0e?usp=sharing
 
-(This has our scrum meetings and other team resources.)
+
+
 
 # Site Description & Goals
 SyncBoard aims to improve the workflow of group projects, including team management, meeting & deadline scheduling, and communication. We have built this application using a MERN stack (Mongo, Express, React, Node). Syncboard allows students to easily determine the best time to meet using a shared calendar, where students can view the availability of their group members. Teams can also chat with each other with the built in chat function, centralizing communications and preventing the need for an additional communication platform such as discord or webex. Teams can organize their tasks by setting the status of their tasks from to-do, in-progress, or completed. This allows members to visualize both progress and the open issues, increasing accountability between teammates. Students can upload their project resources in the resources section to keep track of any additional files and links that are frequently used. Finally, the contact section provides students with easy access to the contact information of their group members, ensuring clear and efficient communication throughout the project.
@@ -38,3 +37,9 @@ For this project, we installed and implemented capabilities using the following 
 3. cors
 4. bcrypt
 5. crypto
+
+
+# Team Google Drive - (This has our scrum meetings and other team resources.)
+https://drive.google.com/drive/folders/1mZXf-QwrH_6nG2-lNvb3Ns0FX67eTz0e?usp=sharing
+
+The same exact files are also located here in our repo:  https://github.com/RPI-ITWS/ITWS-4500-S25-syncboard/tree/main/Meetings
