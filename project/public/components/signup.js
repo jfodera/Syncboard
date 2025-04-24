@@ -41,7 +41,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await fetch('/signup', {
+            const response = await fetch('/node/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const Signup = () => {
                     </div>
                 ))}
                 <button className="sign-in-btn" type="submit">Sign Up</button>
-                <ReactRouterDOM.Link to="/">
+                <ReactRouterDOM.Link to="/node/">
                     <button className="sign-up-btn" type="button">
                         Already have an account? Log in!
                     </button>

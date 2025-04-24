@@ -8,7 +8,7 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 // Validate session and get RIN
-                const rinRes = await fetch('/session/rin', {
+                const rinRes = await fetch('/node/session/rin', {
                     method: 'GET',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
@@ -21,7 +21,7 @@ const Dashboard = () => {
                 const rin = session.rin;
 
                 // Get group ID from session
-                const groupRes = await fetch('/session/groupID', {
+                const groupRes = await fetch('/node/session/groupID', {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });

@@ -4,7 +4,7 @@
       const getRin = async ()=> {
          try{
    
-            const rinRes = await fetch('/session/rin', {
+            const rinRes = await fetch('/node/session/rin', {
                method: 'GET',
                credentials: 'include',
                headers: { 'Content-Type': 'application/json' },
@@ -78,7 +78,7 @@
             if(group.crn == crn){
                //set sesion id to the id of this group
                //only changes page until groupID is set, 
-               const response = await fetch('/session/groupID', {
+               const response = await fetch('/node/session/groupID', {
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({groupid: group.groupid})
@@ -87,7 +87,7 @@
          }
 
          //get id we just set
-         const groupIDres = await fetch('/session/groupID', {
+         const groupIDres = await fetch('/node/session/groupID', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
          });
@@ -96,7 +96,7 @@
          let group = groupIDBack.groupid
 
          //get group name 
-         const groupNameRes  = await fetch('/groups/:groupid', {
+         const groupNameRes  = await fetch('/node/groups/:groupid', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
          });

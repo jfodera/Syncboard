@@ -30,7 +30,7 @@ const Message = ({ message }) => {
       
       const getRin = async () => {
         try {
-          const rinRes = await fetch('/session/rin', {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
+          const rinRes = await fetch('/node/session/rin', {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
           const session = await rinRes.json();
   
           if (session.sessionMissing) {

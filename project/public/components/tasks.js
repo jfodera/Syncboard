@@ -8,7 +8,7 @@ const Tasks = () => {
     React.useEffect(() => {
         const fetchGroupID = async () => {
             try {
-                const response = await fetch('/session/groupID', {
+                const response = await fetch('/node/session/groupID', {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
