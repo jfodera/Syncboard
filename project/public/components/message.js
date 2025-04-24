@@ -35,7 +35,7 @@ const Message = ({ message }) => {
   
           if (session.sessionMissing) {
             //back to login
-            window.location.href = '/';
+            window.location.href = '/node';
           } else {
             setRin(session.rin);
           }

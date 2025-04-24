@@ -23,7 +23,7 @@ const Workspace = () => {
 
                 if (session['sessionMissing']) {
                     //back to login
-                    window.location.href = '/';
+                    window.location.href = '/node';
                 } else {
                     return (session['rin'])
                 }
