@@ -63,7 +63,7 @@ const Profile = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`https://syncboard.eastus.cloudapp.azure.com/node/profile/${rin}`,{
+            const response = await fetch(`https://syncboard.eastus.cloudapp.azure.com/node/profile/${profile.rin}`,{
             // const response = await fetch(`http://localhost:3000/profile/${profile.rin}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
