@@ -132,6 +132,7 @@
 
 
 # Potential future additions 
+   - correlate sanitation and acceptable characters 
    - may be able to just change this:   
    ```
              <ReactRouterDOM.Route
