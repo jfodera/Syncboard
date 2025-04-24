@@ -24,7 +24,7 @@ const Tasks = () => {
 
     React.useEffect(() => {
         if (groupId !== null) {
-            fetch(`/tasks/${groupId}`)
+            fetch(`/node/tasks/${groupId}`)
                 .then((res) => res.json())
                 .then((data) => setTasks(data))
                 .catch((err) => console.error('Failed to fetch tasks:', err));
