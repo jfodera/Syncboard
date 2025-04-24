@@ -18,7 +18,7 @@ const Navbar = (props) => {
 
             //response was in teh 200's 
             if (response.ok) {
-                window.location.href = '/';
+                window.location.href = '/node';
             } else {
                 //if there is an issue
                 alert("fetch call to logout specifications incorrect");
