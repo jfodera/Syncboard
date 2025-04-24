@@ -10,7 +10,7 @@ const Navbar = (props) => {
 
         try {
             //calls our API -> note there is no URL at this point so we are fin e
-            const response = await fetch('/logout', {
+            const response = await fetch('/node/logout', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -61,7 +61,7 @@ const Navbar = (props) => {
     }, []);
     return (
         <nav className="navbar">
-            <ReactRouterDOM.Link to="/workspace">
+            <ReactRouterDOM.Link to="/node/workspace">
                 <div className="logo">
                     <span className="logo-full">SyncBoard</span>
                     <span className="logo-short">SB</span>
@@ -70,8 +70,8 @@ const Navbar = (props) => {
 
             {!isAuthPage && (
                 <div className="main-menu">
-                    <ReactRouterDOM.Link to="/workspace">Home</ReactRouterDOM.Link>
-                    <ReactRouterDOM.Link to="/class/profile">Profile</ReactRouterDOM.Link>
+                    <ReactRouterDOM.Link to="/node/workspace">Home</ReactRouterDOM.Link>
+                    <ReactRouterDOM.Link to="/node/class/profile">Profile</ReactRouterDOM.Link>
                     {loggedIn && (
                         <div onClick={handleLogOut} className="logout">
                             Logout

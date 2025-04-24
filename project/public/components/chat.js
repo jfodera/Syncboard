@@ -10,7 +10,7 @@ const Chat = () => {
   React.useEffect(() => {
     const validateSession = async () => {
       try {
-        const rinRes = await fetch('/session/rin', {
+        const rinRes = await fetch('/node/session/rin', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ const Chat = () => {
   React.useEffect(() => {
     const fetchGroupID = async () => {
       try {
-        const rinRes = await fetch('/session/rin', {
+        const rinRes = await fetch('/node/session/rin', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,7 @@ const Chat = () => {
         }
         const rin = session.rin;
 
-        const res = await fetch('/session/groupID', {
+        const res = await fetch('/node/session/groupID', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -77,7 +77,7 @@ const Chat = () => {
         setClassID(groupInfo.crn);
 
         // Fetch workspaces using RIN
-        const rinRes = await fetch('/session/rin', {
+        const rinRes = await fetch('/node/session/rin', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },

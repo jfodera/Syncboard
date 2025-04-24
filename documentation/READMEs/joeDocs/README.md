@@ -131,7 +131,13 @@
 
 
 # Potential future additions 
-
+   - may be able to just change this:   
+   ```
+             <ReactRouterDOM.Route
+                path="/"
+                render={({ location }) => <Navbar location={location} />}
+            />
+   ```
    - not allowed to get passed workspaces unless session groupID variable is set
    - add cooldowns to API calls to prevent from SPAM
    - more profile storage editing (storing phone number)

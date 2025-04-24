@@ -235,7 +235,7 @@ const CalendarComponent = () => {
    
   const getRin = async ()=> {
       try{
-         const rinRes = await fetch('/session/rin', {
+         const rinRes = await fetch('/node/session/rin', {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -254,7 +254,7 @@ const CalendarComponent = () => {
    }
 
   const getGroupID = async () => {
-      const test = await fetch('/session/groupID', {
+      const test = await fetch('/node/session/groupID', {
          method: 'GET',
          headers: { 'Content-Type': 'application/json' },
       });
