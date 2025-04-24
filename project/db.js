@@ -1,5 +1,10 @@
 const { MongoClient } = require('mongodb');
-require('dotenv').config();
+const path = require('path');
+const dotenv = require('dotenv');
+const os = require('os');
+
+// Load .env from home directory
+dotenv.config({ path: path.join(os.homedir(), '.env') });
 
 let dbConnection;
 
