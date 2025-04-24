@@ -77,6 +77,7 @@
    - sudo npm install cors
    - sudo npm install bcrypt
    - sudo npm install crypto
+   - sudo npm install dotenv
    - change over to VM URL's 
    - set to true when on VM: cookie: { secure: false }  
    - fix browser errors when going back and fourth between pages 
