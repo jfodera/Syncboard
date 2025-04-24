@@ -14,12 +14,7 @@
       ```
       email: 'test2@rpi.edu'
       password: 'im-Inall3Ha?'
-      ```
-   - 413682709: just webSci
-      ``` 
-      email: 'test3@rpi.edu'
-      password: 'final0ne!>'
-      ```
+
    - 231507496 Interface Design, Web Sci System 
       ```
       email: 'test4@rpi.edu'
