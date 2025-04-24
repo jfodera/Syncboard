@@ -10,7 +10,7 @@ const Login = () => {
 
         try {
             //calls our API -> note there is no URL at this point so we are fin e
-            const response = await fetch('/login', {
+            const response = await fetch('./login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -20,7 +20,7 @@ const Login = () => {
 
             //response was in teh 200's 
             if (response.ok) {
-                window.location.href = '/workspace'; // Redirect to home page
+                window.location.href = './workspace'; // Redirect to home page
             } else {
                 //if there is a  
                 alert(data.message || 'Invalid email or password');
@@ -59,7 +59,7 @@ const Login = () => {
                 <button className="sign-in-btn" onClick={handleSignIn}>
                     Sign In
                 </button>
-                <ReactRouterDOM.Link to="/signup">
+                <ReactRouterDOM.Link to="./signup">
                     <button
                         className="sign-up-btn"
                     >
