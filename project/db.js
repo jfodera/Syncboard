@@ -1,13 +1,14 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 let dbConnection;
 
 module.exports = {
     connectToDb: (cb) => {
-        MongoClient.connect('mongodb+srv://websciteam1:Monkey1!@cluster0.s4i1y.mongodb.net/')
+        MongoClient.connect(process.env.MONGODB_URI)
             .then((client) => {
                 //selects database named db from the cluster
-                dbConnection = client.db('db');
+                dbConnection = client.db(process.env.DB_NAME);
                 return cb();
             })
             .catch((err) => {
