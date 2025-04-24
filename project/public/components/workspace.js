@@ -36,7 +36,7 @@ const Workspace = () => {
       //uses groups to present what classes the student is in as there is no 'group homepage' if you are not in a good 
       const fetchGroups = async () =>{
          let rin = await valSession();
-         fetch(`/classes/${rin}`, { method: 'GET' })
+         fetch(`/node/classes/${rin}`, { method: 'GET' })
          .then(response=>response.json())
          .then(data => {
             setWorkspaces(data);

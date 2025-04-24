@@ -17,7 +17,7 @@ const Message = ({ message }) => {
     React.useEffect(() => {
       // get the rins for the group and assign them colors in a map to display different color for user in messages
       const mapColors = async () => {
-        const groupInfo = await fetch(`/groups/${groupid}`, {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
+        const groupInfo = await fetch(`/node/groups/${groupid}`, {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
         const response = await groupInfo.json();
 
         let colorMap = new Map();

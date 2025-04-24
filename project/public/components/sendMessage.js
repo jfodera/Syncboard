@@ -27,7 +27,7 @@ const SendMessage = () => {
    const getName = async () => {
     const rin = await getRin();
         try {
-            const response = await fetch(`/profile/${rin}`);
+            const response = await fetch(`/node/profile/${rin}`);
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
             name = data.name;

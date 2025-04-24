@@ -268,14 +268,14 @@ const CalendarComponent = () => {
 
     try {
       const rin = await getRin()
-      const profile = await fetch(`/profile/${rin}`, {
+      const profile = await fetch(`/node/profile/${rin}`, {
          method: 'GET',
          credentials: 'include',
          headers: { 'Content-Type': 'application/json' },
       });
       
       // get all events for a group
-      const res = await fetch(`/calendar/${sessiongroupid}`);
+      const res = await fetch(`/node/calendar/${sessiongroupid}`);
       const data = await res.json();
       const formattedEvents = data
       .filter(event => !event.deleted)
@@ -308,7 +308,7 @@ const CalendarComponent = () => {
     const handleCreateSubmit = async ({ title, date, starttime, endtime, allDay }) => {
         try {
             // add new event 
-            await fetch(`/calendar/${sessiongroupid}`, {
+            await fetch(`/node/calendar/${sessiongroupid}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ eventname: title, starttime, endtime, date, allday: allDay }),
@@ -325,7 +325,7 @@ const CalendarComponent = () => {
         try {
             const eventid = eventData.extendedProps.eventid;
             // delete individual event
-            const response = await fetch(`/calendar/${sessiongroupid}/${eventid}`, {
+            const response = await fetch(`/node/calendar/${sessiongroupid}/${eventid}`, {
                 method: 'DELETE',
             });
 
@@ -382,7 +382,7 @@ const CalendarComponent = () => {
         try {
             // edit individual event
             const eventid = eventData.extendedProps.eventid;
-            await fetch(`/calendar/${sessiongroupid}/${eventid}`,
+            await fetch(`/node/calendar/${sessiongroupid}/${eventid}`,
                 {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
