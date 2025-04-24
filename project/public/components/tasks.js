@@ -35,7 +35,7 @@ const Tasks = () => {
         if (groupId === null) return;
 
         try {
-            const response = await fetch(`/tasks/${groupId}`, {
+            const response = await fetch(`/node/tasks/${groupId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ task: 'New Task' }),
@@ -63,7 +63,7 @@ const Tasks = () => {
 
         const taskid = updatedTasks[index].taskid;
         try {
-            await fetch(`/tasks/${groupId}/${taskid}`, {
+            await fetch(`/node/tasks/${groupId}/${taskid}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus }),
@@ -91,7 +91,7 @@ const Tasks = () => {
         if (!editedName.trim()) return;
 
         try {
-            await fetch(`/tasks/${groupId}/${selectedTask.taskid}`, {
+            await fetch(`/node/tasks/${groupId}/${selectedTask.taskid}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ task: editedName }),
@@ -111,7 +111,7 @@ const Tasks = () => {
 
     const deleteTask = async () => {
         try {
-            await fetch(`/tasks/${groupId}/${selectedTask.taskid}`, {
+            await fetch(`/node/tasks/${groupId}/${selectedTask.taskid}`, {
                 method: 'DELETE',
             });
 

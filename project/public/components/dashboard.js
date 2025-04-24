@@ -29,7 +29,7 @@ const Dashboard = () => {
                 const groupid = groupSession.groupid;
 
                 // Fetch group details
-                const groupInfoRes = await fetch(`/groups/${groupid}`, {
+                const groupInfoRes = await fetch(`/node/groups/${groupid}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
@@ -38,7 +38,7 @@ const Dashboard = () => {
                 setCrn(groupInfo.crn);
 
                 // Fetch workspaces using RIN
-                const classesRes = await fetch(`/classes/${rin}`, {
+                const classesRes = await fetch(`/node/classes/${rin}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });

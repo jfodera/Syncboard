@@ -76,7 +76,7 @@ const Resources = () => {
 
     const fetchGroupDetails = async () => {
       try {
-        const groupInfoRes = await fetch(`/groups/${groupID}`, {
+        const groupInfoRes = await fetch(`/node/groups/${groupID}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -93,7 +93,7 @@ const Resources = () => {
         const session = await rinRes.json();
         const rin = session.rin;
 
-        const classesRes = await fetch(`/classes/${rin}`, {
+        const classesRes = await fetch(`/node/classes/${rin}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -118,7 +118,7 @@ const Resources = () => {
     if (!groupID) return;
     const fetchResources = async () => {
       try {
-        const res = await fetch(`/resources/${groupID}`, {
+        const res = await fetch(`/node/resources/${groupID}`, {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -137,7 +137,7 @@ const Resources = () => {
     if (!groupID) return;
     const fetchGroupMembers = async () => {
       try {
-        const groupRes = await fetch(`/groups/${groupID}`, {
+        const groupRes = await fetch(`/node/groups/${groupID}`, {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -145,7 +145,7 @@ const Resources = () => {
         const groupData = await groupRes.json();
         if (groupData.students && groupData.students.length > 0) {
           const memberPromises = groupData.students.map((rin) =>
-            fetch(`/profile/${rin}`, {
+            fetch(`/node/profile/${rin}`, {
               method: 'GET',
               credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
@@ -171,7 +171,7 @@ const Resources = () => {
       return;
     }
     try {
-      const res = await fetch(`/resources/${groupID}`, {
+      const res = await fetch(`/node/resources/${groupID}`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -185,7 +185,7 @@ const Resources = () => {
       if (data.error) {
         alert("Error adding resource: " + data.error);
       } else {
-        const updatedResources = await fetch(`/resources/${groupID}`, {
+        const updatedResources = await fetch(`/node/resources/${groupID}`, {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -219,7 +219,7 @@ const Resources = () => {
     }
   
     try {
-      const res = await fetch(`/resources/${groupID}/${selectedResource.resourceid}`, {
+      const res = await fetch(`/node/resources/${groupID}/${selectedResource.resourceid}`, {
         method: 'PUT',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -230,7 +230,7 @@ const Resources = () => {
       });
   
       if (res.ok) {
-        const updatedResources = await fetch(`/resources/${groupID}`, {
+        const updatedResources = await fetch(`/node/resources/${groupID}`, {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -250,7 +250,7 @@ const Resources = () => {
   
   const handleDelete = async () => {
     try {
-      const res = await fetch(`/resources/${groupID}/${selectedResource.resourceid}`, {
+      const res = await fetch(`/node/resources/${groupID}/${selectedResource.resourceid}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

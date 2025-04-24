@@ -27,7 +27,7 @@
             const rin = await getRin();
       
             // Get list of groupIDs user is in
-            const res = await fetch(`/groups/fromrin/${rin}`, {
+            const res = await fetch(`/node/groups/fromrin/${rin}`, {
                method: 'GET',
                credentials: 'include',
                headers: { 'Content-Type': 'application/json' },
@@ -42,7 +42,7 @@
             const groupid = targetGroup.groupid;
       
             // Fetch group name
-            const groupNameRes = await fetch(`/groups/${groupid}`, {
+            const groupNameRes = await fetch(`/node/groups/${groupid}`, {
                method: 'GET',
                headers: { 'Content-Type': 'application/json' },
             });
@@ -67,7 +67,7 @@
    
    
          //get list of groupID's user is in 
-         const res = await fetch(`/groups/fromrin/${rin}`, {
+         const res = await fetch(`/node/groups/fromrin/${rin}`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

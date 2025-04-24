@@ -68,7 +68,7 @@ const Chat = () => {
 
     const fetchGroupDetails = async () => {
       try {
-        const groupInfoRes = await fetch(`/groups/${groupID}`, {
+        const groupInfoRes = await fetch(`/node/groups/${groupID}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -85,7 +85,7 @@ const Chat = () => {
         const session = await rinRes.json();
         const rin = session.rin;
 
-        const classesRes = await fetch(`/classes/${rin}`, {
+        const classesRes = await fetch(`/node/classes/${rin}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
