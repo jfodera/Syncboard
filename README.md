@@ -1,14 +1,14 @@
 # ITWS-4500-S25-syncboard
 
 
-# Accounts to log in With : 
-   - 1 group from each course 
-   - some overlap where one user is in multiple groups 
+# Note to grader: 
+   - our page is hosted at: https://syncboard.eastus.cloudapp.azure.com/node
+
 
    - 174860325: in intro to HCI and Interface Design
       ```
       email: 'test1@rpi.edu'
-      password: 'Yo-mama3<'
+      password: 'outWin2@'
       ```
    - 435219607: in HCI, Interface Design, and Web Sci Systems 
       ```
@@ -25,7 +25,6 @@
       email: 'test4@rpi.edu'
       password: '2lebron3!'
       ```
-   - 662018329: Web Sci Systems dev instructor 
 
 
 # Site Description & Goals
