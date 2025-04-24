@@ -18,6 +18,8 @@
    - not allowed to get passed workspaces unless session groupID variable is set?
    - professors randomizing 
    - verify CSS 
+   - have mention of Stack (MERN) on README 
+   - Add Rate Limits
    
 # Demo Script: 
    - Login with account that already exists
@@ -40,7 +42,7 @@
    - Use all technologies talked about in class
    - Have a group and chat API 
    - MERN Stack 
-   
+      
 # Good Users to create Key: 
    - 1 group from each course 
    - some overlap where one user is in multiple groups 
@@ -125,13 +127,12 @@
       - //second useEffect will NOT run until fetchEvents is run, so will set group session at the beginning of fetchEvents
    
 
-# Code Chunks: 
-
 
 
 # Potential future additions 
 
    - not allowed to get passed workspaces unless session groupID variable is set
+   - add cooldowns to API calls to prevent from SPAM
    - more profile storage editing (storing phone number)
    - if adding 'teacher page' just add a dropdown for signup/login to specify whether student or teacher 
    - notify users of password requirements so they don't have to trial and error
