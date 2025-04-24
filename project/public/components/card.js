@@ -113,7 +113,7 @@
          document.cookie = `groupid=${encodeURIComponent(group)}; expires=${expiryDate.toUTCString()}; path=/`;
          document.cookie = `groupname=${encodeURIComponent(groupName)}; expires=${expiryDate.toUTCString()}; path=/`;
 
-         window.location.href = 'node/class'; //only after everything is done do we go to the next page 
+         window.location.href = '/node/class'; //only after everything is done do we go to the next page 
       } 
 
          
