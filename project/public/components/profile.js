@@ -36,7 +36,9 @@ const Profile = () => {
 
 
             try {
-                const response = await fetch(`http://localhost:3000/profile/${rin}`);
+               const response = await fetch(`https://syncboard.eastus.cloudapp.azure.com/node/profile/${rin}`);
+               //local
+               //  const response = await fetch(`http://localhost:3000/profile/${rin}`);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
                 setProfile(data);

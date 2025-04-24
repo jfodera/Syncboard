@@ -55,8 +55,9 @@ async function getAssoCodes(stuRin) {
 app.use(cors({
 
     //vm: 
+    origin: 'https://syncboard.eastus.cloudapp.azure.com/node', // React app URL
     //local 
-    origin: 'http://localhost:3000', // React app URL
+   //  origin: 'http://localhost:3000', // React app URL
     credentials: true // Allow cookies (session ID) to be sent
 }));
 
@@ -78,7 +79,7 @@ app.use(session({
     //how session ID is trackerd
     cookie: {
         secure: process.env.NODE_ENV === 'production',  // true in production (requires HTTPS)
-        httpOnly: true,   // Prevent access via JavaScript
+        httpOnly: false,   // Prevent access via JavaScript
         sameSite: 'strict' // Helps mitigate CSRF
     }
 }));
