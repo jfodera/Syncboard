@@ -79,7 +79,7 @@ app.use(session({
     //how session ID is trackerd
     cookie: {
         secure: process.env.NODE_ENV === 'production',  // true in production (requires HTTPS)
-        httpOnly: false,   // Prevent access via JavaScript
+        httpOnly: true,   // Prevent access via JavaScript
         sameSite: 'strict' // Helps mitigate CSRF
     }
 }));
