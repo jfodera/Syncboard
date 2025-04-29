@@ -96,7 +96,7 @@ app.put('/logout', (req, res) => {
 
 //so react can acsess session data (as it is server side:):
 app.get('/session/rin', (req, res) => {
-
+   console.log("session.user is: " + req.session.user); 
     if (req.session.user != undefined) {
         res.json({
             'sessionMissing': false,
