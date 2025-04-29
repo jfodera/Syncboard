@@ -35,17 +35,17 @@ const App = () => {
             <div className="content">
                 {/* Default route (this will be shown first when the app loads) */}
 
-                <ReactRouterDOM.Route path="/node" exact component={Login} />
-                <ReactRouterDOM.Route path="/node/signup" exact component={Signup} />
-                <ReactRouterDOM.Route path="/node/workspace" exact component={Workspace} />
+                <ReactRouterDOM.Route path="/" exact component={Login} />
+                <ReactRouterDOM.Route path="/signup" exact component={Signup} />
+                <ReactRouterDOM.Route path="/workspace" exact component={Workspace} />
 
                 {/* Define the route for /class */}
-                <ReactRouterDOM.Route path="/node/class" exact component={Dashboard} />
+                <ReactRouterDOM.Route path="/class" exact component={Dashboard} />
 
                     {/* <ReactRouterDOM.Route path="/home/dashboard" component={Dashboard} /> */}
-                    <ReactRouterDOM.Route path="/node/class/chat" component={Chat} />
-                    <ReactRouterDOM.Route path="/node/class/resources" component={Resources} />
-                    <ReactRouterDOM.Route path="/node/class/profile" render={() => <Profile name="Emily Chen"/>} />
+                    <ReactRouterDOM.Route path="/class/chat" component={Chat} />
+                    <ReactRouterDOM.Route path="/class/resources" component={Resources} />
+                    <ReactRouterDOM.Route path="/class/profile" render={() => <Profile name="Emily Chen"/>} />
             </div>
             <Footer />
         </ReactRouterDOM.BrowserRouter>

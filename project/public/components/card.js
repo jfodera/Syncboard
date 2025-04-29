@@ -4,7 +4,7 @@
       const getRin = async ()=> {
          try{
    
-            const rinRes = await fetch('/node/session/rin', {
+            const rinRes = await fetch('/session/rin', {
                method: 'GET',
                credentials: 'include',
                headers: { 'Content-Type': 'application/json' },
@@ -13,7 +13,7 @@
                
             if(session['sessionMissing']){
                //back to login
-               window.location.href = /;
+               window.location.href = '/';
             }else{
                return(session['rin'])
             }
@@ -27,7 +27,7 @@
             const rin = await getRin();
       
             // Get list of groupIDs user is in
-            const res = await fetch(`/node/groups/fromrin/${rin}`, {
+            const res = await fetch(`/groups/fromrin/${rin}`, {
                method: 'GET',
                credentials: 'include',
                headers: { 'Content-Type': 'application/json' },
@@ -42,7 +42,7 @@
             const groupid = targetGroup.groupid;
       
             // Fetch group name
-            const groupNameRes = await fetch(`/node/groups/${groupid}`, {
+            const groupNameRes = await fetch(`/groups/${groupid}`, {
                method: 'GET',
                headers: { 'Content-Type': 'application/json' },
             });
@@ -67,7 +67,7 @@
    
    
          //get list of groupID's user is in 
-         const res = await fetch(`/node/groups/fromrin/${rin}`, {
+         const res = await fetch(`/groups/fromrin/${rin}`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -78,7 +78,7 @@
             if(group.crn == crn){
                //set sesion id to the id of this group
                //only changes page until groupID is set, 
-               const response = await fetch('/node/session/groupID', {
+               const response = await fetch('/session/groupID', {
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({groupid: group.groupid})
@@ -87,7 +87,7 @@
          }
 
          //get id we just set
-         const groupIDres = await fetch('/node/session/groupID', {
+         const groupIDres = await fetch('/session/groupID', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
          });
@@ -96,7 +96,7 @@
          let group = groupIDBack.groupid
 
          //get group name 
-         const groupNameRes  = await fetch('/node/groups/:groupid', {
+         const groupNameRes  = await fetch('/groups/:groupid', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
          });
@@ -113,7 +113,7 @@
          document.cookie = `groupid=${encodeURIComponent(group)}; expires=${expiryDate.toUTCString()}; path=/`;
          document.cookie = `groupname=${encodeURIComponent(groupName)}; expires=${expiryDate.toUTCString()}; path=/`;
 
-         window.location.href = '/node/class'; //only after everything is done do we go to the next page 
+         window.location.href = '/class'; //only after everything is done do we go to the next page 
       } 
 
          

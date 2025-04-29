@@ -10,7 +10,7 @@ const Chat = () => {
   React.useEffect(() => {
     const validateSession = async () => {
       try {
-        const rinRes = await fetch('/node/session/rin', {
+        const rinRes = await fetch('/session/rin', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -18,7 +18,7 @@ const Chat = () => {
         const session = await rinRes.json();
 
         if (session.sessionMissing) {
-          window.location.href = /;
+          window.location.href = '/';
         }
       } catch (err) {
         console.error('Session validation error:', err);
@@ -31,19 +31,19 @@ const Chat = () => {
   React.useEffect(() => {
     const fetchGroupID = async () => {
       try {
-        const rinRes = await fetch('/node/session/rin', {
+        const rinRes = await fetch('/session/rin', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
         });
         const session = await rinRes.json();
         if (session['sessionMissing']) {
-          window.location.href = /;
+          window.location.href = '/';
           return;
         }
         const rin = session.rin;
 
-        const res = await fetch('/node/session/groupID', {
+        const res = await fetch('/session/groupID', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -68,7 +68,7 @@ const Chat = () => {
 
     const fetchGroupDetails = async () => {
       try {
-        const groupInfoRes = await fetch(`/node/groups/${groupID}`, {
+        const groupInfoRes = await fetch(`/groups/${groupID}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -77,7 +77,7 @@ const Chat = () => {
         setClassID(groupInfo.crn);
 
         // Fetch workspaces using RIN
-        const rinRes = await fetch('/node/session/rin', {
+        const rinRes = await fetch('/session/rin', {
           method: 'GET',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -85,7 +85,7 @@ const Chat = () => {
         const session = await rinRes.json();
         const rin = session.rin;
 
-        const classesRes = await fetch(`/node/classes/${rin}`, {
+        const classesRes = await fetch(`/classes/${rin}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
