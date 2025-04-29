@@ -55,7 +55,7 @@ async function getAssoCodes(stuRin) {
 app.use(cors({
 
     //vm: 
-    origin: 'https://syncboard.up.railway.app/', // React app URL
+    origin: 'https://syncboard.up.railway.app', // React app URL
     //local 
    //  origin: 'http://localhost:3000', // React app URL
     credentials: true // Allow cookies (session ID) to be sent
