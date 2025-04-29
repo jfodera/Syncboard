@@ -64,24 +64,23 @@ app.use(cors({
 
 //set up session middleware: 
 const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
-
 app.use(session({
-    //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
-    //cookie links the client to the session, session is not a cookie
-    //note: this is not the sesion ID, that is a different cookeie 
-    //64 char random string
-    secret: SESSION_SECRET,
-    //prevents rewrites if nothing changes
-    resave: false,
-    //saves when new session created 
-    saveUninitialized: false, 
-    //cokies being sent are secure as we are on https. 
-    //how session ID is trackerd
-    cookie: {
-        secure: true,  // true in production (requires HTTPS)
-        httpOnly: true,   // Prevent access via JavaScript
-        sameSite: 'strict' // Helps mitigate CSRF
-    }
+   //this key verifies that me (the developer was the one to make the session by storing the secret as a cookei ). Checked each request
+   //cookie links the client to the session, session is not a cookie
+   //note: this is not the sesion ID, that is a different cookeie 
+   //64 char random string
+   secret: SESSION_SECRET,
+   //prevents rewrites if nothing changes
+   resave: false,
+   //saves when new session created 
+   saveUninitialized: false, 
+   //cokies being sent are secure as we are on https. 
+   //how session ID is trackerd
+   cookie: {
+       secure: process.env.NODE_ENV === 'production',  // true in production (requires HTTPS)
+       httpOnly: false,   // Prevent access via JavaScript
+       sameSite: 'strict' // Helps mitigate CSRF
+   }
 }));
 
 // *** Session Requests ***/
