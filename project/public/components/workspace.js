@@ -14,7 +14,7 @@ const Workspace = () => {
         const valSession = async () => {
             try {
 
-                const rinRes = await fetch('/node/session/rin', {
+                const rinRes = await fetch('/session/rin', {
                     method: 'GET',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
@@ -23,7 +23,7 @@ const Workspace = () => {
 
                 if (session['sessionMissing']) {
                     //back to login
-                    window.location.href = '/node';
+                    window.location.href = '/';
                 } else {
                     return (session['rin'])
                 }
@@ -36,7 +36,7 @@ const Workspace = () => {
       //uses groups to present what classes the student is in as there is no 'group homepage' if you are not in a good 
       const fetchGroups = async () =>{
          let rin = await valSession();
-         fetch(`/node/classes/${rin}`, { method: 'GET' })
+         fetch(`/classes/${rin}`, { method: 'GET' })
          .then(response=>response.json())
          .then(data => {
             setWorkspaces(data);

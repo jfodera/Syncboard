@@ -10,7 +10,7 @@ const Navbar = (props) => {
 
         try {
             //calls our API -> note there is no URL at this point so we are fin e
-            const response = await fetch('/node/logout', {
+            const response = await fetch('/logout', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -18,7 +18,7 @@ const Navbar = (props) => {
 
             //response was in teh 200's 
             if (response.ok) {
-                window.location.href = '/node';
+                window.location.href = '/';
             } else {
                 //if there is an issue
                 alert("fetch call to logout specifications incorrect");
@@ -34,7 +34,7 @@ const Navbar = (props) => {
         const valSession = async () => {
             try {
 
-                const rinRes = await fetch('/node/session/rin', {
+                const rinRes = await fetch('/session/rin', {
                     method: 'GET',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
@@ -61,7 +61,7 @@ const Navbar = (props) => {
     }, []);
     return (
         <nav className="navbar">
-            <ReactRouterDOM.Link to="/node/workspace">
+            <ReactRouterDOM.Link to="/workspace">
                 <div className="logo">
                     <span className="logo-full">SyncBoard</span>
                     <span className="logo-short">SB</span>
@@ -70,8 +70,8 @@ const Navbar = (props) => {
 
             {!isAuthPage && (
                 <div className="main-menu">
-                    <ReactRouterDOM.Link to="/node/workspace">Home</ReactRouterDOM.Link>
-                    <ReactRouterDOM.Link to="/node/class/profile">Profile</ReactRouterDOM.Link>
+                    <ReactRouterDOM.Link to="/workspace">Home</ReactRouterDOM.Link>
+                    <ReactRouterDOM.Link to="/class/profile">Profile</ReactRouterDOM.Link>
                     {loggedIn && (
                         <div onClick={handleLogOut} className="logout">
                             Logout

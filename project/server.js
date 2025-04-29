@@ -55,7 +55,7 @@ async function getAssoCodes(stuRin) {
 app.use(cors({
 
     //vm: 
-    origin: 'https://syncboard.eastus.cloudapp.azure.com/node', // React app URL
+    origin: 'https://syncboard.up.railway.app/', // React app URL
     //local 
    //  origin: 'http://localhost:3000', // React app URL
     credentials: true // Allow cookies (session ID) to be sent
@@ -736,7 +736,7 @@ app.delete('/tasks/:groupid/:taskid', async (req, res) => {
     }
 });
 
-// allows reload 
+// allows reload -> must be at end as the wildcard is the last thing we want to check for 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

@@ -6,7 +6,7 @@ const SendMessage = () => {
     const getRin = async ()=> {
       try{
 
-         const rinRes = await fetch('/node/session/rin', {
+         const rinRes = await fetch('/session/rin', {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -15,7 +15,7 @@ const SendMessage = () => {
             
          if(session['sessionMissing']){
             //back to login
-            window.location.href = '/node';
+            window.location.href = '/';
          }else{
             return(session['rin'])
          }
@@ -27,7 +27,7 @@ const SendMessage = () => {
    const getName = async () => {
     const rin = await getRin();
         try {
-            const response = await fetch(`/node/profile/${rin}`);
+            const response = await fetch(`/profile/${rin}`);
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             const data = await response.json();
             name = data.name;

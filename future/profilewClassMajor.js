@@ -15,7 +15,7 @@ const Profile = ({ name }) => {
 
         //session valildation 
         try {
-            const rinRes = await fetch('/node/session/rin', {
+            const rinRes = await fetch('/session/rin', {
                 method: 'GET',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -24,7 +24,7 @@ const Profile = ({ name }) => {
 
             if (session['sessionMissing']) {
                 //back to login
-                window.location.href = '/node';
+                window.location.href = '/';
             } else {
                 rin = session['rin']
             }
@@ -35,7 +35,7 @@ const Profile = ({ name }) => {
 
         const fetchProfile = async () => {
             try {
-                const response = await fetch(`https://syncboard.eastus.cloudapp.azure.com/node/profile/${name}`);
+                const response = await fetch(`/profile/${name}`);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
                 setProfile(data);
@@ -58,7 +58,7 @@ const Profile = ({ name }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`https://syncboard.eastus.cloudapp.azure.com/node/profile/${name}`, {
+            const response = await fetch(`/profile/${name}`, {
             //local
                // const response = await fetch(`http://localhost:3000/profile/${name}`, {
                 method: 'PUT',

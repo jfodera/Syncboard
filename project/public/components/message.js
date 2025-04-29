@@ -17,7 +17,7 @@ const Message = ({ message }) => {
     React.useEffect(() => {
       // get the rins for the group and assign them colors in a map to display different color for user in messages
       const mapColors = async () => {
-        const groupInfo = await fetch(`/node/groups/${groupid}`, {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
+        const groupInfo = await fetch(`/groups/${groupid}`, {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
         const response = await groupInfo.json();
 
         let colorMap = new Map();
@@ -30,12 +30,12 @@ const Message = ({ message }) => {
       
       const getRin = async () => {
         try {
-          const rinRes = await fetch('/node/session/rin', {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
+          const rinRes = await fetch('/session/rin', {method: 'GET', credentials: 'include', headers: { 'Content-Type': 'application/json' }});
           const session = await rinRes.json();
   
           if (session.sessionMissing) {
             //back to login
-            window.location.href = '/node';
+            window.location.href = '/';
           } else {
             setRin(session.rin);
           }

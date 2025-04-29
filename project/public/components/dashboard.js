@@ -8,20 +8,20 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 // Validate session and get RIN
-                const rinRes = await fetch('/node/session/rin', {
+                const rinRes = await fetch('/session/rin', {
                     method: 'GET',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                 });
                 const session = await rinRes.json();
                 if (session['sessionMissing']) {
-                    window.location.href = '/node';
+                    window.location.href = '/';
                     return;
                 }
                 const rin = session.rin;
 
                 // Get group ID from session
-                const groupRes = await fetch('/node/session/groupID', {
+                const groupRes = await fetch('/session/groupID', {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
@@ -29,7 +29,7 @@ const Dashboard = () => {
                 const groupid = groupSession.groupid;
 
                 // Fetch group details
-                const groupInfoRes = await fetch(`/node/groups/${groupid}`, {
+                const groupInfoRes = await fetch(`/groups/${groupid}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });
@@ -38,7 +38,7 @@ const Dashboard = () => {
                 setCrn(groupInfo.crn);
 
                 // Fetch workspaces using RIN
-                const classesRes = await fetch(`/node/classes/${rin}`, {
+                const classesRes = await fetch(`/classes/${rin}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });

@@ -41,7 +41,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await fetch('/node/signup', {
+            const response = await fetch('/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const Signup = () => {
             const data = await response.json();
             if (response.ok) {
                 alert('Signup successful! Redirecting to login...');
-                window.location.href = '/node';
+                window.location.href = '/';
             } else {
                 alert(`Signup failed: ${data.error}`);
             }
@@ -80,7 +80,7 @@ const Signup = () => {
                     </div>
                 ))}
                 <button className="sign-in-btn" type="submit">Sign Up</button>
-                <ReactRouterDOM.Link to="/node/">
+                <ReactRouterDOM.Link to="/">
                     <button className="sign-up-btn" type="button">
                         Already have an account? Log in!
                     </button>
