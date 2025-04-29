@@ -23,7 +23,9 @@ const Workspace = () => {
 
                 if (session['sessionMissing']) {
                     //back to login
+                    console.log("session not correctly set");
                     window.location.href = '/';
+                    
                 } else {
                     return (session['rin'])
                 }
