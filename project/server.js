@@ -78,7 +78,7 @@ app.use(session({
     //cokies being sent are secure as we are on https. 
     //how session ID is trackerd
     cookie: {
-        secure: process.env.NODE_ENV === 'production',  // true in production (requires HTTPS)
+        secure: true,  // true in production (requires HTTPS)
         httpOnly: true,   // Prevent access via JavaScript
         sameSite: 'strict' // Helps mitigate CSRF
     }
