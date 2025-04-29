@@ -15,7 +15,7 @@ const Dashboard = () => {
                 });
                 const session = await rinRes.json();
                 if (session['sessionMissing']) {
-                    window.location.href = '/node';
+                    window.location.href = /;
                     return;
                 }
                 const rin = session.rin;

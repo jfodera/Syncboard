@@ -15,7 +15,7 @@ const Profile = ({ name }) => {
 
         //session valildation 
         try {
-            const rinRes = await fetch('/node/session/rin', {
+            const rinRes = await fetch('/session/rin', {
                 method: 'GET',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -24,7 +24,7 @@ const Profile = ({ name }) => {
 
             if (session['sessionMissing']) {
                 //back to login
-                window.location.href = '/node';
+                window.location.href = /;
             } else {
                 rin = session['rin']
             }

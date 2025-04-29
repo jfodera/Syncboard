@@ -26,7 +26,7 @@ const Resources = () => {
         const session = await rinRes.json();
 
         if (session.sessionMissing) {
-          window.location.href = '/node';
+          window.location.href = /;
         }
       } catch (err) {
         console.error('Session validation error:', err);
@@ -46,7 +46,7 @@ const Resources = () => {
         });
         const session = await rinRes.json();
         if (session['sessionMissing']) {
-          window.location.href = '/node';
+          window.location.href = /;
           return;
         }
         const rin = session.rin;
