@@ -376,7 +376,15 @@ app.post('/login', async (req, res) => {
         // Successful authentication
         req.session.user = { rin: profile.rin };
         req.session.save();
-        res.status(200).json(profile);
+        try {
+            req.session.save();
+            res.send("Session saved successfully.");
+         } catch (err) {   
+            console.error("Session save failed:", err);
+            res.status(500).send("An error occurred while saving the session.");
+         }
+     
+      //   res.status(200).json(profile);
     } catch (err) {
         console.error('Login error:', err);
         res.status(500).json({ error: 'Internal server error' });
