@@ -45,7 +45,7 @@ Non-Functional:
 Served at: http://syncboard.eastus.cloudapp.azure.com/node
 - *Note: must be configured for vm and local, as there are url differences*
 - *Note: path to project folder on vm:* ```/var/www/html/syncboard/project ```
-
+- *Note: This in class server configuration assumes everything is served at a folder called 'node' 
 
 # Library Info
 
